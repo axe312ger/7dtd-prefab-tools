@@ -88,7 +88,11 @@ export async function initConfig(): Promise<PrefabToolsConfig> {
       }
     }
 
-    const config = {...responses, additionalPrefabsPaths, ...defaultConfig} as PrefabToolsConfig
+    const config = {
+      ...responses,
+      additionalPrefabsPaths,
+      ...defaultConfig,
+    } as PrefabToolsConfig
     await writeFile(configPath, JSON.stringify(config, null, 2))
     console.log(`Created new config file at ${configPath}`)
     return config
@@ -105,11 +109,11 @@ export async function initConfig(): Promise<PrefabToolsConfig> {
 
 export const defaultConfig = {
   biomeMap: {
-    '90_172_94': 'pine_forest',
-    '220_220_220': 'snow',
-    '255_235_160': 'desert',
+    '0_64_0': 'pine_forest',
+    '255_255_255': 'snow',
+    '255_228_119': 'desert',
     '186_0_255': 'burnt_forest',
-    '255_171_117': 'wasteland',
+    '255_168_0': 'wasteland',
   },
   vanillaWhitelists: {
     wasteland: [
