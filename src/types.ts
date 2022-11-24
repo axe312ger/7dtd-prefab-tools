@@ -1,4 +1,4 @@
-import { Vector3 } from "three"
+import {Vector3} from 'three'
 
 export interface PrefabXMLData {
   [key: string]: string
@@ -53,3 +53,16 @@ export interface Decoration {
 }
 
 export type Prefabs = Map<string, Prefab>
+
+export interface PrefabToolsConfig {
+  vanillaPrefabsPath: string,
+  additionalPrefabsPaths: string[],
+  biomesPath: string
+  heightMapPath: string
+  prefabsPath: string
+  mapSize: number
+  biomeMap: {[key: string]: string}
+  vanillaWhitelists: {[key: string]: string[]}
+  vanillaBlacklists: {[key: string]: string[]}
+  socketBlacklist: string[]
+}

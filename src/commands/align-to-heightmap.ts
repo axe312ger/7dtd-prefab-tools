@@ -1,45 +1,37 @@
-import {Command, Flags} from '@oclif/core'
+import {Command} from '@oclif/core'
 
 import {readFile, writeFile} from 'node:fs/promises'
 import {dirname, resolve} from 'node:path'
 import cloneDeep from 'clone-deep'
 import {Builder} from 'xml2js'
-import {heightMapPath, xmlMapPrefabsPath} from '../config'
+
 import {getHeightForPosition, loadImageViaJimp} from '../utils/pixel-data'
 import {readPrefabsFromXMLs} from '../utils/read-prefabs'
-import {Decoration, Prefab} from '../types'
-
+import {initConfig} from '../utils/config'
 import {loadDecorations} from '../utils/load-decorations'
 import {filterPOIMarkers} from '../utils/filter-poi-markers'
+import {Decoration, Prefab} from '../types'
 
 export default class AlignToHeightmap extends Command {
-  static description = 'describe the command here';
+  static description = 'Align all POIs and tiles to the heightmap of your map';
 
   static examples = ['<%= config.bin %> <%= command.id %>'];
 
-  static flags = {
-    // flag with a value (-n, --name=VALUE)
-    name: Flags.string({char: 'n', description: 'name to print'}),
-    // flag with no value (-f, --force)
-    force: Flags.boolean({char: 'f'}),
-  };
-
-  static args = [{name: 'file'}];
-
   public async run(): Promise<void> {
-    const {args, flags} = await this.parse(AlignToHeightmap)
+    const config = await initConfig()
+    const {prefabsPath, heightMapPath} = config
 
     const builder = new Builder()
-    const xml = await readFile(xmlMapPrefabsPath, 'utf8')
+    const xml = await readFile(prefabsPath, 'utf8')
     const decorations = await loadDecorations(xml)
-    const prefabs = await readPrefabsFromXMLs()
+    const prefabs = await readPrefabsFromXMLs(config)
     const heightMapImage = await loadImageViaJimp(heightMapPath)
 
     // Based on our existing decorations from prefabs.xml, we filter out everything thats a socket OR a "random" wilderness POI
     const sockets = filterPOIMarkers(decorations, prefabs.prefabsByName)
 
     const adjustedSockets: Decoration[] = []
-    for (const [i, socket] of sockets.entries()) {
+    for (const socket of sockets.values()) {
       const socketPrefab: Prefab | undefined = cloneDeep(
         prefabs.prefabsByName.get(socket.name.toLocaleLowerCase()),
       )
@@ -55,6 +47,7 @@ export default class AlignToHeightmap extends Command {
         socketPrefab.meta.PrefabSize,
         socket.rotation,
         heightMapImage,
+        config,
       )
       const diff = actualY - oldY
 
@@ -92,7 +85,7 @@ export default class AlignToHeightmap extends Command {
 
     const newXml = builder.buildObject(newDecorations)
     const xmlPath = resolve(
-      dirname(xmlMapPrefabsPath),
+      dirname(prefabsPath),
       'prefabs-heightmap-aligned.xml',
     )
     await writeFile(xmlPath, `\uFEFF${newXml.replace(/"\/>/g, '" />')}`, {

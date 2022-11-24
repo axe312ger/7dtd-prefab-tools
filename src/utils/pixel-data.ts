@@ -2,17 +2,17 @@ import * as Jimp from 'jimp'
 import {Vector3} from 'three'
 import memoizerific from 'memoizerific'
 
-import {mapSize, biomeMap} from '../config'
+import {PrefabToolsConfig} from '../types'
 
 export const loadImageViaJimp = async (path: string): Promise<Jimp> => Jimp.read(path)
 
 export const getBiomeForPosition = memoizerific(0)(
-  (position: Vector3, biomesImage: Jimp) => {
+  (position: Vector3, biomesImage: Jimp, {mapSize, biomeMap}: PrefabToolsConfig) => {
     const posX = position.x + (mapSize / 2)
     const posY = (mapSize / 2) - position.z
     const locationColor = Jimp.intToRGBA(biomesImage.getPixelColor(posX, posY))
 
-    const biomeCode = `${locationColor.r}_${locationColor.g}_${locationColor.b}` as keyof typeof biomeMap
+    const biomeCode = `${locationColor.r}_${locationColor.g}_${locationColor.b}` as keyof typeof biomeMap as string
 
     if (!Object.keys(biomeMap).includes(biomeCode)) {
       throw new Error(`Unable to detect biome for ${biomeCode} at ${position}`)
@@ -28,6 +28,7 @@ export const getHeightForPosition = memoizerific(0)(
     plotSize: Vector3,
     rotation: number,
     heightMapImage: Jimp,
+    {mapSize}: PrefabToolsConfig,
   ) => {
     let modifierX = plotSize.x
     let modifierZ = plotSize.z * -1

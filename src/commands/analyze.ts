@@ -1,36 +1,30 @@
-import {Command, Flags} from '@oclif/core'
+/* eslint-disable camelcase */
+import {Command} from '@oclif/core'
 import {readFile, writeFile} from 'node:fs/promises'
-import {resolve, dirname} from 'node:path'
-import {vanillaPrefabsPath, xmlMapPrefabsPath} from '../config'
+import {resolve} from 'node:path'
 import {readPrefabsFromXMLs} from '../utils/read-prefabs'
 import {loadDecorations} from '../utils/load-decorations'
+import {initConfig} from '../utils/config'
 
 export default class Analyze extends Command {
-  static description = 'describe the command here';
+  static description = 'Analyze your maps prefabs.xml and get detailed stats about your spawned POIs';
 
   static examples = ['<%= config.bin %> <%= command.id %>'];
-
-  static flags = {
-    // flag with a value (-n, --name=VALUE)
-    name: Flags.string({char: 'n', description: 'name to print'}),
-    // flag with no value (-f, --force)
-    force: Flags.boolean({char: 'f'}),
-  };
 
   static args = [{name: 'file'}];
 
   public async run(): Promise<void> {
-    const {args, flags} = await this.parse(Analyze)
-
+    const config = await initConfig()
+    const {prefabsPath, vanillaPrefabsPath} = config
     // const name = flags.name ?? 'world'
     // this.log(`hello ${name} from /Users/bene/dev/7d2d/prefab-tools/src/commands/analyze.ts`)
     // if (args.file && flags.force) {
     //   this.log(`you input --force and --file: ${args.file}`)
     // }
 
-    const prefabs = await readPrefabsFromXMLs()
+    const prefabs = await readPrefabsFromXMLs(config)
     const xml = await readFile(
-      resolve(dirname(xmlMapPrefabsPath), 'prefabs.xml'),
+      resolve(prefabsPath),
       'utf8',
     )
     const decorations = await loadDecorations(xml)

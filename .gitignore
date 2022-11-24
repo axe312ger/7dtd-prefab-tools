@@ -8,3 +8,9 @@
 /yarn.lock
 node_modules
 oclif.manifest.json
+.DS_Store
+
+prefabs*.xml
+workspace
+prefab-spawn-stats.csv
+prefab-tools.json

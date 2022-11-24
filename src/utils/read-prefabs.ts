@@ -1,15 +1,16 @@
 /* eslint-disable complexity */
 import * as path from 'node:path'
 import * as fs from 'node:fs'
-
 import {Vector3} from 'three'
-import {Prefab, POIMeta, POIMarker, PrefabXMLData} from '../types'
-import {groupBy, parseArrayValue} from './utils'
+
 import {
-  localPrefabsPath,
-  socketBlacklist,
-  vanillaPrefabsPath,
-} from '../config'
+  Prefab,
+  POIMeta,
+  POIMarker,
+  PrefabXMLData,
+  PrefabToolsConfig,
+} from '../types'
+import {groupBy, parseArrayValue} from './utils'
 
 import {parseStringPromise} from 'xml2js'
 import fastGlob from 'fast-glob'
@@ -22,12 +23,16 @@ const getDimensions = (prefabData: PrefabXMLData): Vector3 => {
   return new Vector3(...sizes)
 }
 
-const clearPath = (p: string) =>
-  p
-  .replace(localPrefabsPath, '[MODDED]')
-  .replace(vanillaPrefabsPath, '[VANILLA]')
+// const clearPath = (p: string) =>
+//   p
+//   .replace(localPrefabsPath, '[MODDED]')
+//   .replace(vanillaPrefabsPath, '[VANILLA]')
 
-export async function readPrefabsFromXMLs(): Promise<{
+export async function readPrefabsFromXMLs({
+  vanillaPrefabsPath,
+  additionalPrefabsPaths,
+  socketBlacklist,
+}: PrefabToolsConfig): Promise<{
   prefabsByName: Map<string, Prefab>;
   validPrefabsByName: Map<string, Prefab>;
 }> {
@@ -36,7 +41,7 @@ export async function readPrefabsFromXMLs(): Promise<{
   // Locate all prefabs
   const files = await fastGlob(
     // Turns directory paths into an array of glob patterns that match all xml files recursively
-    [localPrefabsPath, vanillaPrefabsPath].map(pattern =>
+    [vanillaPrefabsPath, ...additionalPrefabsPaths].map(pattern =>
       path.join(expandTilde(pattern), '**', '*.xml'),
     ),
     {
@@ -68,7 +73,7 @@ export async function readPrefabsFromXMLs(): Promise<{
     try {
       getDimensions(prefabData)
     } catch {
-      console.log(`WARNING: POI is missing dimensions/size: ${clearPath(filePath)}`)
+      console.log(`WARNING: POI is missing dimensions/size: ${filePath}`)
       continue
     }
 
@@ -210,7 +215,9 @@ export async function readPrefabsFromXMLs(): Promise<{
 
     // Drop tiles without spawners (vanilla... OMG why...)
     if (isTile && !meta.markers?.some(marker => marker.Type === 'POISpawn')) {
-      console.log(`WARNING: rwg_tile does not have any POI spawers assigned: ${name}`)
+      console.log(
+        `WARNING: rwg_tile does not have any POI spawers assigned: ${name}`,
+      )
       continue
     }
 
