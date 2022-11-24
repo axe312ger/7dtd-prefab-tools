@@ -20,14 +20,18 @@
     "@oclif/core": "^1.19.1",
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^2.1.7",
+    "clone-deep": "^4.0.1",
     "expand-tilde": "^2.0.2",
     "fast-glob": "^3.2.12",
+    "jimp": "^0.16.2",
+    "memoizerific": "^1.11.3",
     "three": "^0.146.0",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@oclif/test": "^2.2.10",
     "@types/chai": "^4",
+    "@types/clone-deep": "^4.0.1",
     "@types/expand-tilde": "^2.0.0",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.18.3",

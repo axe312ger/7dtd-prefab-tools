@@ -18,12 +18,11 @@ export const RANDOM_POI_NAME = 'random'
 export const SKIPPED_POI_NAME = 'skipped'
 
 export const biomeMap = {
-  255_255_255: 'snow',
-  255_228_119: 'desert',
-  254_227_119: 'desert', // WHY???
-  '0640': 'pine_forest',
-  2_551_680: 'wasteland',
-  1_860_255: 'pine_forest', // swamp should behave like forest
+  '90_172_94': 'pine_forest',
+  '220_220_220': 'snow',
+  '255_235_160': 'desert',
+  '186_0_255': 'burnt_forest',
+  '255_171_117': 'wasteland',
 }
 
 export const vanillaWhitelists = {
