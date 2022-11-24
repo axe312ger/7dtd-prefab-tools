@@ -20,7 +20,7 @@ $ npm install -g prefab-tools
 $ prefab-tools COMMAND
 running command...
 $ prefab-tools (--version)
-prefab-tools/0.0.0 darwin-x64 node-v14.20.0
+prefab-tools/0.0.1 darwin-x64 node-v14.20.0
 $ prefab-tools --help [COMMAND]
 USAGE
   $ prefab-tools COMMAND
@@ -29,8 +29,8 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`prefab-tools hello PERSON`](#prefab-tools-hello-person)
-* [`prefab-tools hello world`](#prefab-tools-hello-world)
+* [`prefab-tools align-to-heightmap`](#prefab-tools-align-to-heightmap)
+* [`prefab-tools analyze [FILE]`](#prefab-tools-analyze-file)
 * [`prefab-tools help [COMMAND]`](#prefab-tools-help-command)
 * [`prefab-tools plugins`](#prefab-tools-plugins)
 * [`prefab-tools plugins:install PLUGIN...`](#prefab-tools-pluginsinstall-plugin)
@@ -41,46 +41,41 @@ USAGE
 * [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-1)
 * [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-2)
 * [`prefab-tools plugins update`](#prefab-tools-plugins-update)
+* [`prefab-tools trim`](#prefab-tools-trim)
 
-## `prefab-tools hello PERSON`
+## `prefab-tools align-to-heightmap`
 
-Say hello
-
-```
-USAGE
-  $ prefab-tools hello [PERSON] -f <value>
-
-ARGUMENTS
-  PERSON  Person to say hello to
-
-FLAGS
-  -f, --from=<value>  (required) Who is saying hello
-
-DESCRIPTION
-  Say hello
-
-EXAMPLES
-  $ oex hello friend --from oclif
-  hello friend from oclif! (./src/commands/hello/index.ts)
-```
-
-_See code: [dist/commands/hello/index.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.0.0/dist/commands/hello/index.ts)_
-
-## `prefab-tools hello world`
-
-Say hello world
+Align all POIs and tiles to the heightmap of your map
 
 ```
 USAGE
-  $ prefab-tools hello world
+  $ prefab-tools align-to-heightmap
 
 DESCRIPTION
-  Say hello world
+  Align all POIs and tiles to the heightmap of your map
 
 EXAMPLES
-  $ prefab-tools hello world
-  hello world! (./src/commands/hello/world.ts)
+  $ prefab-tools align-to-heightmap
 ```
+
+_See code: [dist/commands/align-to-heightmap.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.0.1/dist/commands/align-to-heightmap.ts)_
+
+## `prefab-tools analyze [FILE]`
+
+Analyze your maps prefabs.xml and get detailed stats about your spawned POIs
+
+```
+USAGE
+  $ prefab-tools analyze [FILE]
+
+DESCRIPTION
+  Analyze your maps prefabs.xml and get detailed stats about your spawned POIs
+
+EXAMPLES
+  $ prefab-tools analyze
+```
+
+_See code: [dist/commands/analyze.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.0.1/dist/commands/analyze.ts)_
 
 ## `prefab-tools help [COMMAND]`
 
@@ -331,4 +326,21 @@ FLAGS
 DESCRIPTION
   Update installed plugins.
 ```
+
+## `prefab-tools trim`
+
+remove spawned decorations and parts from the prefabs
+
+```
+USAGE
+  $ prefab-tools trim
+
+DESCRIPTION
+  remove spawned decorations and parts from the prefabs
+
+EXAMPLES
+  $ prefab-tools trim
+```
+
+_See code: [dist/commands/trim.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.0.1/dist/commands/trim.ts)_
 <!-- commandsstop -->
