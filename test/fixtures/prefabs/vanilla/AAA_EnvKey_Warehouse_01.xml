@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<prefab>
+  <property name="CopyAirBlocks" value="True" />
+  <property name="ExcludeDistantPOIMesh" value="False" />
+  <property name="ExcludePOICulling" value="False" />
+  <property name="DistantPOIYOffset" value="0" />
+  <property name="AllowTopSoilDecorations" value="False" />
+  <property name="DifficultyTier" value="1" />
+  <property name="TraderArea" value="False" />
+  <property name="RotationToFaceNorth" value="2" />
+  <property name="ShowQuestClearCount" value="1" />
+  <property name="Zoning" value="none" />
+  <property name="PrefabSize" value="14, 21, 19" />
+  <property name="Tags" value="testonly" />
+  <property class="Stats">
+    <property name="TotalVertices" value="173283" />
+    <property name="TotalTriangles" value="166877" />
+    <property class="BlockEntities">
+      <property name="Vertices" value="130538" />
+      <property name="Triangles" value="142184" />
+    </property>
+    <property class="ChunkMeshes0">
+      <property name="Vertices" value="38840" />
+      <property name="Triangles" value="21392" />
+    </property>
+    <property class="ChunkMeshes1">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes2">
+      <property name="Vertices" value="752" />
+      <property name="Triangles" value="376" />
+    </property>
+    <property class="ChunkMeshes3">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes4">
+      <property name="Vertices" value="2605" />
+      <property name="Triangles" value="2069" />
+    </property>
+    <property class="ChunkMeshes5">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes6">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes7">
+      <property name="Vertices" value="548" />
+      <property name="Triangles" value="856" />
+    </property>
+    <property class="ChunkMeshes8">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes9">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+  </property>
+  <property class="IndexedBlockOffsets">
+    <property class="FetchContainer">
+      <property name="0" value="9, 6, 12" />
+    </property>
+    <property class="POILight">
+      <property name="0" value="7, 9, 11" />
+      <property name="1" value="7, 15, 11" />
+      <property name="2" value="7, 15, 14" />
+      <property name="3" value="9, 14, 14" />
+      <property name="4" value="9, 4, 17" />
+    </property>
+  </property>
+</prefab>

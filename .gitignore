@@ -10,7 +10,7 @@ node_modules
 oclif.manifest.json
 .DS_Store
 
+prefab-tools*.json
 prefabs*.xml
 workspace
 prefab-spawn-stats.csv
-prefab-tools.json

@@ -10,14 +10,13 @@ export async function initConfig(): Promise<PrefabToolsConfig> {
   const configPath = resolve(currentDir, 'prefab-tools.json')
   // check if prefab-tools.json exists
   try {
-    // throw new Error('force asking, remove me ;)')
     await access(configPath, fs.constants.R_OK)
     // load and return existing config file
     const configContent = await readFile(configPath)
     console.log(`Loading existing config file from ${configPath}`)
     return JSON.parse(configContent.toString()) as PrefabToolsConfig
-    // otherwise:
   } catch {
+    // otherwise ask user for paths and create a config file:
     const responses: any = await inquirer.prompt([
       {
         name: 'prefabsPath',
@@ -97,14 +96,6 @@ export async function initConfig(): Promise<PrefabToolsConfig> {
     console.log(`Created new config file at ${configPath}`)
     return config
   }
-
-  // 1. ask for prefabs.xml path (suggest current dir + prefabs.xml)
-  // 2. ask for biomes.png path (suggest current dir + workspace/biomes.png)
-  // 3. ask for dtm.png path (suggest current dir + workspace/dtm.png)
-  // 4. ask for paths to game/server to locate vanilla prefabs
-  // 4. ask for paths to folders that contain additional prefabs. repeat this till user enters empty path
-  // 5. ask for map size (give list of possible sizes?)
-  // 6. combine data with default config and write prefab-tools.json
 }
 
 export const defaultConfig = {

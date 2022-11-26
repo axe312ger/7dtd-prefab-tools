@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {Command} from '@oclif/core'
 import {readFile, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'

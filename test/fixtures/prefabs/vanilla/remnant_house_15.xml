@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<prefab>
+  <property name="CopyAirBlocks" value="True" />
+  <property name="ExcludeDistantPOIMesh" value="False" />
+  <property name="ExcludePOICulling" value="False" />
+  <property name="DistantPOIYOffset" value="0" />
+  <property name="AllowTopSoilDecorations" value="False" />
+  <property name="DifficultyTier" value="1" />
+  <property name="ShowQuestClearCount" value="1" />
+  <property name="TraderArea" value="False" />
+  <property name="RotationToFaceNorth" value="2" />
+  <property name="Zoning" value="ResidentialOld, ResdentialOld" />
+  <property name="AllowedTownships" value="town" />
+  <property name="YOffset" value="-2" />
+  <property name="SleeperVolumeSize" value="9, 3, 2#3, 3, 3#3, 3, 3#4, 3, 3#4, 3, 4" />
+  <property name="SleeperVolumeStart" value="20, 4, 21#23, 4, 16#15, 4, 18#22, 4, 13#17, 4, 13" />
+  <property name="SleeperVolumeGroupId" value="1,2,3,4,5" />
+  <property name="SleeperVolumeGroup" value="S_-Group_Generic_Zombie,0,1,S_-Group_Generic_Zombie,0,1,S_-Group_Generic_Zombie,0,1,S_-Group_Generic_Zombie,0,1,S_-Group_Generic_Zombie,0,1" />
+  <property name="SleeperIsLootVolume" value="False,False,False,False,False" />
+  <property name="SleeperIsQuestExclude" value="False,False,False,False,False" />
+  <property name="SleeperVolumeFlags" value="2,2,2,2,2" />
+  <property name="Tags" value="residential" />
+  <property name="EditorGroups" value="remnant, house old" />
+  <property name="POIMarkerSize" value="6, 13, 5" />
+  <property name="POIMarkerStart" value="34, 1, -5" />
+  <property name="POIMarkerGroup" value="driveway" />
+  <property name="POIMarkerTags" value="residential" />
+  <property name="POIMarkerType" value="PartSpawn" />
+  <property name="POIMarkerPartToSpawn" value="part_driveway_residential_06" />
+  <property name="POIMarkerPartRotations" value="2" />
+  <property name="POIMarkerPartSpawnChance" value="1" />
+  <property name="PrefabSize" value="42, 24, 42" />
+  <property class="IndexedBlockOffsets">
+    <property class="POILight">
+      <property name="0" value="28, 4, 25" />
+    </property>
+    <property class="quest_wood">
+      <property name="0" value="21, 3, 10" />
+      <property name="1" value="26, 3, 9" />
+    </property>
+  </property>
+  <property class="Stats">
+    <property name="TotalVertices" value="156388" />
+    <property name="TotalTriangles" value="149797" />
+    <property class="BlockEntities">
+      <property name="Vertices" value="95477" />
+      <property name="Triangles" value="111938" />
+    </property>
+    <property class="ChunkMeshes0">
+      <property name="Vertices" value="55035" />
+      <property name="Triangles" value="29345" />
+    </property>
+    <property class="ChunkMeshes1">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes2">
+      <property name="Vertices" value="256" />
+      <property name="Triangles" value="176" />
+    </property>
+    <property class="ChunkMeshes3">
+      <property name="Vertices" value="80" />
+      <property name="Triangles" value="40" />
+    </property>
+    <property class="ChunkMeshes4">
+      <property name="Vertices" value="274" />
+      <property name="Triangles" value="140" />
+    </property>
+    <property class="ChunkMeshes5">
+      <property name="Vertices" value="144" />
+      <property name="Triangles" value="72" />
+    </property>
+    <property class="ChunkMeshes6">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes7">
+      <property name="Vertices" value="5102" />
+      <property name="Triangles" value="8076" />
+    </property>
+    <property class="ChunkMeshes8">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes9">
+      <property name="Vertices" value="20" />
+      <property name="Triangles" value="10" />
+    </property>
+  </property>
+</prefab>

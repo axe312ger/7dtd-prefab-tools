@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<prefab>
+  <property name="CopyAirBlocks" value="True" />
+  <property name="ExcludeDistantPOIMesh" value="False" />
+  <property name="ExcludePOICulling" value="False" />
+  <property name="DistantPOIYOffset" value="0" />
+  <property name="AllowTopSoilDecorations" value="False" />
+  <property name="DifficultyTier" value="1" />
+  <property name="ShowQuestClearCount" value="1" />
+  <property name="TraderArea" value="False" />
+  <property name="RotationToFaceNorth" value="2" />
+  <property name="SleeperVolumeSize" value="1, 2, 1#1, 2, 2#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#2, 2, 3#1, 2, 2#2, 2, 3#1, 2, 2#2, 2, 3#1, 2, 2#1, 2, 2#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 2#1, 2, 3#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 1#1, 2, 2#1, 2, 2#1, 2, 2#1, 2, 2#1, 2, 2" />
+  <property name="SleeperVolumeStart" value="3, 1, 8#70, 4, 7#1, 4, 8#3, 4, 8#3, 7, 8#5, 1, 8#5, 4, 8#7, 1, 8#7, 4, 8#7, 7, 8#9, 1, 8#9, 4, 8#9, 7, 8#11, 1, 8#11, 4, 8#11, 7, 8#15, 1, 8#15, 4, 8#15, 7, 8#19, 1, 8#19, 4, 8#19, 7, 8#17, 1, 8#17, 4, 8#21, 1, 8#21, 4, 8#21, 7, 8#23, 1, 8#23, 4, 8#23, 7, 8#25, 1, 8#25, 4, 8#25, 7, 8#27, 1, 8#27, 4, 8#27, 7, 8#29, 1, 8#29, 4, 8#29, 7, 8#31, 1, 8#31, 4, 8#31, 7, 8#33, 1, 8#35, 1, 8#35, 4, 8#35, 7, 8#37, 1, 8#37, 4, 8#37, 7, 8#39, 1, 8#39, 4, 8#39, 7, 8#41, 1, 8#41, 4, 8#41, 7, 8#43, 1, 8#45, 1, 8#45, 4, 8#45, 7, 8#47, 1, 8#47, 4, 8#47, 7, 8#49, 1, 8#49, 4, 8#49, 7, 8#51, 4, 8#51, 7, 8#53, 1, 8#53, 4, 8#53, 7, 8#55, 1, 8#57, 1, 8#59, 1, 8#59, 4, 8#33, 4, 8#1, 7, 8#61, 7, 6#70, 1, 7#61, 1, 6#64, 7, 7#61, 4, 6#66, 7, 7#68, 1, 7#1, 1, 8#3, 1, 8#5, 7, 8#13, 1, 8#13, 4, 8#13, 7, 8#55, 4, 8#17, 7, 8#68, 4, 7#68, 7, 6#33, 7, 8#43, 7, 8#43, 4, 8#55, 7, 8#64, 1, 7#64, 4, 7#66, 1, 7#66, 4, 7#70, 7, 7" />
+  <property name="SleeperVolumeGroupId" value="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" />
+  <property name="SleeperVolumeGroup" value="zombieMarlene,1,1,animalZombieVultureRadiated,1,1,zombieArleneFeral,1,1,zombieMarleneFeral,1,1,zombieMarleneRadiated,1,1,zombiePartyGirl,1,1,zombiePartyGirlFeral,1,1,zombieNurse,1,1,zombieNurseFeral,1,1,zombieNurseRadiated,1,1,zombieJoe,1,1,zombieJoeFeral,1,1,zombieJoeRadiated,1,1,zombieSteve,1,1,zombieSteveFeral,1,1,zombieSteveRadiated,1,1,zombieTomClark,1,1,zombieTomClarkFeral,1,1,zombieTomClarkRadiated,1,1,zombieBurnt,1,1,zombieBurntFeral,1,1,zombieBurntRadiated,1,1,S_Zom_Businessman,1,1,zombieBusinessManFeral,1,1,zombieBoe,1,1,zombieBoeFeral,1,1,zombieBoeRadiated,1,1,zombieJanitor,1,1,zombieJanitorFeral,1,1,zombieJanitorRadiated,1,1,zombieMoe,1,1,zombieMoeFeral,1,1,zombieMoeRadiated,1,1,zombieLab,1,1,zombieLabFeral,1,1,zombieLabRadiated,1,1,zombieDarlene,1,1,zombieDarleneFeral,1,1,zombieDarleneRadiated,1,1,zombieYo,1,1,zombieYoFeral,1,1,zombieYoRadiated,1,1,zombieUtilityWorker,1,1,zombieBiker,1,1,zombieBikerFeral,1,1,zombieBikerRadiated,1,1,zombieLumberjack,1,1,zombieLumberjackFeral,1,1,zombieLumberjackRadiated,1,1,zombieFemaleFat,1,1,zombieFemaleFatFeral,1,1,zombieFemaleFatRadiated,1,1,zombieFatHawaiian,1,1,zombieFatHawaiianFeral,1,1,zombieFatHawaiianRadiated,1,1,zombieMaleHazmat,1,1,zombieFatCop,1,1,zombieFatCopFeral,1,1,zombieFatCopRadiated,1,1,zombieSkateboarder,1,1,zombieSkateboarderFeral,1,1,zombieSkateboarderRadiated,1,1,zombieSoldier,1,1,zombieSoldierFeral,1,1,zombieSoldierRadiated,1,1,zombieWightFeral,1,1,zombieWightRadiated,1,1,zombieScreamer,1,1,zombieScreamerFeral,1,1,zombieScreamerRadiated,1,1,zombieMutated,1,1,zombieDemolition,1,1,zombieSteveCrawler,1,1,zombieSteveCrawlerFeral,1,1,zombieUtilityWorkerFeral,1,1,zombieArleneRadiated,1,1,animalZombieBear,1,1,animalZombieVultureRadiated,1,1,animalBossGrace,1,1,animalCoyote,1,1,animalBear,1,1,animalBoar,1,1,animalSnake,1,1,zombieArlene,5,6,zombieArleneRadiated,5,6,zombiePartyGirlRadiated,1,1,zombieSpider,1,1,zombieSpiderFeral,1,1,zombieSpiderRadiated,1,1,zombieMutatedFeral,1,1,zombieBusinessManRadiated,1,1,animalRabbit,1,1,animalChicken,5,6,zombieUtilityWorkerRadiated,1,1,zombieMaleHazmatRadiated,1,1,zombieMaleHazmatFeral,1,1,zombieMutatedRadiated,1,1,animalCoyote,1,1,animalWolf,1,1,animalDoe,1,1,animalStag,1,1,animalMountainLion,1,1" />
+  <property name="SleeperIsLootVolume" value="False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False" />
+  <property name="SleeperIsQuestExclude" value="False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False" />
+  <property name="SleeperVolumeFlags" value="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" />
+  <property name="Zoning" value="none" />
+  <property name="YOffset" value="-1" />
+  <property name="PrefabSize" value="77, 10, 11" />
+  <property class="Stats">
+    <property name="TotalVertices" value="27554" />
+    <property name="TotalTriangles" value="20043" />
+    <property class="BlockEntities">
+      <property name="Vertices" value="7060" />
+      <property name="Triangles" value="7672" />
+    </property>
+    <property class="ChunkMeshes0">
+      <property name="Vertices" value="19718" />
+      <property name="Triangles" value="11011" />
+    </property>
+    <property class="ChunkMeshes1">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes2">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes3">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes4">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes5">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes6">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes7">
+      <property name="Vertices" value="776" />
+      <property name="Triangles" value="1360" />
+    </property>
+    <property class="ChunkMeshes8">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes9">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+  </property>
+  <property class="IndexedBlockOffsets">
+    <property class="Trader">
+      <property name="0" value="73, 1, 8" />
+      <property name="1" value="73, 4, 8" />
+      <property name="2" value="73, 7, 8" />
+      <property name="3" value="75, 4, 8" />
+      <property name="4" value="75, 7, 8" />
+    </property>
+  </property>
+</prefab>

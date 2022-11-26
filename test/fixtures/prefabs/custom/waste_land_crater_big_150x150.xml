@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<prefab>
+  <property name="CopyAirBlocks" value="True" />
+  <property name="ExcludeDistantPOIMesh" value="False" />
+  <property name="ExcludePOICulling" value="False" />
+  <property name="DistantPOIYOffset" value="0" />
+  <property name="AllowTopSoilDecorations" value="False" />
+  <property name="DifficultyTier" value="3" />
+  <property name="QuestTags" value="fetch" />
+  <property name="ShowQuestClearCount" value="3" />
+  <property name="TraderArea" value="False" />
+  <property name="PrefabSize" value="150, 47, 150" />
+  <property name="RotationToFaceNorth" value="1" />
+  <property name="Zoning" value="none" />
+  <property name="YOffset" value="-27" />
+  <property name="SleeperVolumeSize" value="10, 3, 11#18, 6, 37#36, 14, 46#24, 12, 28#11, 2, 6#7, 3, 7#51, 9, 15#42, 8, 22#38, 9, 45" />
+  <property name="SleeperVolumeStart" value="93, 27, 106#96, 19, 53#62, 9, 50#124, 22, 9#130, 31, 3#141, 31, 2#49, 20, 4#107, 23, 63#1, 25, 57" />
+  <property name="SleeperVolumeGroupId" value="0,0,0,0,0,0,0,0,0" />
+  <property name="SleeperVolumeGroup" value="zombieSpiderRadiated,1,2,S_-_Group_Zom_Badass,5,6,S_-_Group_Zom_Badass_Only,9,10,zombieLabRadiated,4,5,zombieLabRadiated,3,4,zombieWightRadiated,5,6,S_-_Group_Ghost_Town,5,6,zombieSoldier,2,2,animalZombieVultureRadiated,3,3" />
+  <property name="SleeperIsLootVolume" value="False,False,False,False,False,False,False,False,False" />
+  <property name="SleeperIsQuestExclude" value="False,False,False,False,False,False,False,False,False" />
+  <property name="SleeperVolumeFlags" value="0,0,0,0,0,0,0,0,0" />
+  <property class="Stats">
+    <property name="TotalVertices" value="2725344" />
+    <property name="TotalTriangles" value="2728165" />
+    <property class="BlockEntities">
+      <property name="Vertices" value="2117579" />
+      <property name="Triangles" value="2268515" />
+    </property>
+    <property class="ChunkMeshes0">
+      <property name="Vertices" value="373938" />
+      <property name="Triangles" value="224712" />
+    </property>
+    <property class="ChunkMeshes1">
+      <property name="Vertices" value="85120" />
+      <property name="Triangles" value="42560" />
+    </property>
+    <property class="ChunkMeshes2">
+      <property name="Vertices" value="4692" />
+      <property name="Triangles" value="2436" />
+    </property>
+    <property class="ChunkMeshes3">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes4">
+      <property name="Vertices" value="40848" />
+      <property name="Triangles" value="30713" />
+    </property>
+    <property class="ChunkMeshes5">
+      <property name="Vertices" value="8896" />
+      <property name="Triangles" value="4448" />
+    </property>
+    <property class="ChunkMeshes6">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes7">
+      <property name="Vertices" value="93635" />
+      <property name="Triangles" value="154157" />
+    </property>
+    <property class="ChunkMeshes8">
+      <property name="Vertices" value="636" />
+      <property name="Triangles" value="624" />
+    </property>
+    <property class="ChunkMeshes9">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+  </property>
+  <property class="IndexedBlockOffsets">
+    <property class="POILight">
+      <property name="0" value="145, 26, 126" />
+      <property name="1" value="142, 29, 137" />
+      <property name="2" value="145, 29, 137" />
+    </property>
+    <property class="quest_feather">
+      <property name="0" value="47, 18, 82" />
+      <property name="1" value="52, 17, 88" />
+      <property name="2" value="56, 17, 90" />
+    </property>
+    <property class="FetchContainer">
+      <property name="0" value="86, 13, 78" />
+    </property>
+    <property class="Rally">
+      <property name="0" value="107, 28, 75" />
+    </property>
+    <property class="TraderOnOff">
+      <property name="0" value="144, 31, 8" />
+    </property>
+  </property>
+</prefab>

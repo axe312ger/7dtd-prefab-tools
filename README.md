@@ -20,7 +20,7 @@ $ npm install -g prefab-tools
 $ prefab-tools COMMAND
 running command...
 $ prefab-tools (--version)
-prefab-tools/0.0.1 darwin-x64 node-v14.20.0
+prefab-tools/0.0.1 darwin-arm64 node-v16.16.0
 $ prefab-tools --help [COMMAND]
 USAGE
   $ prefab-tools COMMAND
