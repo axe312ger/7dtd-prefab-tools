@@ -23,6 +23,9 @@ async function initTestConfig(): Promise<void> {
       ...defaultConfig,
     } as PrefabToolsConfig
 
+    console.log('Creating config file for tests with content:')
+    console.log(config)
+
     await writeFile(configPath, JSON.stringify(config, null, 2))
   }
 }
