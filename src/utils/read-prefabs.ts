@@ -39,11 +39,13 @@ export async function readPrefabsFromXMLs({
   console.log('Locate, parse and normalize XML data for all prefabs')
 
   // Locate all prefabs
+  const globPatterns = [vanillaPrefabsPath, ...additionalPrefabsPaths].map(pattern =>
+    path.join(expandTilde(pattern), '**', '*.xml').replace(/\\/g, '/'),
+  )
+
   const files = await fastGlob(
     // Turns directory paths into an array of glob patterns that match all xml files recursively
-    [vanillaPrefabsPath, ...additionalPrefabsPaths].map(pattern =>
-      path.join(expandTilde(pattern), '**', '*.xml'),
-    ),
+    globPatterns,
     {
       onlyFiles: true,
       extglob: true,

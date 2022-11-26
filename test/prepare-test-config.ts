@@ -12,19 +12,19 @@ async function initTestConfig(): Promise<void> {
   try {
     await access(configPath, fs.constants.R_OK)
     await rename(configPath, resolve(currentDir, `prefab-tools-backup-${Date.now()}.json`))
-  } catch {
-    const config = {
-      vanillaPrefabsPath: resolve(currentDir, 'test', 'fixtures', 'prefabs', 'vanilla'),
-      additionalPrefabsPaths: [resolve(currentDir, 'test', 'fixtures', 'prefabs', 'ul'), resolve(currentDir, 'test', 'fixtures', 'prefabs', 'custom')],
-      biomesPath: resolve(currentDir, 'test', 'fixtures', 'biomes.png'),
-      heightMapPath: resolve(currentDir, 'test', 'fixtures', 'dtm.png'),
-      prefabsPath: resolve(currentDir, 'test', 'fixtures', 'prefabs.xml'),
-      mapSize: 6144,
-      ...defaultConfig,
-    } as PrefabToolsConfig
+  } catch {}
 
-    await writeFile(configPath, JSON.stringify(config, null, 2))
-  }
+  const config = {
+    vanillaPrefabsPath: resolve(currentDir, 'test', 'fixtures', 'prefabs', 'vanilla'),
+    additionalPrefabsPaths: [resolve(currentDir, 'test', 'fixtures', 'prefabs', 'ul'), resolve(currentDir, 'test', 'fixtures', 'prefabs', 'custom')],
+    biomesPath: resolve(currentDir, 'test', 'fixtures', 'biomes.png'),
+    heightMapPath: resolve(currentDir, 'test', 'fixtures', 'dtm.png'),
+    prefabsPath: resolve(currentDir, 'test', 'fixtures', 'prefabs.xml'),
+    mapSize: 6144,
+    ...defaultConfig,
+  } as PrefabToolsConfig
+
+  await writeFile(configPath, JSON.stringify(config, null, 2))
 }
 
 initTestConfig()
