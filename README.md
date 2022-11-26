@@ -1,13 +1,9 @@
-oclif-hello-world
+prefab-tools for 7 Days To Die
 =================
 
-oclif example Hello World CLI
+> Toolkit to analyze, trim, repopulate and manipulate your 7 Days To Die map
 
-[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/oclif-hello-world.svg)](https://npmjs.org/package/oclif-hello-world)
-[![CircleCI](https://circleci.com/gh/oclif/hello-world/tree/main.svg?style=shield)](https://circleci.com/gh/oclif/hello-world/tree/main)
-[![Downloads/week](https://img.shields.io/npm/dw/oclif-hello-world.svg)](https://npmjs.org/package/oclif-hello-world)
-[![License](https://img.shields.io/npm/l/oclif-hello-world.svg)](https://github.com/oclif/hello-world/blob/main/package.json)
+**⚠️⚠️⚠️ Alpha status: Use with caution, make backups, manually check the files the script generates! ⚠️⚠️⚠️**
 
 <!-- toc -->
 * [Usage](#usage)
@@ -29,19 +25,22 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`prefab-tools align-to-heightmap`](#prefab-tools-align-to-heightmap)
-* [`prefab-tools analyze [FILE]`](#prefab-tools-analyze-file)
-* [`prefab-tools help [COMMAND]`](#prefab-tools-help-command)
-* [`prefab-tools plugins`](#prefab-tools-plugins)
-* [`prefab-tools plugins:install PLUGIN...`](#prefab-tools-pluginsinstall-plugin)
-* [`prefab-tools plugins:inspect PLUGIN...`](#prefab-tools-pluginsinspect-plugin)
-* [`prefab-tools plugins:install PLUGIN...`](#prefab-tools-pluginsinstall-plugin-1)
-* [`prefab-tools plugins:link PLUGIN`](#prefab-tools-pluginslink-plugin)
-* [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin)
-* [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-1)
-* [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-2)
-* [`prefab-tools plugins update`](#prefab-tools-plugins-update)
-* [`prefab-tools trim`](#prefab-tools-trim)
+- [prefab-tools for 7 Days To Die](#prefab-tools-for-7-days-to-die)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`prefab-tools align-to-heightmap`](#prefab-tools-align-to-heightmap)
+  - [`prefab-tools analyze [FILE]`](#prefab-tools-analyze-file)
+  - [`prefab-tools help [COMMAND]`](#prefab-tools-help-command)
+  - [`prefab-tools plugins`](#prefab-tools-plugins)
+  - [`prefab-tools plugins:install PLUGIN...`](#prefab-tools-pluginsinstall-plugin)
+  - [`prefab-tools plugins:inspect PLUGIN...`](#prefab-tools-pluginsinspect-plugin)
+  - [`prefab-tools plugins:install PLUGIN...`](#prefab-tools-pluginsinstall-plugin-1)
+  - [`prefab-tools plugins:link PLUGIN`](#prefab-tools-pluginslink-plugin)
+  - [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin)
+  - [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-1)
+  - [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-2)
+  - [`prefab-tools plugins update`](#prefab-tools-plugins-update)
+  - [`prefab-tools trim`](#prefab-tools-trim)
 
 ## `prefab-tools align-to-heightmap`
 
