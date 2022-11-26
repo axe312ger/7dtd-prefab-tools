@@ -5,7 +5,6 @@ describe('trim', () => {
   .stdout()
   .command(['trim'])
   .it('executes', ctx => {
-    console.log(ctx.stdout)
     expect(ctx.stdout).to.contain('prefabs-trimmed.xml')
   })
 })
