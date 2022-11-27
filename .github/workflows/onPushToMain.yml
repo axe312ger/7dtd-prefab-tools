@@ -10,6 +10,7 @@ jobs:
     uses: axe312ger/github-workflows/.github/workflows/githubRelease.yml@main
     secrets: inherit
 
+  # trigger reparse
   # most repos won't use this
   # depends on previous job to avoid git collisions, not for any functionality reason
   # docs:
