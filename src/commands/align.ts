@@ -12,7 +12,7 @@ import {loadDecorations} from '../utils/load-decorations'
 import {filterPOIMarkers} from '../utils/filter-poi-markers'
 import {Decoration, Prefab} from '../types'
 
-export default class AlignToHeightmap extends Command {
+export default class Align extends Command {
   static description = 'Align all POIs and tiles to the heightmap of your map';
 
   static examples = ['<%= config.bin %> <%= command.id %>'];

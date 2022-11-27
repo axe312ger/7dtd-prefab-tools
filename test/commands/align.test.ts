@@ -1,9 +1,9 @@
 import {expect, test} from '@oclif/test'
 
-describe('align-to-heightmap', () => {
+describe('align', () => {
   test
   .stdout()
-  .command(['align-to-heightmap'])
+  .command(['align'])
   .it('executes', ctx => {
     expect(ctx.stdout).to.contain('prefabs-heightmap-aligned.xml')
   })
