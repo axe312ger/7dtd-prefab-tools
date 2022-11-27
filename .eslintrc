@@ -2,8 +2,5 @@
   "extends": [
     "oclif",
     "oclif-typescript"
-  ],
-  "rules":{
-    "linebreak-style": ["error", "unix"]
-  }
+  ]
 }
