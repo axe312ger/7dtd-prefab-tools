@@ -37,6 +37,7 @@ USAGE
 * [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-1)
 * [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-2)
 * [`prefab-tools plugins update`](#prefab-tools-plugins-update)
+* [`prefab-tools populate`](#prefab-tools-populate)
 * [`prefab-tools trim`](#prefab-tools-trim)
 
 ## `prefab-tools align`
@@ -322,6 +323,23 @@ FLAGS
 DESCRIPTION
   Update installed plugins.
 ```
+
+## `prefab-tools populate`
+
+Populate all empty tiles in a prefab.xml
+
+```
+USAGE
+  $ prefab-tools populate
+
+DESCRIPTION
+  Populate all empty tiles in a prefab.xml
+
+EXAMPLES
+  $ prefab-tools populate
+```
+
+_See code: [dist/commands/populate.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.1.0/dist/commands/populate.ts)_
 
 ## `prefab-tools trim`
 
