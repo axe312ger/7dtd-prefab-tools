@@ -178,5 +178,5 @@ export const defaultConfig = {
     ],
     wasteland: ['rwg_tile_oldwest'],
   },
-  socketBlacklist: ['bridge_', 'canyon_', 'deco_', 'spawn_'],
+  socketBlacklist: ['bridge_', 'canyon_', 'deco_', 'spawn_', 'rwg_tile_oldwest_'],
 }
