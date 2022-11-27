@@ -6,7 +6,13 @@ prefab-tools for 7 Days To Die
 
 > Toolkit to analyze, trim, repopulate and manipulate your 7 Days To Die map
 
-**⚠️⚠️⚠️ Alpha status: Use with caution, make backups, manually check the files the script generates! ⚠️⚠️⚠️**
+⚠️⚠️⚠️
+
+**Alpha status:**
+
+**Use with caution, make backups, manually check the files the script generates!**
+
+⚠️⚠️⚠️
 
 <!-- toc -->
 * [Usage](#usage)
