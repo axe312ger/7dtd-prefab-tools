@@ -16,7 +16,7 @@ $ npm install -g prefab-tools
 $ prefab-tools COMMAND
 running command...
 $ prefab-tools (--version)
-prefab-tools/0.0.1 darwin-arm64 node-v16.16.0
+prefab-tools/0.1.0 darwin-arm64 node-v16.16.0
 $ prefab-tools --help [COMMAND]
 USAGE
   $ prefab-tools COMMAND
@@ -25,39 +25,36 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-- [prefab-tools for 7 Days To Die](#prefab-tools-for-7-days-to-die)
-- [Usage](#usage)
-- [Commands](#commands)
-  - [`prefab-tools align-to-heightmap`](#prefab-tools-align-to-heightmap)
-  - [`prefab-tools analyze [FILE]`](#prefab-tools-analyze-file)
-  - [`prefab-tools help [COMMAND]`](#prefab-tools-help-command)
-  - [`prefab-tools plugins`](#prefab-tools-plugins)
-  - [`prefab-tools plugins:install PLUGIN...`](#prefab-tools-pluginsinstall-plugin)
-  - [`prefab-tools plugins:inspect PLUGIN...`](#prefab-tools-pluginsinspect-plugin)
-  - [`prefab-tools plugins:install PLUGIN...`](#prefab-tools-pluginsinstall-plugin-1)
-  - [`prefab-tools plugins:link PLUGIN`](#prefab-tools-pluginslink-plugin)
-  - [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin)
-  - [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-1)
-  - [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-2)
-  - [`prefab-tools plugins update`](#prefab-tools-plugins-update)
-  - [`prefab-tools trim`](#prefab-tools-trim)
+* [`prefab-tools align`](#prefab-tools-align)
+* [`prefab-tools analyze [FILE]`](#prefab-tools-analyze-file)
+* [`prefab-tools help [COMMAND]`](#prefab-tools-help-command)
+* [`prefab-tools plugins`](#prefab-tools-plugins)
+* [`prefab-tools plugins:install PLUGIN...`](#prefab-tools-pluginsinstall-plugin)
+* [`prefab-tools plugins:inspect PLUGIN...`](#prefab-tools-pluginsinspect-plugin)
+* [`prefab-tools plugins:install PLUGIN...`](#prefab-tools-pluginsinstall-plugin-1)
+* [`prefab-tools plugins:link PLUGIN`](#prefab-tools-pluginslink-plugin)
+* [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin)
+* [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-1)
+* [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-2)
+* [`prefab-tools plugins update`](#prefab-tools-plugins-update)
+* [`prefab-tools trim`](#prefab-tools-trim)
 
-## `prefab-tools align-to-heightmap`
+## `prefab-tools align`
 
 Align all POIs and tiles to the heightmap of your map
 
 ```
 USAGE
-  $ prefab-tools align-to-heightmap
+  $ prefab-tools align
 
 DESCRIPTION
   Align all POIs and tiles to the heightmap of your map
 
 EXAMPLES
-  $ prefab-tools align-to-heightmap
+  $ prefab-tools align
 ```
 
-_See code: [dist/commands/align-to-heightmap.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.0.1/dist/commands/align-to-heightmap.ts)_
+_See code: [dist/commands/align.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.1.0/dist/commands/align.ts)_
 
 ## `prefab-tools analyze [FILE]`
 
@@ -74,7 +71,7 @@ EXAMPLES
   $ prefab-tools analyze
 ```
 
-_See code: [dist/commands/analyze.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.0.1/dist/commands/analyze.ts)_
+_See code: [dist/commands/analyze.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.1.0/dist/commands/analyze.ts)_
 
 ## `prefab-tools help [COMMAND]`
 
@@ -341,5 +338,5 @@ EXAMPLES
   $ prefab-tools trim
 ```
 
-_See code: [dist/commands/trim.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.0.1/dist/commands/trim.ts)_
+_See code: [dist/commands/trim.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.1.0/dist/commands/trim.ts)_
 <!-- commandsstop -->
