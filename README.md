@@ -1,6 +1,9 @@
 prefab-tools for 7 Days To Die
 =================
 
+[![Version](https://img.shields.io/npm/v/prefab-tools.svg)](https://npmjs.org/package/prefab-tools)
+[![Downloads/week](https://img.shields.io/npm/dw/prefab-tools.svg)](https://npmjs.org/package/prefab-tools)
+
 > Toolkit to analyze, trim, repopulate and manipulate your 7 Days To Die map
 
 **⚠️⚠️⚠️ Alpha status: Use with caution, make backups, manually check the files the script generates! ⚠️⚠️⚠️**
