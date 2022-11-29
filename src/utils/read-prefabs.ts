@@ -61,6 +61,7 @@ export async function readPrefabsFromXMLs({
     const data = await parseStringPromise(fileContent)
 
     if (!data.prefab) {
+      console.log(`Unable to read file ${filePath}. Does this script have permission to read these files?`)
       continue
     }
 

@@ -161,8 +161,6 @@ export const filterPOIMarkers = (
 ) => {
   const sockets: Decoration[] = []
 
-  console.dir({decorations, prefabs})
-
   while (decorations.length > 0) {
     const decoration = decorations.shift()
     if (!decoration) {
