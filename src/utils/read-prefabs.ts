@@ -2,6 +2,10 @@
 import * as path from 'node:path'
 import * as fs from 'node:fs'
 import {Vector3} from 'three'
+import {parseStringPromise} from 'xml2js'
+import fastGlob from 'fast-glob'
+import expandTilde from 'expand-tilde'
+import {CliUx} from '@oclif/core'
 
 import {
   Prefab,
@@ -11,10 +15,6 @@ import {
   PrefabToolsConfig,
 } from '../types'
 import {groupBy, parseArrayValue} from './utils'
-
-import {parseStringPromise} from 'xml2js'
-import fastGlob from 'fast-glob'
-import expandTilde from 'expand-tilde'
 
 const getDimensions = (prefabData: PrefabXMLData): Vector3 => {
   const sizes: number[] = prefabData.PrefabSize.split(',').map(v =>
@@ -36,7 +36,9 @@ export async function readPrefabsFromXMLs({
   prefabsByName: Map<string, Prefab>;
   validPrefabsByName: Map<string, Prefab>;
 }> {
-  console.log('Locate, parse and normalize XML data for all prefabs')
+  CliUx.ux.action.start(
+    'Locate, parse and normalize XML data for all prefabs',
+  )
 
   // Locate all prefabs
   const globPatterns = [vanillaPrefabsPath, ...additionalPrefabsPaths].map(pattern =>
@@ -269,5 +271,6 @@ export async function readPrefabsFromXMLs({
   console.log(`Total Prefabs: ${prefabsByName.size}`)
   console.log(`Valid/Spawnable Prefabs: ${validPrefabsByName.size}`)
 
+  CliUx.ux.action.stop()
   return {prefabsByName, validPrefabsByName}
 }

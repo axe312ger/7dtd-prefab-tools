@@ -5,6 +5,7 @@ import {readPrefabsFromXMLs} from '../utils/read-prefabs'
 import {loadDecorations} from '../utils/load-decorations'
 import {initConfig} from '../utils/config'
 import {Prefab} from '../types'
+import {getBiomeForPosition, loadImageViaJimp} from '../utils/pixel-data'
 
 export default class Analyze extends Command {
   static description = 'Analyze your maps prefabs.xml and get detailed stats about your spawned POIs';
@@ -15,7 +16,7 @@ export default class Analyze extends Command {
 
   public async run(): Promise<void> {
     const config = await initConfig()
-    const {prefabsPath, vanillaPrefabsPath} = config
+    const {prefabsPath, vanillaPrefabsPath, biomesPath} = config
     // const name = flags.name ?? 'world'
     // this.log(`hello ${name} from /Users/bene/dev/7d2d/prefab-tools/src/commands/analyze.ts`)
     // if (args.file && flags.force) {
@@ -23,12 +24,13 @@ export default class Analyze extends Command {
     // }
 
     const prefabs = await readPrefabsFromXMLs(config)
-    const xml = await readFile(
-      resolve(prefabsPath),
-      'utf8',
-    )
+    const xml = await readFile(resolve(prefabsPath), 'utf8')
     const decorations = await loadDecorations(xml)
+    const biomesImage = await loadImageViaJimp(biomesPath)
 
+    CliUx.ux.action.start('Analyzing your prefabs and prefabs.xml')
+
+    // POISpawn marker by size
     const validPrefabsBySize: Map<string, Prefab[]> = new Map()
     for (const prefab of prefabs.validPrefabsByName.values()) {
       const prefabSizeId = `${prefab.meta.PrefabSize.x}x${prefab.meta.PrefabSize.z}`
@@ -39,9 +41,9 @@ export default class Analyze extends Command {
         validPrefabsBySize.set(prefabSizeId, [prefab])
       }
     }
+
     // Loop through
 
-    // Count how many 50x50 poi markers and so on you have
     // say how many tiles/prefabs are in which biome
 
     // 1. output list of prefabs without distant mesh!
@@ -54,6 +56,66 @@ export default class Analyze extends Command {
     // biome (any biome, you might not want that!)
 
     // 4. list unique values used in zoning, tags, townships, biomes
+
+    const biomePrefabs: Map<string, Prefab[]> = new Map()
+    const poiSpawnMarkerMap: Map<string, Prefab[]> = new Map()
+    let tilesCount = 0
+    for (const decoration of decorations) {
+      const prefabId = decoration.name.toLocaleLowerCase()
+      const prefabData = prefabs.validPrefabsByName.get(prefabId)
+      if (!prefabData) {
+        continue
+      }
+
+      // Check by biome
+      const biome = getBiomeForPosition(decoration.position, biomesImage, config)
+      const biomePrefabList = biomePrefabs.get(biome)
+      if (biomePrefabList) {
+        biomePrefabs.set(biome, [...biomePrefabList, prefabData])
+      } else {
+        biomePrefabs.set(biome, [prefabData])
+      }
+
+      // Count types
+      if (prefabData.meta.isTile) {
+        tilesCount += 1
+      }
+
+      // Analyze POI spawn markers
+      if (prefabData.meta.markers) {
+        for (const marker of prefabData.meta.markers) {
+          if (marker.Type === 'POISpawn') {
+            const markerId = `${marker.Size.x}x${marker.Size.z}`
+            const markerStats = poiSpawnMarkerMap.get(markerId)
+            if (markerStats) {
+              poiSpawnMarkerMap.set(markerId, [...markerStats, prefabData])
+            } else {
+              poiSpawnMarkerMap.set(markerId, [prefabData])
+            }
+          }
+        }
+      }
+    }
+
+    const markerTableData = []
+    for (const markerInfo of poiSpawnMarkerMap.entries()) {
+      markerTableData.push({
+        size: markerInfo[0],
+        count: markerInfo[1].length,
+        prefabs: validPrefabsBySize.get(markerInfo[0])?.length || 0,
+        tiles: [...new Set(markerInfo[1].map(prefab => prefab.name))]
+        .sort()
+        .join(', '),
+      })
+    }
+
+    const biomesTableData = []
+    for (const biomeInfo of biomePrefabs.entries()) {
+      biomesTableData.push({
+        biome: biomeInfo[0],
+        count: biomeInfo[1].length,
+      })
+    }
 
     // Output prefab placement stats as CSV
     const prefabStats = [...prefabs.validPrefabsByName.entries()]
@@ -81,47 +143,9 @@ export default class Analyze extends Command {
       return d.name.localeCompare(d2.name)
     })
 
-    const poiSpawnMarkerMap: Map<string, Prefab[]> = new Map()
-    let tilesCount = 0
-    for (const decoration of decorations) {
-      const prefabId = decoration.name.toLocaleLowerCase()
-      const prefabData = prefabs.validPrefabsByName.get(prefabId)
-      if (!prefabData) {
-        continue
-      }
-
-      if (prefabData.meta.isTile) {
-        tilesCount += 1
-      }
-
-      // Analyze POI spawn markers
-      if (prefabData.meta.markers) {
-        for (const marker of prefabData.meta.markers) {
-          if (marker.Type === 'POISpawn') {
-            const markerId = `${marker.Size.x}x${marker.Size.z}`
-            const markerStats = poiSpawnMarkerMap.get(markerId)
-            if (markerStats) {
-              poiSpawnMarkerMap.set(markerId, [...markerStats, prefabData])
-            } else {
-              poiSpawnMarkerMap.set(markerId, [prefabData])
-            }
-          }
-        }
-      }
-    }
-
-    const markerTableData = []
-    for (const markerInfo of poiSpawnMarkerMap.entries()) {
-      markerTableData.push({
-        size: markerInfo[0],
-        count: markerInfo[1].length,
-        prefabs: validPrefabsBySize.get(markerInfo[0])?.length || 0,
-        tiles: [...new Set(markerInfo[1].map(prefab => prefab.name))].sort().join(', '),
-      })
-    }
-
     // Turn to CSV array
-    const csvData = prefabStats.map(d =>
+    const csvData = prefabStats
+    .map(d =>
       [
         d.name,
         d.count,
@@ -142,7 +166,14 @@ export default class Analyze extends Command {
     )
     .filter(Boolean)
 
-    console.log(`There are ${prefabStats.filter((v => v.count > 0)).length} unique POIs spawned in your prefabs.xml`)
+    CliUx.ux.action.stop()
+
+    // DATA LOGGING
+    console.log(
+      `There are ${
+        prefabStats.filter(v => v.count > 0).length
+      } unique POIs spawned in your prefabs.xml`,
+    )
     console.log(`Number of tiles: ${tilesCount}`)
     console.log('List of POI markers:')
     CliUx.ux.table(
@@ -164,7 +195,19 @@ export default class Analyze extends Command {
       },
     )
 
-    // @todo show as table and how many POIs are available per size
+    console.log('Prefabs per biome:')
+    CliUx.ux.table(
+      biomesTableData.sort((a, b) => a.biome.localeCompare(b.biome)),
+      {
+        biome: {
+          header: 'Biome',
+        },
+        count: {
+          header: 'Total Count', // override column header
+          minWidth: 3, // column must display at this width or greater
+        },
+      },
+    )
 
     const statsPath = resolve(process.cwd(), 'prefab-spawn-stats.csv')
     await writeFile(
