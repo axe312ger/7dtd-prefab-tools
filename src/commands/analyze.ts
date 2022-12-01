@@ -29,8 +29,9 @@ async function analyzePrefabs(validPrefabsByName: Map<string, Prefab>) {
     // 1. output list of prefabs without distant mesh!
     const errors: string[] = []
     try {
-      const {dir, base} = parse(prefab.filePath)
-      await access(resolve(dir, `${base}.mesh`), fs.constants.R_OK)
+      const {dir, name} = parse(prefab.filePath)
+      const meshPath = resolve(dir, `${name}.mesh`)
+      await access(meshPath, fs.constants.R_OK)
     } catch {
       errors.push('Distant mesh file is missing (.mesh)')
     }
