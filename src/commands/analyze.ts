@@ -6,6 +6,7 @@ import {loadDecorations} from '../utils/load-decorations'
 import {initConfig} from '../utils/config'
 import {Prefab} from '../types'
 import {getBiomeForPosition, loadImageViaJimp} from '../utils/pixel-data'
+import chalk from 'chalk'
 
 export default class Analyze extends Command {
   static description = 'Analyze your maps prefabs.xml and get detailed stats about your spawned POIs';
@@ -188,6 +189,8 @@ export default class Analyze extends Command {
         },
         prefabs: {
           header: 'Fitting prefabs',
+          get: (row: { count: number; prefabs: number }) =>
+            row.prefabs > row.count ? chalk.red(row.prefabs) : row.prefabs, // custom getter for data row object
         },
         tiles: {
           header: 'Tiles with marker',

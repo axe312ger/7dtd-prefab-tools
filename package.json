@@ -20,6 +20,7 @@
     "@oclif/core": "^1.19.1",
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^2.1.7",
+    "chalk": "4",
     "clone-deep": "^4.0.1",
     "expand-tilde": "^2.0.2",
     "fast-glob": "^3.2.12",
