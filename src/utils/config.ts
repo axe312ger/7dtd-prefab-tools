@@ -98,13 +98,28 @@ export async function initConfig(): Promise<PrefabToolsConfig> {
   }
 }
 
-export const defaultConfig = {
+export const defaultConfig: Partial<PrefabToolsConfig> = {
   biomeMap: {
     '0_64_0': 'pine_forest',
     '255_255_255': 'snow',
     '255_228_119': 'desert',
     '186_0_255': 'burnt_forest',
     '255_168_0': 'wasteland',
+  },
+  biomeTierMap: {
+    // eslint-disable-next-line camelcase
+    pine_forest: [1, 2, 3, 4, 5],
+    snow: [1, 2, 3, 4, 5],
+    desert: [1, 2, 3, 4, 5],
+    // eslint-disable-next-line camelcase
+    burnt_forest: [1, 2, 3, 4, 5],
+    wasteland: [1, 2, 3, 4, 5],
+  },
+  markerSizeDifferenceMax: 0.02,
+  distances: {
+    default: 400,
+    wilderness: 3000,
+    trader: 2000,
   },
   vanillaWhitelists: {
     wasteland: [
@@ -178,5 +193,11 @@ export const defaultConfig = {
     ],
     wasteland: ['rwg_tile_oldwest'],
   },
-  socketBlacklist: ['bridge_', 'canyon_', 'deco_', 'spawn_', 'rwg_tile_oldwest_'],
+  socketBlacklist: [
+    'bridge_',
+    'canyon_',
+    'deco_',
+    'spawn_',
+    'rwg_tile_oldwest_',
+  ],
 }

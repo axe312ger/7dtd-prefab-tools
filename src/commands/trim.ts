@@ -51,7 +51,6 @@ export default class Trim extends Command {
         zoning: socket.guessedZone,
         allowedTownships: socket.guessedTownship || 'city',
       }
-      // @todo add guesses townships and so one like from the shuffle script
       socketsWithMarkers.push(socketEnhanced)
     }
 

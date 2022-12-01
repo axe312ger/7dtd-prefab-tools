@@ -55,14 +55,17 @@ export interface Decoration {
 export type Prefabs = Map<string, Prefab>
 
 export interface PrefabToolsConfig {
-  vanillaPrefabsPath: string,
-  additionalPrefabsPaths: string[],
-  biomesPath: string
-  heightMapPath: string
-  prefabsPath: string
-  mapSize: number
-  biomeMap: {[key: string]: string}
-  vanillaWhitelists: {[key: string]: string[]}
-  vanillaBlacklists: {[key: string]: string[]}
-  socketBlacklist: string[]
+  vanillaPrefabsPath: string;
+  additionalPrefabsPaths: string[];
+  biomesPath: string;
+  heightMapPath: string;
+  prefabsPath: string;
+  mapSize: number;
+  biomeMap: { [key: string]: string };
+  vanillaWhitelists: { [key: string]: string[] };
+  vanillaBlacklists: { [key: string]: string[] };
+  socketBlacklist: string[];
+  biomeTierMap: { [key: string]: number[] };
+  markerSizeDifferenceMax: number
+  distances : { [key: string]: number };
 }

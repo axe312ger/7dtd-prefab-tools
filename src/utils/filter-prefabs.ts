@@ -3,39 +3,39 @@ import {Vector3} from 'three'
 import {POIMarker, Prefab, PrefabToolsConfig} from '../types'
 
 interface FilterContextData {
-  isWilderness: boolean
-  distanceMap: Map<string, Vector3[]>
-  position: Vector3
-  biome: string
-  marker?: POIMarker
-  debugPrefabName?: string
-  debugSocketName?: string
-  config: PrefabToolsConfig
+  isWilderness: boolean;
+  distanceMap: Map<string, Vector3[]>;
+  position: Vector3;
+  biome: string;
+  marker?: POIMarker;
+  debugPrefabName?: string;
+  debugSocketName?: string;
+  config: PrefabToolsConfig;
 }
 
 interface FilterContext extends FilterContextData {
-  prefabToReplace: Prefab
-  prefabCandidate: Prefab
+  prefabToReplace: Prefab;
+  prefabCandidate: Prefab;
 }
 
 export interface Filter {
-  name: string
-  optional?: boolean
+  name: string;
+  optional?: boolean;
   filter: (
     filterContext: FilterContext,
     index?: number,
     array?: Prefab[]
-  ) => boolean
+  ) => boolean;
 }
 
-type PrefabFilterSuccess = { success: true; prefabs: Prefab[] }
+type PrefabFilterSuccess = { success: true; prefabs: Prefab[] };
 type PrefabFilterFailure = {
-  success: false
-  prefabs: Prefab[]
-  reason?: string
-}
+  success: false;
+  prefabs: Prefab[];
+  reason?: string;
+};
 
-type PrefabFilterResult = PrefabFilterSuccess | PrefabFilterFailure
+type PrefabFilterResult = PrefabFilterSuccess | PrefabFilterFailure;
 
 export const defaultPrefabFilters: Filter[] = [
   {
@@ -139,17 +139,24 @@ export const defaultPrefabFilters: Filter[] = [
       prefabToReplace,
       prefabCandidate,
       biome,
-      debugPrefabName,
-      config: {vanillaBlacklists, vanillaPrefabsPath, vanillaWhitelists},
+      // debugPrefabName,
+      config: {
+        vanillaBlacklists,
+        vanillaPrefabsPath,
+        vanillaWhitelists,
+        biomeTierMap,
+      },
     }: FilterContext): boolean => {
-      const difficultyMatches =
-        prefabCandidate.meta.difficultyTier <=
-        (['wasteland', 'snow'].includes(biome) ? 5 : 4)
+      // Mach by difficulty tier
+      const difficultyMatches = prefabCandidate.meta.difficultyTier === 0 || biomeTierMap[
+      biome
+      ].includes(prefabCandidate.meta.difficultyTier)
 
       if (!difficultyMatches) {
         return false
       }
 
+      // Match biome, except for oldwest
       const biomeMatches =
         (prefabToReplace.meta.allowedTownships &&
           prefabToReplace.meta.allowedTownships.includes('oldwest')) ||
@@ -160,6 +167,7 @@ export const defaultPrefabFilters: Filter[] = [
         return false
       }
 
+      // Filter by white and blacklists
       const vanillaWhitelist = vanillaWhitelists[biome]
       const vanillaBlacklist = vanillaBlacklists[biome]
       const isVanillaPrefab =
@@ -180,19 +188,23 @@ export const defaultPrefabFilters: Filter[] = [
         }
       }
 
-      if (!isAllowed && debugPrefabName === prefabCandidate.name) {
-        console.log(
-          `Dropped ${prefabCandidate.name} because of white or black list.`,
-          {vanillaWhitelist, vanillaBlacklist},
-        )
-      }
+      // if (!isAllowed && debugPrefabName === prefabCandidate.name) {
+      //   console.log(
+      //     `Dropped ${prefabCandidate.name} because of white or black list.`,
+      //     {vanillaWhitelist, vanillaBlacklist},
+      //   )
+      // }
 
       return isAllowed
     },
   },
   {
     name: '3. Spawn traders only at POIMarkers tagged with trader or prefabs marked as trader area',
-    filter: ({marker, prefabCandidate, prefabToReplace}: FilterContext): boolean => {
+    filter: ({
+      marker,
+      prefabCandidate,
+      prefabToReplace,
+    }: FilterContext): boolean => {
       // Trader should only spawn at markers with tag trader
       if (
         (marker && marker.Tags && marker.Tags.includes('trader')) ||
@@ -205,9 +217,12 @@ export const defaultPrefabFilters: Filter[] = [
     },
   },
   {
-    name: '4. Filter by POIMarker tags',
-    filter: ({prefabCandidate, marker, isWilderness}
-      : FilterContext): boolean => {
+    name: '4. Filter by POIMarker tags. (Hint: Check if the tile and prefab share the same biomes, zones and townships. Also make sure a prefab exists with the defined POISpawn marker tag.)',
+    filter: ({
+      prefabCandidate,
+      marker,
+      isWilderness,
+    }: FilterContext): boolean => {
       // Filter by marker tags if given
       if (!isWilderness && marker && marker.Tags && marker.Tags.length > 0) {
         return prefabCandidate.meta.tags.some(tag =>
@@ -219,26 +234,33 @@ export const defaultPrefabFilters: Filter[] = [
     },
   },
   {
-    name: '5. Filter by size',
-    filter: ({isWilderness, marker, prefabCandidate, prefabToReplace}: FilterContext): boolean => {
+    name: '5. Filter by size. (Hint: That means none of the listed prefabs fit into the given socket/marker)',
+    filter: ({
+      isWilderness,
+      marker,
+      prefabCandidate,
+      prefabToReplace,
+      config: {markerSizeDifferenceMax},
+    }: FilterContext): boolean => {
       // No size check for traders or wilderness pois
       if (isWilderness || prefabCandidate.meta.isTrader) {
         return true
       }
 
-      // If we place markers, allow them do differ by 33% in size
+      // If we place markers, allow them do differ by X% in size
       if (marker && marker.Size) {
         const diffX = marker.Size.x - prefabCandidate.meta.PrefabSize.x
         const diffZ = marker.Size.z - prefabCandidate.meta.PrefabSize.z
-        const factor = 0.02
+
         return (
           diffX >= 0 &&
-          diffX <= Math.ceil(marker.Size.x * factor) &&
+          diffX <= Math.ceil(marker.Size.x * markerSizeDifferenceMax) &&
           diffZ >= 0 &&
-          diffZ <= Math.ceil(marker.Size.z * factor)
+          diffZ <= Math.ceil(marker.Size.z * markerSizeDifferenceMax)
         )
       }
 
+      // non-wilderness non-markers (must be tiles) - have to be exact
       return (
         prefabToReplace.meta.PrefabSize.x ===
           prefabCandidate.meta.PrefabSize.x &&
@@ -247,13 +269,14 @@ export const defaultPrefabFilters: Filter[] = [
     },
   },
   {
-    name: '6. Filter by distance',
+    name: '6. Filter by distance. (Hint: that means another copy of the same building is already spawned too close and no other option is available)',
     filter: ({
       prefabCandidate,
       biome,
       distanceMap,
       position,
       isWilderness,
+      config: {distances},
     }: FilterContext): boolean => {
       // Exclude some from the distance check
       if (
@@ -265,16 +288,19 @@ export const defaultPrefabFilters: Filter[] = [
         return true
       }
 
-      let distance = 600
+      let type = 'default'
+
       if (isWilderness) {
-        distance = 1000
+        type = 'wilderness'
       }
 
-      if (prefabCandidate.meta.tags.includes('fabberres')) {
-        distance = 300
+      if (prefabCandidate.meta.isTrader) {
+        type = 'trader'
       }
 
-      // Ensure minimum distance of 600
+      const distance = distances[type]
+
+      // Ensure minimum distance
       const positions = distanceMap.get(prefabCandidate.name) || []
       if (positions && positions.length > 0) {
         return Boolean(
@@ -328,7 +354,7 @@ export const filterPrefabs = (
       if (lastFilter === undefined) {
         return {
           success: false,
-          reason: `Filter '${filter.name}' did not return any prefabs. This was the first filter.`,
+          reason: `Filter '${filter.name}' did not return any prefabs. This was the first filter. None of your (valid) prefabs match!`,
           prefabs: [],
         }
       }
