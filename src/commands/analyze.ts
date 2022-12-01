@@ -35,12 +35,20 @@ async function analyzePrefabs(validPrefabsByName: Map<string, Prefab>) {
       errors.push('Distant mesh file is missing (.mesh)')
     }
 
-    // 3. output list of prefabs without :
-    // zone (any zone, you might not want that!)
-    // township (any township, you might not want that!)
-    // biome (any biome, you might not want that!)
+    if (prefab.meta.zoning.length === 0) {
+      errors.push('Spawns in all zones')
+    }
 
-    // 4. list unique values used in zoning, tags (!!!), townships, biomes
+    if (prefab.meta.allowedTownships.length === 0) {
+      errors.push('Spawns in all townships')
+    }
+
+    if (prefab.meta.allowedBiomes.length === 0) {
+      errors.push('Spawns in all biomes')
+    }
+
+    // @todo show prefabs without quest
+    // @todo can we find prefabs with broken quests?
 
     if (errors.length > 0) {
       errorPrefabs.add({prefab, errors})
