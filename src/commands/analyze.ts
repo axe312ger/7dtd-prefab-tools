@@ -28,24 +28,26 @@ async function analyzePrefabs(validPrefabsByName: Map<string, Prefab>) {
 
     // 1. output list of prefabs without distant mesh!
     const errors: string[] = []
-    try {
-      const {dir, name} = parse(prefab.filePath)
-      const meshPath = resolve(dir, `${name}.mesh`)
-      await access(meshPath, fs.constants.R_OK)
-    } catch {
-      errors.push('Distant mesh file is missing (.mesh)')
-    }
+    if (!prefab.meta.isTile) {
+      try {
+        const {dir, name} = parse(prefab.filePath)
+        const meshPath = resolve(dir, `${name}.mesh`)
+        await access(meshPath, fs.constants.R_OK)
+      } catch {
+        errors.push('Distant mesh file is missing (.mesh)')
+      }
 
-    if (prefab.meta.zoning.length === 0) {
-      errors.push('Spawns in all zones')
-    }
+      if (prefab.meta.zoning.length === 0) {
+        errors.push('Spawns in all zones')
+      }
 
-    if (prefab.meta.allowedTownships.length === 0) {
-      errors.push('Spawns in all townships')
-    }
+      if (prefab.meta.allowedTownships.length === 0) {
+        errors.push('Spawns in all townships')
+      }
 
-    if (prefab.meta.allowedBiomes.length === 0) {
-      errors.push('Spawns in all biomes')
+      if (prefab.meta.allowedBiomes.length === 0) {
+        errors.push('Spawns in all biomes')
+      }
     }
 
     // @todo show prefabs without quest
