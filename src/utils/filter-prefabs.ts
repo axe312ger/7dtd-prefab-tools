@@ -44,8 +44,8 @@ export const defaultPrefabFilters: Filter[] = [
       prefabToReplace,
       prefabCandidate,
       isWilderness,
-      // debugPrefabName,
-    }) => {
+    }: // debugPrefabName,
+    FilterContext): boolean => {
       // Do not mix tiles and non tiles
       if (prefabToReplace.meta.isTile !== prefabCandidate.meta.isTile) {
         return false
@@ -135,7 +135,13 @@ export const defaultPrefabFilters: Filter[] = [
   },
   {
     name: '2. Filter by vanilla white and black lists, biome and difficulty',
-    filter: ({prefabToReplace, prefabCandidate, biome, debugPrefabName, config: {vanillaBlacklists, vanillaPrefabsPath, vanillaWhitelists}}) => {
+    filter: ({
+      prefabToReplace,
+      prefabCandidate,
+      biome,
+      debugPrefabName,
+      config: {vanillaBlacklists, vanillaPrefabsPath, vanillaWhitelists},
+    }: FilterContext): boolean => {
       const difficultyMatches =
         prefabCandidate.meta.difficultyTier <=
         (['wasteland', 'snow'].includes(biome) ? 5 : 4)
@@ -162,14 +168,14 @@ export const defaultPrefabFilters: Filter[] = [
       let isAllowed = true
       if (isVanillaPrefab) {
         if (vanillaWhitelist) {
-          isAllowed = vanillaWhitelist.some(
-            entry => prefabCandidate.name.includes(entry),
+          isAllowed = vanillaWhitelist.some(entry =>
+            prefabCandidate.name.includes(entry),
           )
         }
 
         if (vanillaBlacklists) {
-          isAllowed = !vanillaBlacklist.some(
-            entry => prefabCandidate.name.includes(entry),
+          isAllowed = !vanillaBlacklist.some(entry =>
+            prefabCandidate.name.includes(entry),
           )
         }
       }
@@ -186,7 +192,7 @@ export const defaultPrefabFilters: Filter[] = [
   },
   {
     name: '3. Spawn traders only at POIMarkers tagged with trader or prefabs marked as trader area',
-    filter: ({marker, prefabCandidate, prefabToReplace}) => {
+    filter: ({marker, prefabCandidate, prefabToReplace}: FilterContext): boolean => {
       // Trader should only spawn at markers with tag trader
       if (
         (marker && marker.Tags && marker.Tags.includes('trader')) ||
@@ -200,7 +206,8 @@ export const defaultPrefabFilters: Filter[] = [
   },
   {
     name: '4. Filter by POIMarker tags',
-    filter: ({prefabCandidate, marker, isWilderness}) => {
+    filter: ({prefabCandidate, marker, isWilderness}
+      : FilterContext): boolean => {
       // Filter by marker tags if given
       if (!isWilderness && marker && marker.Tags && marker.Tags.length > 0) {
         return prefabCandidate.meta.tags.some(tag =>
@@ -213,7 +220,7 @@ export const defaultPrefabFilters: Filter[] = [
   },
   {
     name: '5. Filter by size',
-    filter: ({isWilderness, marker, prefabCandidate, prefabToReplace}) => {
+    filter: ({isWilderness, marker, prefabCandidate, prefabToReplace}: FilterContext): boolean => {
       // No size check for traders or wilderness pois
       if (isWilderness || prefabCandidate.meta.isTrader) {
         return true
@@ -247,7 +254,7 @@ export const defaultPrefabFilters: Filter[] = [
       distanceMap,
       position,
       isWilderness,
-    }) => {
+    }: FilterContext): boolean => {
       // Exclude some from the distance check
       if (
         prefabCandidate.meta.isTile ||
@@ -270,9 +277,9 @@ export const defaultPrefabFilters: Filter[] = [
       // Ensure minimum distance of 600
       const positions = distanceMap.get(prefabCandidate.name) || []
       if (positions && positions.length > 0) {
-        return Boolean(!positions?.find(
-          p => p.manhattanDistanceTo(position) < distance,
-        ))
+        return Boolean(
+          !positions?.find(p => p.manhattanDistanceTo(position) < distance),
+        )
       }
 
       return true
