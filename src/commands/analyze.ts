@@ -1,12 +1,14 @@
 import {CliUx, Command} from '@oclif/core'
-import {readFile, writeFile} from 'node:fs/promises'
-import {resolve} from 'node:path'
+import {readFile, writeFile, access} from 'node:fs/promises'
+import fs from 'node:fs'
+import {resolve, parse} from 'node:path'
 import {readPrefabsFromXMLs} from '../utils/read-prefabs'
 import {loadDecorations} from '../utils/load-decorations'
 import {initConfig} from '../utils/config'
 import {Prefab} from '../types'
 import {getBiomeForPosition, loadImageViaJimp} from '../utils/pixel-data'
 import chalk from 'chalk'
+import {fstat} from 'node:fs'
 
 export default class Analyze extends Command {
   static description = 'Analyze your maps prefabs.xml and get detailed stats about your spawned POIs';
@@ -31,10 +33,34 @@ export default class Analyze extends Command {
 
     CliUx.ux.action.start('Analyzing your prefabs and prefabs.xml')
 
-    // POISpawn marker by size
+    const errorPrefabs: Set<{ prefab: Prefab; errors: string[] }> = new Set()
     const validPrefabsBySize: Map<string, Prefab[]> = new Map()
-    for (const prefab of prefabs.validPrefabsByName.values()) {
+    for await (const prefab of prefabs.validPrefabsByName.values()) {
       const prefabSizeId = `${prefab.meta.PrefabSize.x}x${prefab.meta.PrefabSize.z}`
+
+      // Gather issues/warnings/errors about prefabs
+
+      // 1. output list of prefabs without distant mesh!
+      const errors: string[] = []
+      try {
+        const {dir, base} = parse(prefab.filePath)
+        await access(resolve(dir, `${base}.mesh`), fs.constants.R_OK)
+      } catch {
+        errors.push('Distant mesh file is missing (.mesh)')
+      }
+
+      // 3. output list of prefabs without :
+      // zone (any zone, you might not want that!)
+      // township (any township, you might not want that!)
+      // biome (any biome, you might not want that!)
+
+      // 4. list unique values used in zoning, tags (!!!), townships, biomes
+
+      if (errors.length > 0) {
+        errorPrefabs.add({prefab, errors})
+      }
+
+      // prefabs by size for POISpawn marker analysis
       const prefabList = validPrefabsBySize.get(prefabSizeId)
       if (prefabList) {
         validPrefabsBySize.set(prefabSizeId, [...prefabList, prefab])
@@ -43,20 +69,13 @@ export default class Analyze extends Command {
       }
     }
 
-    // Loop through
-
-    // say how many tiles/prefabs are in which biome
-
-    // 1. output list of prefabs without distant mesh!
-
-    // 2. output list of prefabs without size
-
-    // 3. output list of prefabs without :
-    // zone (any zone, you might not want that!)
-    // township (any township, you might not want that!)
-    // biome (any biome, you might not want that!)
-
-    // 4. list unique values used in zoning, tags, townships, biomes
+    const prefabsErrorTableData = []
+    for (const prefabErrorInfo of errorPrefabs.values()) {
+      prefabsErrorTableData.push({
+        name: prefabErrorInfo.prefab.name,
+        errors: prefabErrorInfo.errors.join(',\n'),
+      })
+    }
 
     const biomePrefabs: Map<string, Prefab[]> = new Map()
     const poiSpawnMarkerMap: Map<string, Prefab[]> = new Map()
@@ -169,14 +188,34 @@ export default class Analyze extends Command {
 
     CliUx.ux.action.stop()
 
-    // DATA LOGGING
+    // Prefabs DATA LOGGING
+    console.log(chalk.green('\nAnalysis of your configured prefabs:'))
+
+    console.log(`Total Prefabs: ${prefabs.prefabsByName.size}`)
+    console.log(`Valid/Spawnable Prefabs: ${prefabs.validPrefabsByName.size}`)
+
+    if (prefabsErrorTableData.length > 0) {
+      console.log('Prefabs with issues:')
+      CliUx.ux.table(
+        prefabsErrorTableData,
+        {
+          name: {
+            header: 'Prefab',
+          },
+          errors: {
+            header: 'Issues / Warnings / Errors'},
+        },
+      )
+    }
+
+    console.log(chalk.green('\nAnalysis of prefab.xml:'))
     console.log(
       `There are ${
         prefabStats.filter(v => v.count > 0).length
       } unique POIs spawned in your prefabs.xml`,
     )
     console.log(`Number of tiles: ${tilesCount}`)
-    console.log('List of POI markers:')
+    console.log(chalk.bold('\nList of POI markers:'))
     CliUx.ux.table(
       markerTableData.sort((a, b) => a.size.localeCompare(b.size)),
       {
@@ -198,7 +237,7 @@ export default class Analyze extends Command {
       },
     )
 
-    console.log('Prefabs per biome:')
+    console.log(chalk.bold('\nPrefabs per biome:'))
     CliUx.ux.table(
       biomesTableData.sort((a, b) => a.biome.localeCompare(b.biome)),
       {
@@ -220,6 +259,6 @@ export default class Analyze extends Command {
         ...csvData,
       ].join('\n'),
     )
-    console.log(`Stats written to: ${statsPath}`)
+    console.log(chalk.bold('\nDetailed statatistics of your spawned prefabs is written to:'), statsPath)
   }
 }

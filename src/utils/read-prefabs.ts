@@ -78,7 +78,7 @@ export async function readPrefabsFromXMLs({
     try {
       getDimensions(prefabData)
     } catch {
-      console.log(`WARNING: POI is missing dimensions/size: ${filePath}`)
+      console.log(`SKIPPING: POI is missing dimensions/size: ${filePath}`)
       continue
     }
 
@@ -221,7 +221,7 @@ export async function readPrefabsFromXMLs({
     // Drop tiles without spawners (vanilla... OMG why...)
     if (isTile && !meta.markers?.some(marker => marker.Type === 'POISpawn')) {
       console.log(
-        `WARNING: rwg_tile does not have any POI spawers assigned: ${name}`,
+        `SKIPPING: rwg_tile ${name} does not have any POI spawers assigned.`,
       )
       continue
     }
@@ -267,9 +267,6 @@ export async function readPrefabsFromXMLs({
       validPrefabsByName.set(prefab.name.toLocaleLowerCase(), prefab)
     }
   }
-
-  console.log(`Total Prefabs: ${prefabsByName.size}`)
-  console.log(`Valid/Spawnable Prefabs: ${validPrefabsByName.size}`)
 
   CliUx.ux.action.stop()
   return {prefabsByName, validPrefabsByName}
