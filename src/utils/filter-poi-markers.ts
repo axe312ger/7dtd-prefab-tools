@@ -182,7 +182,10 @@ export const filterPOIMarkers = (
       )
 
       // Delete top level decorations
-      decorations = decorations.filter(({name, position}) => !positionsToDelete.includes(position) || name.indexOf('part_') === 0)
+      decorations = decorations.filter(
+        ({position}) =>
+          !positionsToDelete.includes(position),
+      )
 
       decoration.spawnedDecorations = spawnedDecorations
       const guessedZone = prefab.name
@@ -215,7 +218,9 @@ export const filterPOIMarkers = (
       }
     }
 
-    sockets.push(decoration)
+    if (decoration.name.indexOf('part_') !== 0) {
+      sockets.push(decoration)
+    }
   }
 
   // idea: loop through sockets, check if tiles are very close. if so:
