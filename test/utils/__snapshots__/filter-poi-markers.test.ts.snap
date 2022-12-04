@@ -1,0 +1,762 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`filter existing decoration list can detect old west city 1`] = `
+Array [
+  Object {
+    "guessedTownship": "oldwest",
+    "name": "rwg_tile_oldwest_corner",
+    "position": Vector3 {
+      "x": -1849,
+      "y": 38,
+      "z": 97,
+    },
+    "rotation": 1,
+    "spawnedDecorations": Array [
+      Object {
+        "name": "oldwest_church",
+        "position": Vector3 {
+          "x": -1824,
+          "y": 36,
+          "z": 159,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "oldwest_strip_01",
+        "position": Vector3 {
+          "x": -1774,
+          "y": 35,
+          "z": 143,
+        },
+        "rotation": 2,
+      },
+      Object {
+        "name": "oldwest_strip_02",
+        "position": Vector3 {
+          "x": -1774,
+          "y": 39,
+          "z": 176,
+        },
+        "rotation": 0,
+      },
+      Object {
+        "name": "oldwest_business_07",
+        "position": Vector3 {
+          "x": -1807,
+          "y": 39,
+          "z": 134,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "oldwest_business_09",
+        "position": Vector3 {
+          "x": -1724,
+          "y": 39,
+          "z": 143,
+        },
+        "rotation": 2,
+      },
+      Object {
+        "name": "oldwest_business_12",
+        "position": Vector3 {
+          "x": -1724,
+          "y": 39,
+          "z": 176,
+        },
+        "rotation": 0,
+      },
+      Object {
+        "name": "oldwest_business_11",
+        "position": Vector3 {
+          "x": -1807,
+          "y": 39,
+          "z": 201,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "oldwest_business_10",
+        "position": Vector3 {
+          "x": -1774,
+          "y": 35,
+          "z": 201,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "oldwest_strip_03",
+        "position": Vector3 {
+          "x": -1770,
+          "y": 39,
+          "z": 247,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "remnant_oldwest_08",
+        "position": Vector3 {
+          "x": -1803,
+          "y": 35,
+          "z": 247,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "part_trader_tile_filler_03",
+        "position": Vector3 {
+          "x": -1699,
+          "y": 38,
+          "z": 105,
+        },
+        "rotation": 2,
+      },
+    ],
+  },
+  Object {
+    "guessedTownship": "oldwest",
+    "name": "rwg_tile_oldwest_cap",
+    "position": Vector3 {
+      "x": -1849,
+      "y": 39,
+      "z": 247,
+    },
+    "rotation": 0,
+    "spawnedDecorations": Array [
+      Object {
+        "name": "oldwest_strip_04",
+        "position": Vector3 {
+          "x": -1803,
+          "y": 39,
+          "z": 276,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "oldwest_jail",
+        "position": Vector3 {
+          "x": -1803,
+          "y": 39,
+          "z": 332,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "oldwest_business_04",
+        "position": Vector3 {
+          "x": -1786,
+          "y": 39,
+          "z": 367,
+        },
+        "rotation": 0,
+      },
+      Object {
+        "name": "remnant_oldwest_05",
+        "position": Vector3 {
+          "x": -1770,
+          "y": 39,
+          "z": 314,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "remnant_oldwest_07",
+        "position": Vector3 {
+          "x": -1770,
+          "y": 39,
+          "z": 339,
+        },
+        "rotation": 3,
+      },
+    ],
+  },
+  Object {
+    "name": "rwg_tile_gateway_cap",
+    "position": Vector3 {
+      "x": -1699,
+      "y": 37,
+      "z": 97,
+    },
+    "rotation": 3,
+    "spawnedDecorations": Array [],
+  },
+]
+`;
+
+exports[`filter existing decoration list filters bug#1 1`] = `
+Array [
+  Object {
+    "guessedTownship": "countrytown",
+    "name": "rwg_tile_countrytown_cap_shopcenter",
+    "position": Vector3 {
+      "x": -1845,
+      "y": 26,
+      "z": 1295,
+    },
+    "rotation": 1,
+    "spawnedDecorations": Array [
+      Object {
+        "name": "xcostum_Shops(by_Warsaken)",
+        "position": Vector3 {
+          "x": -1825,
+          "y": 28,
+          "z": 1315,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "lot_industrial_05",
+        "position": Vector3 {
+          "x": -1728,
+          "y": 35,
+          "z": 1297,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "xcostum_Supermarket_03(by_Zyncosa)",
+        "position": Vector3 {
+          "x": -1728,
+          "y": 35,
+          "z": 1380,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "part_driveway_countrytown_09",
+        "position": Vector3 {
+          "x": -1730,
+          "y": 36,
+          "z": 1386,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "xcostum_Billboard(by_OctoberFire)",
+        "position": Vector3 {
+          "x": -1728,
+          "y": 34,
+          "z": 1418,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "part_driveway_countrytown_19",
+        "position": Vector3 {
+          "x": -1730,
+          "y": 36,
+          "z": 1423,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "part_horde_large",
+        "position": Vector3 {
+          "x": -1719,
+          "y": 37,
+          "z": 1434,
+        },
+        "rotation": 3,
+      },
+    ],
+  },
+]
+`;
+
+exports[`filter existing decoration list filters bug#2 1`] = `
+Array [
+  Object {
+    "guessedTownship": "city",
+    "name": "rwg_tile_gateway_cap",
+    "position": Vector3 {
+      "x": -1695,
+      "y": 34,
+      "z": 1295,
+    },
+    "rotation": 3,
+    "spawnedDecorations": Array [
+      Object {
+        "name": "trader_rekt",
+        "position": Vector3 {
+          "x": -1676,
+          "y": 36,
+          "z": 1382,
+        },
+        "rotation": 0,
+      },
+      Object {
+        "name": "part_trader_tile_filler_01",
+        "position": Vector3 {
+          "x": -1695,
+          "y": 35,
+          "z": 1303,
+        },
+        "rotation": 2,
+      },
+    ],
+  },
+  Object {
+    "name": "xcostum_L4D_DT_Tower(by_CraterCreator)",
+    "position": Vector3 {
+      "x": 422,
+      "y": 45,
+      "z": -901,
+    },
+    "rotation": 2,
+    "spawnedDecorations": Array [
+      Object {
+        "name": "part_horde_large",
+        "position": Vector3 {
+          "x": 424,
+          "y": 46,
+          "z": -897,
+        },
+        "rotation": 3,
+      },
+    ],
+  },
+  Object {
+    "name": "xcostum_Army_Bunker_01(by_Laz_Man)",
+    "position": Vector3 {
+      "x": -1190,
+      "y": 27,
+      "z": 3057,
+    },
+    "rotation": 0,
+    "spawnedDecorations": Array [],
+  },
+  Object {
+    "name": "gas_station_02",
+    "position": Vector3 {
+      "x": -198,
+      "y": 35,
+      "z": 2021,
+    },
+    "rotation": 3,
+    "spawnedDecorations": Array [],
+  },
+  Object {
+    "name": "xcostum_Burial_Shrine(by_Snake0567)",
+    "position": Vector3 {
+      "x": 727,
+      "y": 92,
+      "z": 1440,
+    },
+    "rotation": 1,
+    "spawnedDecorations": Array [],
+  },
+  Object {
+    "name": "xcostum_The_Sphinx_3(by_Andyjoki)",
+    "position": Vector3 {
+      "x": 777,
+      "y": -4,
+      "z": -2495,
+    },
+    "rotation": 1,
+    "spawnedDecorations": Array [
+      Object {
+        "name": "part_loot_t5",
+        "position": Vector3 {
+          "x": 814,
+          "y": 19,
+          "z": -2396,
+        },
+        "rotation": 3,
+      },
+    ],
+  },
+  Object {
+    "name": "cabin_01",
+    "position": Vector3 {
+      "x": -24,
+      "y": 36,
+      "z": -2789,
+    },
+    "rotation": 3,
+    "spawnedDecorations": Array [],
+  },
+  Object {
+    "name": "xcostum_Fire_Watch_Tower(by_SciFiFlippa)",
+    "position": Vector3 {
+      "x": 239,
+      "y": 66,
+      "z": -2018,
+    },
+    "rotation": 0,
+    "spawnedDecorations": Array [],
+  },
+]
+`;
+
+exports[`filter existing decoration list filters out poi markers 1`] = `
+Array [
+  Object {
+    "guessedTownship": "city",
+    "guessedZone": "commercial",
+    "name": "rwg_tile_commercial_intersection",
+    "position": Vector3 {
+      "x": -1476,
+      "y": 35,
+      "z": -1602,
+    },
+    "rotation": 3,
+    "spawnedDecorations": Array [
+      Object {
+        "name": "hotel_01",
+        "position": Vector3 {
+          "x": -1476,
+          "y": 30,
+          "z": -1601,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "remnant_business_02",
+        "position": Vector3 {
+          "x": -1476,
+          "y": 30,
+          "z": -1513,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "remnant_waste_01",
+        "position": Vector3 {
+          "x": -1382,
+          "y": 34,
+          "z": -1591,
+        },
+        "rotation": 2,
+      },
+      Object {
+        "name": "zztong_Office_Building_01_Destroyed",
+        "position": Vector3 {
+          "x": -1386,
+          "y": 30,
+          "z": -1517,
+        },
+        "rotation": 0,
+      },
+      Object {
+        "name": "part_car_accident_01",
+        "position": Vector3 {
+          "x": -1402,
+          "y": 36,
+          "z": -1532,
+        },
+        "rotation": 1,
+      },
+    ],
+  },
+  Object {
+    "guessedTownship": "city",
+    "guessedZone": "commercial",
+    "name": "rwg_tile_commercial_intersection",
+    "position": Vector3 {
+      "x": -1476,
+      "y": 35,
+      "z": -1752,
+    },
+    "rotation": 0,
+    "spawnedDecorations": Array [
+      Object {
+        "name": "store_book_01",
+        "position": Vector3 {
+          "x": -1387,
+          "y": 36,
+          "z": -1752,
+        },
+        "rotation": 2,
+      },
+      Object {
+        "name": "gas_station_09",
+        "position": Vector3 {
+          "x": -1475,
+          "y": 35,
+          "z": -1752,
+        },
+        "rotation": 2,
+      },
+      Object {
+        "name": "fire_station_01",
+        "position": Vector3 {
+          "x": -1379,
+          "y": 31,
+          "z": -1658,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "zztong_EMS_01",
+        "position": Vector3 {
+          "x": -1453,
+          "y": 35,
+          "z": -1662,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "part_ambulance_01",
+        "position": Vector3 {
+          "x": -1435,
+          "y": 37,
+          "z": -1659,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "part_shipping_container_06",
+        "position": Vector3 {
+          "x": -1424,
+          "y": 37,
+          "z": -1660,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "part_generator_01",
+        "position": Vector3 {
+          "x": -1433,
+          "y": 37,
+          "z": -1650,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "part_streetlight_single_diagonal",
+        "position": Vector3 {
+          "x": -1392,
+          "y": 46,
+          "z": -1683,
+        },
+        "rotation": 0,
+      },
+      Object {
+        "name": "part_trafficlight_single",
+        "position": Vector3 {
+          "x": -1399,
+          "y": 43,
+          "z": -1664,
+        },
+        "rotation": 2,
+      },
+    ],
+  },
+]
+`;
+
+exports[`filter existing decoration list tile that had issues 1`] = `
+Array [
+  Object {
+    "guessedTownship": "rural",
+    "guessedZone": "rural",
+    "name": "rwg_tile_rural_t",
+    "position": Vector3 {
+      "x": -2906,
+      "y": 32,
+      "z": -1914,
+    },
+    "rotation": 2,
+    "spawnedDecorations": Array [
+      Object {
+        "name": "lot_rural_filler_03",
+        "position": Vector3 {
+          "x": -2898,
+          "y": 36,
+          "z": -1913,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "house_old_ranch_01",
+        "position": Vector3 {
+          "x": -2898,
+          "y": 36,
+          "z": -1825,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "part_driveway_rural_02",
+        "position": Vector3 {
+          "x": -2838,
+          "y": 36,
+          "z": -1786,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "part_driveway_rural_02",
+        "position": Vector3 {
+          "x": -2838,
+          "y": 36,
+          "z": -1805,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "farm_04",
+        "position": Vector3 {
+          "x": -2824,
+          "y": 35,
+          "z": -1913,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "part_farm60_field_03",
+        "position": Vector3 {
+          "x": -2824,
+          "y": 36,
+          "z": -1886,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "part_driveway_rural_03",
+        "position": Vector3 {
+          "x": -2827,
+          "y": 36,
+          "z": -1891,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "part_driveway_rural_04",
+        "position": Vector3 {
+          "x": -2827,
+          "y": 36,
+          "z": -1911,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "xcostum_Survivor_House_A(by_Telric)",
+        "position": Vector3 {
+          "x": -2824,
+          "y": 34,
+          "z": -1825,
+        },
+        "rotation": 2,
+      },
+      Object {
+        "name": "part_driveway_rural_03",
+        "position": Vector3 {
+          "x": -2827,
+          "y": 36,
+          "z": -1777,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "part_xcostum_potato_27x18",
+        "position": Vector3 {
+          "x": -2784,
+          "y": 36,
+          "z": -1822,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "part_xcostum_goldenrod_27x18",
+        "position": Vector3 {
+          "x": -2803,
+          "y": 36,
+          "z": -1822,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "part_xcostum_coffee_27x18",
+        "position": Vector3 {
+          "x": -2823,
+          "y": 36,
+          "z": -1822,
+        },
+        "rotation": 1,
+      },
+      Object {
+        "name": "part_roadside_fruit_stand_01",
+        "position": Vector3 {
+          "x": -2825,
+          "y": 37,
+          "z": -1852,
+        },
+        "rotation": 3,
+      },
+    ],
+  },
+]
+`;
+
+exports[`filter existing decoration list zipcore1 1`] = `
+Array [
+  Object {
+    "guessedTownship": "city",
+    "guessedZone": "commercial",
+    "name": "rwg_tile_commercial_intersection",
+    "position": Vector3 {
+      "x": 509,
+      "y": 59,
+      "z": 519,
+    },
+    "rotation": 1,
+    "spawnedDecorations": Array [
+      Object {
+        "name": "remnant_business_02",
+        "position": Vector3 {
+          "x": 599,
+          "y": 54,
+          "z": 608,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "remnant_waste_16",
+        "position": Vector3 {
+          "x": 599,
+          "y": 55,
+          "z": 520,
+        },
+        "rotation": 3,
+      },
+      Object {
+        "name": "remnant_waste_03",
+        "position": Vector3 {
+          "x": 523,
+          "y": 59,
+          "z": 616,
+        },
+        "rotation": 0,
+      },
+      Object {
+        "name": "fastfood_04",
+        "position": Vector3 {
+          "x": 527,
+          "y": 60,
+          "z": 542,
+        },
+        "rotation": 0,
+      },
+      Object {
+        "name": "part_kiosk_foodtrailer_01",
+        "position": Vector3 {
+          "x": 532,
+          "y": 61,
+          "z": 520,
+        },
+        "rotation": 2,
+      },
+      Object {
+        "name": "part_streetlight_single_diagonal",
+        "position": Vector3 {
+          "x": 589,
+          "y": 70,
+          "z": 603,
+        },
+        "rotation": 1,
+      },
+    ],
+  },
+]
+`;

@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable max-params */
 /* eslint-disable no-case-declarations */
 import {randomInt} from 'node:crypto'
 import {Vector3} from 'three'
@@ -12,7 +14,7 @@ export function calcRotation(
   initialRotation: number,
   RotationToFaceNorth: number,
   markerRotation: number,
-) {
+):number {
   // if (markerRotation === 1) {
   //   markerRotation = 3
   // } else if (markerRotation === 3) {
@@ -40,6 +42,69 @@ export function getPrefabForRandomMarker(
     },
     prefabData: {},
   }
+}
+
+export function calculateMarkerPosition(
+  mainPOIRotation: number,
+  mainPOIPosition: Vector3,
+  socketPrefab: Prefab,
+  marker: POIMarker,
+): { position: Vector3; rotation: number } {
+  const rotation = calcRotation(
+    mainPOIRotation, // or first prefab rotation
+    socketPrefab.meta.RotationToFaceNorth,
+    marker.PartRotation,
+  )
+  const rotatedMarker = marker.Start.clone().applyAxisAngle(
+    new Vector3(0, 1, 0),
+    (Math.PI / 2) * mainPOIRotation,
+  )
+
+  const position = mainPOIPosition.clone()
+  const newMarker = marker.Start.clone()
+
+  switch (mainPOIRotation) {
+  case 0:
+    position.add(rotatedMarker)
+    break
+  case 1:
+    const newZ = newMarker.x
+    const modifierX =
+        marker.PartRotation % 2 ?
+          marker.Size.x :
+          marker.Size.z
+    newMarker.x = marker.Size.z - newMarker.z - modifierX
+    newMarker.z = newZ
+    position.add(newMarker)
+    break
+
+  case 3:
+    const newX = newMarker.z
+    const modifierZ =
+        marker.PartRotation % 2 ?
+          marker.Size.z :
+          marker.Size.x
+    newMarker.z = marker.Size.x - newMarker.x - modifierZ
+    newMarker.x = newX
+    position.add(newMarker)
+
+    break
+  case 2:
+    const sizeX =
+        marker.PartRotation % 2 ?
+          marker.Size.z :
+          marker.Size.x
+    const sizeZ =
+        marker.PartRotation % 2 ?
+          marker.Size.x :
+          marker.Size.z
+    position
+    .add(new Vector3(marker.Size.x, 0, marker.Size.z))
+    .add(rotatedMarker)
+    .sub(new Vector3(sizeX, 0, sizeZ))
+  }
+
+  return {rotation, position}
 }
 
 export function spawnPOIMarkers(
@@ -172,61 +237,9 @@ export function spawnPOIMarkers(
     }
 
     // Calculate marker position
-    const rotation = calcRotation(
-      mainPOIRotation, // or first prefab rotation
-      markerPOI.meta.RotationToFaceNorth,
-      marker.PartRotation,
+    const {position, rotation} = calculateMarkerPosition(
+      mainPOIRotation, mainPOIPosition, socketPrefab, marker,
     )
-    const rotatedMarker = marker.Start.clone().applyAxisAngle(
-      new Vector3(0, 1, 0),
-      (Math.PI / 2) * mainPOIRotation,
-    )
-
-    const position = mainPOIPosition.clone()
-    const newMarker = marker.Start.clone()
-
-    switch (mainPOIRotation) {
-    case 0:
-      position.add(rotatedMarker)
-      break
-    case 1:
-      const newZ = newMarker.x
-      const modifierX =
-          marker.PartRotation % 2 ?
-            markerPOI.meta.PrefabSize.x :
-            markerPOI.meta.PrefabSize.z
-      newMarker.x = prefab.meta.PrefabSize.z - newMarker.z - modifierX
-      newMarker.z = newZ
-      position.add(newMarker)
-      break
-
-    case 3:
-      const newX = newMarker.z
-      const modifierZ =
-          marker.PartRotation % 2 ?
-            markerPOI.meta.PrefabSize.z :
-            markerPOI.meta.PrefabSize.x
-      newMarker.z = prefab.meta.PrefabSize.x - newMarker.x - modifierZ
-      newMarker.x = newX
-      position.add(newMarker)
-
-      break
-    case 2:
-      const sizeX =
-          marker.PartRotation % 2 ?
-            markerPOI.meta.PrefabSize.z :
-            markerPOI.meta.PrefabSize.x
-      const sizeZ =
-          marker.PartRotation % 2 ?
-            markerPOI.meta.PrefabSize.x :
-            markerPOI.meta.PrefabSize.z
-      position
-      .add(
-        new Vector3(prefab.meta.PrefabSize.x, 0, prefab.meta.PrefabSize.z),
-      )
-      .add(rotatedMarker)
-      .sub(new Vector3(sizeX, 0, sizeZ))
-    }
 
     if (marker.Type === 'POISpawn') {
       position.add(new Vector3(0, markerPOI.meta.YOffset, 0))
@@ -275,7 +288,7 @@ export function translatePositionAndRotation(
   prefab: Prefab,
   heightMapImage: Jimp,
   config: PrefabToolsConfig,
-) {
+): { mainPOIPosition:Vector3, mainPOIRotation: number } {
   const neutralRotation = calcRotation(
     rotation,
     prefab.meta.RotationToFaceNorth * -1,
@@ -310,12 +323,13 @@ export function translatePositionAndRotation(
 export const addToDistanceMap = (
   distanceMap: Map<string, Vector3[]>,
   decoration: Decoration,
-) =>
+): void => {
   decoration.name.indexOf('part_') !== 0 &&
   distanceMap.set(decoration.name, [
     ...(distanceMap.get(decoration.name) || []),
     decoration.position,
   ])
+}
 
 export function spawnPOI(
   position: Vector3,

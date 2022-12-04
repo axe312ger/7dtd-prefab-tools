@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+import {Box2, Vector2, Vector3} from 'three'
 import {Decoration, POIMarker, Prefab} from '../types'
 
 function getMostFrequent(arr: string[]) {
@@ -31,138 +33,132 @@ function getMostFrequent(arr: string[]) {
   return highestKey
 }
 
-const findDecorationsForMarkers = (
-  markerGroups: Map<string, Set<POIMarker>>,
-  markerGroupsOrder: string[],
+const removeSpawnedMarkers = (
   prefabs: Map<string, Prefab>,
   decorations: Decoration[],
+  socketPrefab: Prefab,
+  socketDecoration: Decoration,
 ): {
+  positionsToDelete: Vector3[];
   foundZones: string[];
   foundTownships: string[];
   foundOldwestFlags: boolean[];
   spawnedDecorations: Decoration[];
 } => {
+  const positionsToDelete: Vector3[] = []
   const spawnedDecorations: Decoration[] = []
   const foundZones: string[] = []
   const foundTownships: string[] = []
   const foundOldwestFlags: boolean[] = []
 
-  for (const markerGroupId of markerGroupsOrder) {
-    const markerGroup = markerGroups.get(markerGroupId)
-    // console.log("checking for markers in group", markerGroupId)
-
-    const current = decorations[0]
-    if (!current || !markerGroup) {
+  const socketBox = new Box2(
+    new Vector2(socketDecoration.position.x, socketDecoration.position.z),
+    new Vector2(
+      socketDecoration.position.x + socketPrefab.meta.PrefabSize.x,
+      socketDecoration.position.z + socketPrefab.meta.PrefabSize.z,
+    ),
+  )
+  for (const decorationCandidate of decorations.values()) {
+    // Do not delete tiles that (accidently?) overlap
+    if (decorationCandidate.name.indexOf('rwg_tile_') === 0) {
       continue
     }
 
-    for (const marker of markerGroup) {
-      // console.log("checking", { marker, current })
+    const decorationPrefab = prefabs.get(
+      decorationCandidate.name.toLocaleLowerCase(),
+    )
 
-      // markers of type "RoadExit" seem to be spawned dynamically
-      if (['RoadExit', 'None'].includes(marker.Type)) {
-        continue
-      }
+    if (!decorationPrefab) {
+      throw new Error(
+        `Unable to load prefab ${decorationCandidate.name.toLocaleLowerCase()}`,
+      )
+    }
 
-      if (decorations[0].name.indexOf('rwg_tile_') === 0) {
-        continue
-      }
-
-      if (['POISpawn'].includes(marker.Type)) {
-        // Some markers might not be able to spawn anything. We have to skip these
-        if (marker.PartToSpawn) {
-          const markerPOI = prefabs.get(marker.PartToSpawn.toLocaleLowerCase())
-          if (!markerPOI) {
-            console.warn(
-              'Skipping marker as no potential POI can be found',
-              marker,
-            )
-            continue
-          }
-        }
-
-        // For POISpawn, we can assume the next one is the spawned prefab.
-        const decorationPrefab = prefabs.get(
-          decorations[0].name.toLocaleLowerCase(),
-        )
-
-        if (!decorationPrefab) {
-          throw new Error(
-            `Could not find marker prefab ${decorations[0].name}. Did you remove or rename it?`,
-          )
-        }
-
-        const current = decorations.shift()
-        if (current) {
-          // console.log("found poi spawn", current)
-          spawnedDecorations.push(current)
-        }
-
-        foundZones.push(...decorationPrefab.meta.zoning)
-        foundTownships.push(...decorationPrefab.meta.allowedTownships)
-
-        if (
-          decorationPrefab.meta.markerGroups &&
-          decorationPrefab.meta.markerGroupsOrder
-        ) {
-          // console.log("going deeper in level", current)
-          const additionalMeta = findDecorationsForMarkers(
-            decorationPrefab.meta.markerGroups,
-            decorationPrefab.meta.markerGroupsOrder,
-            prefabs,
-            decorations,
-          )
-          foundZones.push(...additionalMeta.foundZones)
-          foundTownships.push(...additionalMeta.foundTownships)
-          foundOldwestFlags.push(...additionalMeta.foundOldwestFlags)
-          spawnedDecorations.push(...additionalMeta.spawnedDecorations)
-          // console.log("one level out again")
-        }
-
-        continue
-      } else if (marker.Type === 'PartSpawn') {
-        if (
-          marker.PartSpawnChance !== 0 &&
-          decorations[0].name !== marker.PartToSpawn
-        ) {
-          continue
-        }
-
-        if (decorations[0].name !== marker.PartToSpawn) {
-          throw new Error(
-            `Expecting part ${marker.PartToSpawn} in ${JSON.stringify(
-              marker,
-              null,
-              2,
-            )}`,
-          )
-        }
-
-        const current = decorations.shift()
-        if (current) {
-          // console.log("found part spawn", current)
-          spawnedDecorations.push(current)
-        }
-
-        continue
-      }
-
-      console.log({marker})
-      throw new Error(`Unknown marker type: ${marker.Type}`)
+    const decorationCandidateBox = new Box2(
+      new Vector2(
+        decorationCandidate.position.x,
+        decorationCandidate.position.z,
+      ),
+      new Vector2(
+        decorationCandidate.position.x + decorationPrefab.meta.PrefabSize.x,
+        decorationCandidate.position.z + decorationPrefab.meta.PrefabSize.z,
+      ),
+    )
+    if (decorationCandidateBox.intersectsBox(socketBox)) {
+      // console.log(
+      //   'Removing',
+      //   decorationCandidate.name,
+      //   '@',
+      //   decorationCandidate.position.x,
+      //   'x',
+      //   decorationCandidate.position.z,
+      // )
+      positionsToDelete.push(decorationCandidate.position)
+      foundZones.push(...decorationPrefab.meta.zoning)
+      foundTownships.push(...decorationPrefab.meta.allowedTownships)
     }
   }
 
-  return {foundZones, foundTownships, foundOldwestFlags, spawnedDecorations}
+  // Remove located spawned prefabs from actual decorations
+  decorations = decorations.filter(decoration => {
+    if (positionsToDelete.includes(decoration.position)) {
+      spawnedDecorations.push(decoration)
+      return false
+    }
+
+    return true
+  })
+
+  // Loop deeper with spawned decorations to ensure sub-parts and so on get deleted
+  const newSpawnedDecorations: Decoration[] = []
+  for (const decoration of spawnedDecorations) {
+    const decorationPrefab = prefabs.get(decoration.name.toLocaleLowerCase())
+
+    if (!decorationPrefab) {
+      throw new Error(
+        `Unable to load prefab ${decoration.name.toLocaleLowerCase()}`,
+      )
+    }
+
+    if (decorationPrefab.meta.markers) {
+      // console.log(
+      //   `Locate and remove markers for Prefab ${decorationPrefab.name}@${decoration.position.x}x${decoration.position.z}`,
+      // )
+      const additionalMeta = removeSpawnedMarkers(
+        prefabs,
+        decorations,
+        decorationPrefab,
+        decoration,
+      )
+      foundZones.push(...additionalMeta.foundZones)
+      foundTownships.push(...additionalMeta.foundTownships)
+      foundOldwestFlags.push(...additionalMeta.foundOldwestFlags)
+      newSpawnedDecorations.push(
+        ...additionalMeta.spawnedDecorations,
+      )
+    }
+  }
+
+  spawnedDecorations.push(...newSpawnedDecorations)
+
+  return {
+    positionsToDelete,
+    foundZones,
+    foundTownships,
+    foundOldwestFlags,
+    spawnedDecorations,
+  }
 }
 
 export const filterPOIMarkers = (
   decorations: Decoration[],
   prefabs: Map<string, Prefab>,
-) => {
+): Decoration[] => {
   const sockets: Decoration[] = []
 
   while (decorations.length > 0) {
     const decoration = decorations.shift()
+    // Last one
     if (!decoration) {
       continue
     }
@@ -174,13 +170,20 @@ export const filterPOIMarkers = (
       )
     }
 
+    // Iterate markers, gather dater and delete them
     if (prefab.meta.markerGroups && prefab.meta.markerGroupsOrder) {
-      const {foundTownships, spawnedDecorations} = findDecorationsForMarkers(
-        prefab.meta.markerGroups,
-        prefab.meta.markerGroupsOrder,
+      // console.log(
+      //   `Locate and remove markers for Socket/Tile ${prefab.name}@${decoration.position.x}x${decoration.position.z}`,
+      // )
+      const {positionsToDelete, foundTownships, spawnedDecorations} = removeSpawnedMarkers(
         prefabs,
         decorations,
+        prefab,
+        decoration,
       )
+
+      // Delete top level decorations
+      decorations = decorations.filter(({position}) => !positionsToDelete.includes(position))
 
       decoration.spawnedDecorations = spawnedDecorations
       const guessedZone = prefab.name
@@ -218,7 +221,7 @@ export const filterPOIMarkers = (
 
   // idea: loop through sockets, check if tiles are very close. if so:
   // 1. set as real socket/non wilderness
-  // 2. guess type of zone & township based on close tiles
+  // 2. guess type of zone & township based on close tiles // amount of tiles in one city
 
   return sockets
 }
