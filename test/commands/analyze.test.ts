@@ -5,7 +5,9 @@ describe('analyze', () => {
   .stdout()
   .command(['analyze'])
   .it('executes', ctx => {
-    expect(ctx.stdout).to.contain('There are 1597 unique POIs currently spawned on the map.')
+    expect(ctx.stdout).to.contain(
+      'There are 728 unique POIs spawned in your prefabs.xml',
+    )
     expect(ctx.stdout).to.contain('prefab-spawn-stats.csv')
   })
 })
