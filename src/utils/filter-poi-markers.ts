@@ -182,7 +182,7 @@ export const filterPOIMarkers = (
       )
 
       // Delete top level decorations
-      decorations = decorations.filter(({position}) => !positionsToDelete.includes(position))
+      decorations = decorations.filter(({name, position}) => !positionsToDelete.includes(position) || name.indexOf('part_') === 0)
 
       decoration.spawnedDecorations = spawnedDecorations
       const guessedZone = prefab.name
