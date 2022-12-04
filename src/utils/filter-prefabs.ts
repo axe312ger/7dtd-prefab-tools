@@ -304,6 +304,12 @@ export const defaultPrefabFilters: Filter[] = [
         type = 'trader'
       }
 
+      // Allow custom distance per tag
+      const distanceTag = prefabCandidate.meta.tags.find(tag => Object.keys(distances).includes(tag))
+      if (distanceTag) {
+        type = distanceTag
+      }
+
       const distance = distances[type]
 
       // Ensure minimum distance
