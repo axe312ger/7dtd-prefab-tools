@@ -1,6 +1,5 @@
-/* eslint-disable complexity */
 import {Box2, Vector2, Vector3} from 'three'
-import {Decoration, POIMarker, Prefab} from '../types'
+import {Decoration, Prefab} from '../types'
 
 function getMostFrequent(arr: string[]) {
   const hashmap: Map<string, number> = new Map()

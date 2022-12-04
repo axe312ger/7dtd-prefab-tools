@@ -146,7 +146,13 @@ export const defaultPrefabFilters: Filter[] = [
         vanillaWhitelists,
         biomeTierMap,
       },
+      marker,
     }: FilterContext): boolean => {
+      // Skip check if marker is filtered by tags
+      if (marker && marker.Tags && marker.Tags.length > 0) {
+        return true
+      }
+
       // Mach by difficulty tier
       const difficultyMatches = prefabCandidate.meta.difficultyTier === 0 || biomeTierMap[
       biome
