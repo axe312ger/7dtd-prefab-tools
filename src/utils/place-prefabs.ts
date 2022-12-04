@@ -127,6 +127,7 @@ export function spawnPOIMarkers(
   const markers: Decoration[] = []
   for (const marker of prefab.meta.markers) {
     if (['RoadExit', 'None'].includes(marker.Type)) {
+      // @todo should we spawn the road exists here now?
       continue
     }
 
