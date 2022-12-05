@@ -3,23 +3,23 @@
 /* eslint-disable no-case-declarations */
 import {randomInt} from 'node:crypto'
 import {Vector3} from 'three'
-import * as Jimp from 'jimp'
 import {RANDOM_POI_NAME, SKIPPED_POI_NAME} from '../const'
-import {getHeightForPosition} from './pixel-data'
 import {defaultPrefabFilters, filterPrefabs} from './filter-prefabs'
 import {getRandomPrefab} from './select-prefabs'
 import {Prefab, Decoration, POIMarker, PrefabToolsConfig} from '../types'
+import {MapHelper} from './map-helper'
 
 export function calcRotation(
   initialRotation: number,
   RotationToFaceNorth: number,
   markerRotation: number,
-):number {
-  // if (markerRotation === 1) {
-  //   markerRotation = 3
-  // } else if (markerRotation === 3) {
-  //   markerRotation = 1
-  // }
+): number {
+  if (markerRotation === 1) {
+    markerRotation = 3
+  } else if (markerRotation === 3) {
+    markerRotation = 1
+  }
+
   return (markerRotation + RotationToFaceNorth + initialRotation) % 4
 }
 
@@ -69,37 +69,33 @@ export function calculateMarkerPosition(
     break
   case 1:
     const newZ = newMarker.x
-    const modifierX =
-        marker.PartRotation % 2 ?
-          marker.Size.x :
-          marker.Size.z
-    newMarker.x = marker.Size.z - newMarker.z - modifierX
+    const modifierX = mainPOIRotation % 2 ? marker.Size.z : marker.Size.x
+    const startX = mainPOIRotation % 2 ? marker.Start.z : marker.Start.x
+    newMarker.x = socketPrefab.meta.PrefabSize.z - startX - modifierX
     newMarker.z = newZ
     position.add(newMarker)
     break
 
   case 3:
     const newX = newMarker.z
-    const modifierZ =
-        marker.PartRotation % 2 ?
-          marker.Size.z :
-          marker.Size.x
-    newMarker.z = marker.Size.x - newMarker.x - modifierZ
+    const modifierZ = mainPOIRotation % 2 ? marker.Size.x : marker.Size.z
+    const startZ = mainPOIRotation % 2 ? marker.Start.x : marker.Start.z
+    newMarker.z = socketPrefab.meta.PrefabSize.x - startZ - modifierZ
     newMarker.x = newX
     position.add(newMarker)
 
     break
   case 2:
-    const sizeX =
-        marker.PartRotation % 2 ?
-          marker.Size.z :
-          marker.Size.x
-    const sizeZ =
-        marker.PartRotation % 2 ?
-          marker.Size.x :
-          marker.Size.z
+    const sizeX = rotation % 2 ? marker.Size.z : marker.Size.x
+    const sizeZ = rotation % 2 ? marker.Size.x : marker.Size.z
     position
-    .add(new Vector3(marker.Size.x, 0, marker.Size.z))
+    .add(
+      new Vector3(
+        socketPrefab.meta.PrefabSize.x,
+        0,
+        socketPrefab.meta.PrefabSize.z,
+      ),
+    )
     .add(rotatedMarker)
     .sub(new Vector3(sizeX, 0, sizeZ))
   }
@@ -113,7 +109,7 @@ export function spawnPOIMarkers(
   prefab: Prefab,
   prefabsByName: Map<string, Prefab>,
   validPrefabsByName: Map<string, Prefab>,
-  biome: string,
+  mapHelper: MapHelper,
   distanceMap: Map<string, Vector3[]>,
   socketPrefab: Prefab,
   prefabCounter: Map<string, number>,
@@ -145,7 +141,7 @@ export function spawnPOIMarkers(
           {
             distanceMap,
             position: mainPOIPosition,
-            biome,
+            biome: mapHelper.getBiomeForPosition(mainPOIPosition),
             marker,
             isWilderness: false,
             // YOU PROBABLY WANT TO CHECK RANDOM SPAWNS BELOW!!!
@@ -174,7 +170,7 @@ export function spawnPOIMarkers(
         {
           distanceMap,
           position: mainPOIPosition,
-          biome,
+          biome: mapHelper.getBiomeForPosition(mainPOIPosition),
           marker,
           isWilderness: false,
           // debugPrefabName: "xcostum_Origami_Gallery(by_Pille_TopMinder)",
@@ -197,7 +193,7 @@ export function spawnPOIMarkers(
           `Unable to find valid POI for marker in ${socketPrefab.name}:`,
           marker,
           filterResult.reason,
-          biome,
+          mapHelper.getBiomeForPosition(mainPOIPosition),
           '\nPrefabs candidates that filtered to zero:\n',
           filterResult.prefabs.map(p => p.name).join('\n'),
         )
@@ -208,7 +204,7 @@ export function spawnPOIMarkers(
       const randomReplacement = getRandomPrefab(
         markerGhostPrefab,
         socketPrefab,
-        biome,
+        mapHelper.getBiomeForPosition(mainPOIPosition),
         mainPOIPosition,
         filterResult.prefabs,
         prefabCounter,
@@ -239,7 +235,10 @@ export function spawnPOIMarkers(
 
     // Calculate marker position
     const {position, rotation} = calculateMarkerPosition(
-      mainPOIRotation, mainPOIPosition, socketPrefab, marker,
+      mainPOIRotation,
+      mainPOIPosition,
+      socketPrefab,
+      marker,
     )
 
     if (marker.Type === 'POISpawn') {
@@ -270,7 +269,7 @@ export function spawnPOIMarkers(
           markerPOI,
           prefabsByName,
           validPrefabsByName,
-          biome,
+          mapHelper,
           distanceMap,
           socketPrefab,
           prefabCounter,
@@ -287,21 +286,18 @@ export function translatePositionAndRotation(
   position: Vector3,
   rotation: number,
   prefab: Prefab,
-  heightMapImage: Jimp,
-  config: PrefabToolsConfig,
-): { mainPOIPosition:Vector3, mainPOIRotation: number } {
+  mapHelper: MapHelper,
+): { mainPOIPosition: Vector3; mainPOIRotation: number } {
   const neutralRotation = calcRotation(
     rotation,
     prefab.meta.RotationToFaceNorth * -1,
     0,
   )
 
-  const correctedHeight = getHeightForPosition(
+  const correctedHeight = mapHelper.getHeightForPosition(
     position,
     prefab.meta.PrefabSize,
     rotation,
-    heightMapImage,
-    config,
   )
 
   const neutralPosition = position
@@ -326,21 +322,20 @@ export const addToDistanceMap = (
   decoration: Decoration,
 ): void => {
   decoration.name.indexOf('part_') !== 0 &&
-  distanceMap.set(decoration.name, [
-    ...(distanceMap.get(decoration.name) || []),
-    decoration.position,
-  ])
+    distanceMap.set(decoration.name, [
+      ...(distanceMap.get(decoration.name) || []),
+      decoration.position,
+    ])
 }
 
 export function spawnPOI(
+  mapHelper: MapHelper,
   position: Vector3,
   rotation: number,
   prefab: Prefab,
   prefabsByName: Map<string, Prefab>,
   validPrefabsByName: Map<string, Prefab>,
-  biome: string,
   distanceMap: Map<string, Vector3[]>,
-  heightMapImage: Jimp,
   socketPrefab: Prefab,
   prefabCounter: Map<string, number>,
   config: PrefabToolsConfig,
@@ -350,8 +345,7 @@ export function spawnPOI(
     position,
     rotation,
     prefab,
-    heightMapImage,
-    config,
+    mapHelper,
   )
   const decorations: Decoration[] = []
   const mainDecoration: Decoration = {
@@ -377,7 +371,7 @@ export function spawnPOI(
     prefab,
     prefabsByName,
     validPrefabsByName,
-    biome,
+    mapHelper,
     distanceMap,
     socketPrefab,
     prefabCounter,

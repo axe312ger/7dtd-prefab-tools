@@ -6,14 +6,13 @@ import cloneDeep from 'clone-deep'
 import {Builder} from 'xml2js'
 import {Vector3} from 'three'
 
-import {getBiomeForPosition, loadImageViaJimp} from '../utils/pixel-data'
 import {readPrefabsFromXMLs} from '../utils/read-prefabs'
 import {initConfig} from '../utils/config'
 import {loadDecorations} from '../utils/load-decorations'
 import {filterPOIMarkers} from '../utils/filter-poi-markers'
-import {Decoration, Prefab} from '../types'
-
 import {spawnPOI} from '../utils/place-prefabs'
+import {MapHelper} from '../utils/map-helper'
+import {Decoration, Prefab} from '../types'
 
 export default class Populate extends Command {
   static description = 'Populate all empty tiles in a prefab.xml'
@@ -24,14 +23,15 @@ export default class Populate extends Command {
 
   public async run(): Promise<void> {
     const config = await initConfig()
-    const {prefabsPath, heightMapPath, biomesPath} = config
+    const {prefabsPath} = config
 
     const builder = new Builder()
     const xml = await readFile(prefabsPath, 'utf8')
     const decorations = await loadDecorations(xml)
     const prefabs = await readPrefabsFromXMLs(config)
-    const biomesImage = await loadImageViaJimp(biomesPath)
-    const heightMapImage = await loadImageViaJimp(heightMapPath)
+    const mapHelper = new MapHelper(config)
+    await mapHelper.loadImages()
+
     const distanceMap: Map<string, Vector3[]> = new Map()
 
     // Based on our existing decorations from prefabs.xml, we filter out everything thats a socket OR a "random" wilderness POI
@@ -67,19 +67,16 @@ export default class Populate extends Command {
         socketPrefab.meta.allowedTownships.push(socket.guessedTownship)
       }
 
-      const biome = getBiomeForPosition(socket.position, biomesImage, config)
-
       console.log(`Spawning ${socketPrefab.name} (${i}/${sockets.length - 1})`)
 
       const spawned = spawnPOI(
+        mapHelper,
         socket.position,
         socket.rotation,
         socketPrefab,
         prefabs.prefabsByName,
         prefabs.validPrefabsByName,
-        biome,
         distanceMap,
-        heightMapImage,
         socketPrefab,
         prefabCounter,
         config,
@@ -104,7 +101,7 @@ export default class Populate extends Command {
             rotation: decoration.rotation,
             zones: decoration.zoning,
             townships: decoration.allowedTownships,
-            biome: getBiomeForPosition(decoration.position, biomesImage, config),
+            biome: mapHelper.getBiomeForPosition(decoration.position),
           },
         },
       })),
