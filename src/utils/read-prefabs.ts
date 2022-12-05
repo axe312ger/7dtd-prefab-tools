@@ -251,11 +251,11 @@ export async function readPrefabsFromXMLs({
   for (const prefab of prefabsByName.values()) {
     if (
       !(
-        prefab.name.indexOf('part_') === 0 ||
+        // prefab.name.indexOf('part_') === 0 ||
         prefab.name.indexOf('AAA_') === 0 ||
         prefab.name.indexOf('000_') === 0 ||
         // prefab.name.indexOf("rwg_tile_oldwest_") === 0 ||
-        prefab.meta.tags.includes('part') ||
+        // prefab.meta.tags.includes('part') ||
         prefab.meta.tags.includes('testonly') ||
         prefab.meta.tags.includes('test') ||
         prefab.meta.tags.includes('navonly') ||

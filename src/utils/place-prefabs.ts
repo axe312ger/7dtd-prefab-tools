@@ -261,7 +261,7 @@ export function spawnPOIMarkers(
     }
 
     // If we just spawned a POI, spawn its markers as well
-    if (marker.Type === 'POISpawn') {
+    if (markerPOI.meta.markers?.length !== 0) {
       markers.push(
         ...spawnPOIMarkers(
           position,

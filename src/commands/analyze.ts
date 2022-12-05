@@ -22,6 +22,10 @@ async function analyzePrefabs(validPrefabsByName: Map<string, Prefab>) {
     ['biomes', new Set()],
   ])
   for await (const prefab of validPrefabsByName.values()) {
+    if (prefab.name.indexOf('part_') === 0) {
+      continue
+    }
+
     const prefabSizeId = `${prefab.meta.PrefabSize.x}x${prefab.meta.PrefabSize.z}`
 
     // Gather issues/warnings/errors about prefabs
@@ -137,7 +141,7 @@ export default class Analyze extends Command {
     for (const decoration of decorations) {
       const prefabId = decoration.name.toLocaleLowerCase()
       const prefabData = prefabs.validPrefabsByName.get(prefabId)
-      if (!prefabData) {
+      if (!prefabData || prefabId.indexOf('part_') === 0) {
         continue
       }
 
@@ -197,12 +201,7 @@ export default class Analyze extends Command {
 
     // Output prefab placement stats as CSV
     const prefabStats = [...prefabs.validPrefabsByName.entries()]
-    .filter(
-      ([k]) =>
-        !k.includes('part_') &&
-          !k.includes('deco') &&
-          !k.toLowerCase().includes('aaa_'),
-    )
+    .filter(([k]) => !k.includes('part_') && !k.includes('deco'))
     // Inject extra information
     .map(([k, v]) => {
       const count = decorations.filter(
