@@ -13,11 +13,14 @@ export function calcRotation(
   initialRotation: number,
   RotationToFaceNorth: number,
   markerRotation: number,
+  flip = false,
 ): number {
-  if (markerRotation === 1) {
-    markerRotation = 3
-  } else if (markerRotation === 3) {
-    markerRotation = 1
+  if (flip) {
+    if (markerRotation === 1) {
+      markerRotation = 3
+    } else if (markerRotation === 3) {
+      markerRotation = 1
+    }
   }
 
   return (markerRotation + RotationToFaceNorth + initialRotation) % 4
@@ -45,32 +48,34 @@ export function getPrefabForRandomMarker(
 }
 
 export function calculateMarkerPosition(
-  mainPOIRotation: number,
-  mainPOIPosition: Vector3,
+  socketDecoPOIRotation: number,
+  socketDecoPOIPosition: Vector3,
   socketPrefab: Prefab,
   marker: POIMarker,
+  flip: boolean,
 ): { position: Vector3; rotation: number } {
   const rotation = calcRotation(
-    mainPOIRotation, // or first prefab rotation
+    socketDecoPOIRotation, // or first prefab rotation
     socketPrefab.meta.RotationToFaceNorth,
     marker.PartRotation,
+    flip,
   )
   const rotatedMarker = marker.Start.clone().applyAxisAngle(
     new Vector3(0, 1, 0),
-    (Math.PI / 2) * mainPOIRotation,
+    (Math.PI / 2) * socketDecoPOIRotation,
   )
 
-  const position = mainPOIPosition.clone()
+  const position = socketDecoPOIPosition.clone()
   const newMarker = marker.Start.clone()
 
-  switch (mainPOIRotation) {
+  switch (socketDecoPOIRotation) {
   case 0:
     position.add(rotatedMarker)
     break
   case 1:
     const newZ = newMarker.x
-    const modifierX = mainPOIRotation % 2 ? marker.Size.z : marker.Size.x
-    const startX = mainPOIRotation % 2 ? marker.Start.z : marker.Start.x
+    const modifierX = socketDecoPOIRotation % 2 ? marker.Size.z : marker.Size.x
+    const startX = socketDecoPOIRotation % 2 ? marker.Start.z : marker.Start.x
     newMarker.x = socketPrefab.meta.PrefabSize.z - startX - modifierX
     newMarker.z = newZ
     position.add(newMarker)
@@ -78,16 +83,16 @@ export function calculateMarkerPosition(
 
   case 3:
     const newX = newMarker.z
-    const modifierZ = mainPOIRotation % 2 ? marker.Size.x : marker.Size.z
-    const startZ = mainPOIRotation % 2 ? marker.Start.x : marker.Start.z
+    const modifierZ = socketDecoPOIRotation % 2 ? marker.Size.x : marker.Size.z
+    const startZ = socketDecoPOIRotation % 2 ? marker.Start.x : marker.Start.z
     newMarker.z = socketPrefab.meta.PrefabSize.x - startZ - modifierZ
     newMarker.x = newX
     position.add(newMarker)
 
     break
   case 2:
-    const sizeX = rotation % 2 ? marker.Size.z : marker.Size.x
-    const sizeZ = rotation % 2 ? marker.Size.x : marker.Size.z
+    const sizeX = socketDecoPOIRotation % 2 ? marker.Size.z : marker.Size.x
+    const sizeZ = socketDecoPOIRotation % 2 ? marker.Size.x : marker.Size.z
     position
     .add(
       new Vector3(
@@ -237,8 +242,9 @@ export function spawnPOIMarkers(
     const {position, rotation} = calculateMarkerPosition(
       mainPOIRotation,
       mainPOIPosition,
-      socketPrefab,
+      prefab,
       marker,
+      !socketPrefab.meta.isTile,
     )
 
     if (marker.Type === 'POISpawn') {
@@ -282,7 +288,7 @@ export function spawnPOIMarkers(
   return markers
 }
 
-export function translatePositionAndRotation(
+export function translateSocketPositionAndRotation(
   position: Vector3,
   rotation: number,
   prefab: Prefab,
@@ -341,7 +347,7 @@ export function spawnPOI(
   config: PrefabToolsConfig,
   testRun?: boolean,
 ): Decoration[] {
-  const {mainPOIPosition, mainPOIRotation} = translatePositionAndRotation(
+  const {mainPOIPosition, mainPOIRotation} = translateSocketPositionAndRotation(
     position,
     rotation,
     prefab,

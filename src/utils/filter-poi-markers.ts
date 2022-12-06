@@ -1,5 +1,6 @@
-import {Box2, Vector2, Vector3} from 'three'
+import {Vector3} from 'three'
 import {Decoration, Prefab} from '../types'
+import {createDecorationBox} from './utils'
 
 function getMostFrequent(arr: string[]) {
   const hashmap: Map<string, number> = new Map()
@@ -50,13 +51,8 @@ const removeSpawnedMarkers = (
   const foundTownships: string[] = []
   const foundOldwestFlags: boolean[] = []
 
-  const socketBox = new Box2(
-    new Vector2(socketDecoration.position.x, socketDecoration.position.z),
-    new Vector2(
-      socketDecoration.position.x + socketPrefab.meta.PrefabSize.x,
-      socketDecoration.position.z + socketPrefab.meta.PrefabSize.z,
-    ),
-  )
+  const socketBox = createDecorationBox(socketDecoration, socketPrefab)
+
   for (const decorationCandidate of decorations.values()) {
     // Do not delete tiles that (accidently?) overlap
     if (decorationCandidate.name.indexOf('rwg_tile_') === 0) {
@@ -73,16 +69,8 @@ const removeSpawnedMarkers = (
       )
     }
 
-    const decorationCandidateBox = new Box2(
-      new Vector2(
-        decorationCandidate.position.x,
-        decorationCandidate.position.z,
-      ),
-      new Vector2(
-        decorationCandidate.position.x + decorationPrefab.meta.PrefabSize.x,
-        decorationCandidate.position.z + decorationPrefab.meta.PrefabSize.z,
-      ),
-    )
+    const decorationCandidateBox = createDecorationBox(decorationCandidate, decorationPrefab)
+
     if (decorationCandidateBox.intersectsBox(socketBox)) {
       // console.log(
       //   'Removing',

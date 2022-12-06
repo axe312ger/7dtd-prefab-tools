@@ -1,4 +1,5 @@
-import {POIMarker} from '../types'
+import {Box2, Vector2} from 'three'
+import {Decoration, POIMarker, Prefab} from '../types'
 
 export const parseArrayValue = (a: string): string[] => {
   if (!a || !a.trim()) {
@@ -41,4 +42,26 @@ export const groupBy = (
   //   }
   // }, {})
   return {order, groups}
+}
+
+// Create a 2D threejs box from a decoration and its prefab to check for intersections
+export function createDecorationBox(decoration: Decoration, prefab: Prefab): Box2 {
+  const sizeX =
+  decoration.rotation % 2 ?
+    prefab.meta.PrefabSize.x :
+    prefab.meta.PrefabSize.z
+
+  const sizeZ =
+  decoration.rotation % 2 ?
+    prefab.meta.PrefabSize.x :
+    prefab.meta.PrefabSize.z
+
+  const decorationCandidateBox = new Box2(
+    new Vector2(decoration.position.x, decoration.position.z),
+    new Vector2(
+      decoration.position.x + sizeX,
+      decoration.position.z + sizeZ,
+    ),
+  )
+  return decorationCandidateBox
 }

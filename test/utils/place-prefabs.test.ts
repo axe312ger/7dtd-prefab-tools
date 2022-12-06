@@ -11,6 +11,7 @@ chai.use(jestSnapshotPlugin())
 import {Vector3} from 'three'
 import {initConfig} from '../../src/utils/config'
 import {MapHelper} from '../../src/utils/map-helper'
+import {createDecorationBox} from '../../src/utils/utils'
 
 describe('spawn POI markers', () => {
   let prefabs: {
@@ -31,6 +32,92 @@ describe('spawn POI markers', () => {
   beforeEach(() => {
     mapHelper.getBiomeForPosition = () => 'pine_forest'
     mapHelper.getHeightForPosition = () => 37
+  })
+
+  it('vanilla pregenerated - rwg_tile_rural_t rotation 1', async () => {
+    mapHelper.getHeightForPosition = () => 45
+    const distanceMap: Map<string, Vector3[]> = new Map()
+    const prefab = prefabs.validPrefabsByName.get('rwg_tile_rural_t')
+    if (!prefab) {
+      throw new Error('Unable to find POI')
+    }
+
+    const position = new Vector3(1769, 40, 1313)
+    const rotation = 1
+
+    const prefabFixtures: Map<string, Prefab> = new Map()
+    const prefabFixtureList = ['rwg_tile_rural_t',
+      'lot_rural_filler_04',
+      'lot_rural_filler_05',
+      'rural_church_01',
+      'part_driveway_rural_04',
+      'house_old_ranch_01',
+      'part_driveway_rural_02']
+
+    for (const prefabName of prefabFixtureList) {
+      const prefabFixture = prefabs.validPrefabsByName.get(prefabName)
+      if (!prefabFixture) {
+        throw new Error('Unable to find POI')
+      }
+
+      prefabFixtures.set(prefabName, prefabFixture)
+    }
+
+    const res = spawnPOI(
+      mapHelper,
+      position,
+      rotation,
+      prefab,
+      prefabs.prefabsByName,
+      prefabFixtures,
+      distanceMap,
+      prefab,
+      prefabCounter,
+      config,
+    )
+
+    const socketDeco = res[0]
+    const socketPrefab = prefabs.validPrefabsByName.get(socketDeco.name.toLocaleLowerCase())
+    if (!socketPrefab) {
+      throw new Error('Unable to find POI')
+    }
+
+    expect(socketDeco).to.deep.equal({
+      name: 'rwg_tile_rural_t',
+      position,
+      rotation,
+    })
+
+    const socketBox = createDecorationBox(socketDeco, socketPrefab)
+
+    // console.dir(res)
+    const resNoParts = res.filter(res => res.name.indexOf('part_') !== 0)
+
+    const expectedPrefabRotations =
+    [1, 0, 0, 2, 2]
+
+    for (const [i, rotation] of expectedPrefabRotations.entries()) {
+      expect(resNoParts[i].rotation, `${resNoParts[i].name} rotation`).to.equal(rotation)
+    }
+
+    // These should pass as soon rotation is fine!
+    for (const [i, resDeco] of res.entries()) {
+      const resDecoPrefab = prefabs.validPrefabsByName.get(resDeco.name.toLocaleLowerCase())
+      if (!resDecoPrefab) {
+        throw new Error('Unable to find POI')
+      }
+
+      const decoBox = createDecorationBox(resDeco, resDecoPrefab)
+      expect(
+        socketBox.intersectsBox(decoBox),
+        `${
+          resDecoPrefab.name
+        }@${i} does not overlap with socket:\n${JSON.stringify({
+          socketBox,
+          decoBox,
+        })}`,
+      ).to.be.true
+    }
   })
 
   it('vanilla pregenerated - farm_05 rotation 1', async () => {
@@ -237,7 +324,7 @@ describe('spawn POI markers', () => {
     ])
   })
 
-  it.skip('farm_12 rotation 2', async () => {
+  it('farm_12 rotation 2', async () => {
     mapHelper.getHeightForPosition = () => 41
     const distanceMap: Map<string, Vector3[]> = new Map()
     const prefab = prefabs.validPrefabsByName.get('farm_12')
