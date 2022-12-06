@@ -51,12 +51,12 @@ export const defaultPrefabFilters: Filter[] = [
         return false
       }
 
-      // Do not mix oldwest and other tiles
       if (
         prefabToReplace.meta.isTile &&
-        prefabToReplace.meta.allowedTownships.includes('oldwest') &&
-        !prefabCandidate.meta.allowedTownships.includes('oldwest')
+          prefabToReplace.meta.allowedTownships.includes('oldwest') &&
+          !prefabCandidate.meta.allowedTownships.includes('oldwest')
       ) {
+        // Do not mix oldwest and other tiles
         // if (true || debugPrefabName === prefabCandidate.name) {
         //   console.log(
         //     `Dropped ${prefabCandidate.name} because of oldwest tile check.`,
@@ -234,6 +234,11 @@ export const defaultPrefabFilters: Filter[] = [
         return prefabCandidate.meta.tags.some(tag =>
           marker.Tags.includes(tag),
         )
+      }
+
+      // Drop parts for markers without tags
+      if (marker && marker.Tags && marker.Tags.length === 0 && prefabCandidate.name.indexOf('part_') === 0) {
+        return false
       }
 
       return true
