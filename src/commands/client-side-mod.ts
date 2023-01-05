@@ -5,6 +5,8 @@ import {
   createReadStream,
   createWriteStream,
   existsSync,
+  accessSync,
+  constants,
 } from 'node:fs'
 import {join, resolve, dirname, parse} from 'node:path'
 
@@ -138,11 +140,13 @@ export default class ClientSideMod extends Command {
         ) :
         createReadStream(resolve(dir, `${name}.blocks.nim`))
 
-      let ins
+      let ins = null
       try {
-        ins = dummyExists ?
-          readFileSync(resolve(__dirname, '..', 'prefab-dummies', `dummy_${id}.ins`)) :
-          createReadStream(resolve(dir, `${name}.ins`))
+        const insPath = dummyExists ? resolve(__dirname, '..', 'prefab-dummies', `dummy_${id}.ins`) : resolve(dir, `${name}.ins`)
+
+        accessSync(insPath, constants.F_OK)
+
+        ins = createReadStream(insPath)
       } catch {
         ins = null
       }
