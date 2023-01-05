@@ -177,7 +177,10 @@ export default class ClientSideMod extends Command {
       })
 
       try {
-        const previewImage = createReadStream(resolve(dir, `${name}.jpg`))
+        const previewImagePath = resolve(dir, `${name}.jpg`)
+        accessSync(previewImagePath, constants.F_OK)
+
+        const previewImage = createReadStream(previewImagePath)
 
         archive.append(previewImage, {
           name: join(BASE_DIR_NAME, name, `${name}.jpg`),
