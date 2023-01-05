@@ -138,9 +138,12 @@ export default class ClientSideMod extends Command {
         ) :
         createReadStream(resolve(dir, `${name}.blocks.nim`))
 
-      const ins = dummyExists ?
-        readFileSync(resolve(__dirname, '..', 'prefab-dummies', `dummy_${id}.ins`)) :
-        createReadStream(resolve(dir, `${name}.ins`))
+      let ins
+      try {
+        ins = dummyExists ?
+          readFileSync(resolve(__dirname, '..', 'prefab-dummies', `dummy_${id}.ins`)) :
+          createReadStream(resolve(dir, `${name}.ins`))
+      } catch {}
 
       const tts = dummyExists ?
         readFileSync(resolve(__dirname, '..', 'prefab-dummies', `dummy_${id}.tts`)) :
@@ -149,9 +152,13 @@ export default class ClientSideMod extends Command {
       archive.append(nim, {
         name: join(BASE_DIR_NAME, name, `${name}.blocks.nim`),
       })
-      archive.append(ins, {
-        name: join(BASE_DIR_NAME, name, `${name}.ins`),
-      })
+
+      if (ins) {
+        archive.append(ins, {
+          name: join(BASE_DIR_NAME, name, `${name}.ins`),
+        })
+      }
+
       archive.append(tts, {
         name: join(BASE_DIR_NAME, name, `${name}.tts`),
       })
