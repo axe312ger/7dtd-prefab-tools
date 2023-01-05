@@ -143,7 +143,9 @@ export default class ClientSideMod extends Command {
         ins = dummyExists ?
           readFileSync(resolve(__dirname, '..', 'prefab-dummies', `dummy_${id}.ins`)) :
           createReadStream(resolve(dir, `${name}.ins`))
-      } catch {}
+      } catch {
+        ins = null
+      }
 
       const tts = dummyExists ?
         readFileSync(resolve(__dirname, '..', 'prefab-dummies', `dummy_${id}.tts`)) :
