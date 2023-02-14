@@ -25,7 +25,7 @@ $ npm install -g prefab-tools
 $ prefab-tools COMMAND
 running command...
 $ prefab-tools (--version)
-prefab-tools/0.1.0 darwin-arm64 node-v16.16.0
+prefab-tools/0.7.0 darwin-arm64 node-v18.9.0
 $ prefab-tools --help [COMMAND]
 USAGE
   $ prefab-tools COMMAND
@@ -36,6 +36,7 @@ USAGE
 <!-- commands -->
 * [`prefab-tools align`](#prefab-tools-align)
 * [`prefab-tools analyze [FILE]`](#prefab-tools-analyze-file)
+* [`prefab-tools client-side-mod [FILE]`](#prefab-tools-client-side-mod-file)
 * [`prefab-tools help [COMMAND]`](#prefab-tools-help-command)
 * [`prefab-tools plugins`](#prefab-tools-plugins)
 * [`prefab-tools plugins:install PLUGIN...`](#prefab-tools-pluginsinstall-plugin)
@@ -64,7 +65,7 @@ EXAMPLES
   $ prefab-tools align
 ```
 
-_See code: [dist/commands/align.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.1.0/dist/commands/align.ts)_
+_See code: [dist/commands/align.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.7.0/dist/commands/align.ts)_
 
 ## `prefab-tools analyze [FILE]`
 
@@ -81,7 +82,28 @@ EXAMPLES
   $ prefab-tools analyze
 ```
 
-_See code: [dist/commands/analyze.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.1.0/dist/commands/analyze.ts)_
+_See code: [dist/commands/analyze.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.7.0/dist/commands/analyze.ts)_
+
+## `prefab-tools client-side-mod [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ prefab-tools client-side-mod [FILE] [-n <value>] [-f]
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ prefab-tools client-side-mod
+```
+
+_See code: [dist/commands/client-side-mod.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.7.0/dist/commands/client-side-mod.ts)_
 
 ## `prefab-tools help [COMMAND]`
 
@@ -348,7 +370,7 @@ EXAMPLES
   $ prefab-tools populate
 ```
 
-_See code: [dist/commands/populate.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.1.0/dist/commands/populate.ts)_
+_See code: [dist/commands/populate.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.7.0/dist/commands/populate.ts)_
 
 ## `prefab-tools trim`
 
@@ -365,5 +387,5 @@ EXAMPLES
   $ prefab-tools trim
 ```
 
-_See code: [dist/commands/trim.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.1.0/dist/commands/trim.ts)_
+_See code: [dist/commands/trim.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.7.0/dist/commands/trim.ts)_
 <!-- commandsstop -->
