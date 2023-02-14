@@ -18,7 +18,11 @@ export default class TeragonPoiPropertyList extends Command {
   public async run(): Promise<void> {
     const config = await initConfig()
 
-    const prefabs = await readPrefabsFromXMLs(config)
+    const prefabs = await readPrefabsFromXMLs({
+      ...config,
+      vanillaPrefabsPath: config.additionalPrefabsPaths[0],
+      additionalPrefabsPaths: config.additionalPrefabsPaths.slice(1),
+    })
     const poiProperties = []
 
     for (const prefab of prefabs.validPrefabsByName.values()) {
@@ -50,7 +54,7 @@ export default class TeragonPoiPropertyList extends Command {
     )
     console.log(
       chalk.red(
-        '\nMake sure to manually include your Teragon prefabs to this list!',
+        '\nNote: Your vanilla prefabs have been excluded from the file. Make sure to import/read the default POI Property List with Teragon!',
       ),
     )
   }
