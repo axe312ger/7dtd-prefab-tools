@@ -6,7 +6,8 @@ import {resolve} from 'node:path'
 import chalk from 'chalk'
 
 export default class TeragonPoiPropertyList extends Command {
-  static description = 'creates a terragon poi property list based on all your prefabs.';
+  static description =
+    'creates a terragon poi property list based on all your prefabs.';
 
   static examples = ['<%= config.bin %> <%= command.id %>'];
 
@@ -24,8 +25,9 @@ export default class TeragonPoiPropertyList extends Command {
       const region = prefab.meta.isWilderness ? 'region:default' : 'alone'
       const biomes =
         prefab.meta.isWilderness &&
-        prefab.meta.allowedBiomes.length > 0 &&
-        `biome:${prefab.meta.allowedBiomes.join(';')}`
+        (prefab.meta.allowedBiomes.length > 0 ?
+          `biome:${prefab.meta.allowedBiomes.join(';')}` :
+          'biome:burnt,desert,forest,snow,wasteland')
       const prefabListEntry = [
         prefab.name,
         prefab.meta.RotationToFaceNorth,
@@ -36,7 +38,7 @@ export default class TeragonPoiPropertyList extends Command {
         prefab.meta.isWilderness && 4, // custom value, distance to next wilderness poi
         biomes,
         region,
-      ].filter(v => v !== undefined && v !== null)
+      ].filter(v => v !== undefined && v !== null && v !== false)
       poiProperties.push(prefabListEntry.join(';'))
     }
 
@@ -47,7 +49,9 @@ export default class TeragonPoiPropertyList extends Command {
       statsPath,
     )
     console.log(
-      chalk.red('\nMake sure to manually include your Teragon prefabs to this list!'),
+      chalk.red(
+        '\nMake sure to manually include your Teragon prefabs to this list!',
+      ),
     )
   }
 }
