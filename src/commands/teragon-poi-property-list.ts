@@ -38,6 +38,10 @@ export default class TeragonPoiPropertyList extends Command {
         (prefab.meta.allowedBiomes.length > 0 ?
           `biome:${prefab.meta.allowedBiomes.join(';')}` :
           'biome:burnt,desert,forest,snow,wasteland')
+
+      const road = prefab.meta.isWilderness && prefab.meta.markers?.find(marker =>
+        marker.Type === 'RoadExit' || marker.PartToSpawn.includes('part_driveway'),
+      ) ? 'road:gravel' : null
       const prefabListEntry = [
         prefab.name,
         prefab.meta.RotationToFaceNorth,
@@ -48,6 +52,7 @@ export default class TeragonPoiPropertyList extends Command {
         prefab.meta.isWilderness && 4, // custom value, distance to next wilderness poi
         biomes,
         region,
+        road,
       ].filter(v => v !== undefined && v !== null && v !== false)
       poiProperties.push(prefabListEntry.join(';'))
     }
