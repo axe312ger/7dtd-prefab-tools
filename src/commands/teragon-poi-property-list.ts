@@ -24,8 +24,14 @@ export default class TeragonPoiPropertyList extends Command {
       additionalPrefabsPaths: config.additionalPrefabsPaths.slice(1),
     })
     const poiProperties = []
+    const prefabsSorted = [...prefabs.validPrefabsByName.values()].sort((a, b) => {
+      if (a.meta.isWilderness === b.meta.isWilderness) {
+        return 0
+      }
 
-    for (const prefab of prefabs.validPrefabsByName.values()) {
+      return a.meta.isWilderness ? -1 : 1
+    })
+    for (const prefab of prefabsSorted) {
       const region = prefab.meta.isWilderness ? 'region:default' : 'alone'
       const biomes =
         prefab.meta.isWilderness &&
