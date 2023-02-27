@@ -15,7 +15,8 @@ export const getBiomeForPosition = memoizerific(0)(
     const biomeCode = `${locationColor.r}_${locationColor.g}_${locationColor.b}` as keyof typeof biomeMap as string
 
     if (!Object.keys(biomeMap).includes(biomeCode)) {
-      throw new Error(`Unable to detect biome for ${biomeCode} at ${position.x},${position.z}`)
+      console.log(`WARNING: Unable to detect biome for ${biomeCode} at ${position.x},${position.z}`)
+      return 'pine_forest'
     }
 
     return biomeMap[biomeCode]
