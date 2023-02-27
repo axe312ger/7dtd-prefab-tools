@@ -8,6 +8,7 @@ import {
   accessSync,
   constants,
 } from 'node:fs'
+import * as StreamPromises from 'node:stream/promises'
 import {join, resolve, dirname, parse} from 'node:path'
 
 import archiver from 'archiver'
@@ -125,9 +126,6 @@ export default class ClientSideMod extends Command {
       )
     })
 
-    // pipe archive data to the file
-    archive.pipe(output)
-
     for (const prefab of prefabsToInclude.values()) {
       const {name, dir} = parse(prefab.filePath)
 
@@ -188,7 +186,10 @@ export default class ClientSideMod extends Command {
       } catch {}
     }
 
-    // or write everything to disk
+    // Finish archive
     await archive.finalize()
+
+    // Write to disk
+    await StreamPromises.pipeline(archive, output)
   }
 }
