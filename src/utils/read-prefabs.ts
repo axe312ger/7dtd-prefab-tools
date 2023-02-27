@@ -85,6 +85,7 @@ export async function readPrefabsFromXMLs({
     const {name} = path.parse(filePath)
     const allowedTownships = parseArrayValue(prefabData.AllowedTownships)
     const isTile = name.indexOf('rwg_tile_') === 0
+    const isTrader = prefabData.TraderArea.toLocaleLowerCase() === 'true'
     const meta: POIMeta = {
       PrefabSize: getDimensions(prefabData),
       zoning: parseArrayValue(prefabData.Zoning),
@@ -93,9 +94,9 @@ export async function readPrefabsFromXMLs({
       difficultyTier: Number.parseInt(prefabData.DifficultyTier, 10),
       RotationToFaceNorth: Number.parseInt(prefabData.RotationToFaceNorth, 10),
       YOffset: Number.parseInt(prefabData.YOffset, 10) || 0,
-      isTrader: prefabData.TraderArea.toLocaleLowerCase() === 'true',
+      isTrader,
       isTile,
-      isWilderness: allowedTownships.includes('wilderness'),
+      isWilderness: !isTrader && !name.includes('part_') && allowedTownships.includes('wilderness'),
       tags: parseArrayValue(prefabData.Tags),
     }
 
