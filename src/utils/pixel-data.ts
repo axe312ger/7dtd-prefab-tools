@@ -31,25 +31,16 @@ export const getHeightForPosition = memoizerific(0)(
     heightMapImage: Jimp,
     {mapSize}: PrefabToolsConfig,
   ) => {
-    let modifierX = plotSize.x
-    let modifierZ = plotSize.z * -1
-    switch (rotation) {
-    case 3:
-      modifierX = plotSize.z * -1
-      modifierZ = plotSize.x * -1
-      break
-    case 2:
-      modifierX = plotSize.z
-      modifierZ = plotSize.x * -1
-      break
-    case 1:
-      modifierX = plotSize.z
-      modifierZ = plotSize.x * -1
-      break
+    let modifierX = Math.floor(plotSize.x / 2)
+    let modifierZ = Math.floor(plotSize.z / 2)
+
+    if (rotation === 1 || rotation === 3) {
+      modifierX = Math.floor(plotSize.z / 2)
+      modifierZ = Math.floor(plotSize.x / 2)
     }
 
-    const posX = (mapSize / 2) + position.x + Math.floor(modifierX / 2)
-    const posY = (mapSize / 2) - position.z + Math.floor(modifierZ / 2)
+    const posX = (mapSize / 2) + (position.x + modifierX)
+    const posY = (mapSize / 2) - (position.z + modifierZ)
 
     const locationColor = Jimp.intToRGBA(
       heightMapImage.getPixelColor(posX, posY),
