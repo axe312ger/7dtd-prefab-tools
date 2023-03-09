@@ -253,7 +253,7 @@ export function spawnPOIMarkers(
     }
 
     // Calculate marker position
-    const {position, rotation} = calculateMarkerPosition(
+    const markerPos = calculateMarkerPosition(
       mainPOIRotation,
       mainPOIPosition,
       prefab,
@@ -261,8 +261,19 @@ export function spawnPOIMarkers(
       !socketPrefab.meta.isTile,
     )
 
+    let {rotation} = markerPos
+    const {position} = markerPos
+
     if (marker.Type === 'POISpawn') {
       position.add(new Vector3(0, markerPOI.meta.YOffset, 0))
+    }
+
+    // handle pois that only fit rotated
+    if (
+      markerPOI.meta.PrefabSize.x > marker.Size.x ||
+      markerPOI.meta.PrefabSize.z > marker.Size.z
+    ) {
+      rotation = rotation === 3 ? 0 : rotation + 1
     }
 
     const markerDecoration: Decoration = {

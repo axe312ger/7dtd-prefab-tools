@@ -271,15 +271,31 @@ export const defaultPrefabFilters: Filter[] = [
 
       // If we place markers, allow them do differ by X% in size
       if (marker && marker.Size) {
-        const diffX = marker.Size.x - prefabCandidate.meta.PrefabSize.x
-        const diffZ = marker.Size.z - prefabCandidate.meta.PrefabSize.z
+        let res: true | string = 'size mismatch'
+        for (const [x, z] of [
+          [
+            prefabCandidate.meta.PrefabSize.x,
+            prefabCandidate.meta.PrefabSize.z,
+          ],
+          [
+            prefabCandidate.meta.PrefabSize.z,
+            prefabCandidate.meta.PrefabSize.x,
+          ],
+        ]) {
+          const diffX = marker.Size.x - x
+          const diffZ = marker.Size.z - z
 
-        return (
-          diffX >= 0 &&
-          diffX <= Math.ceil(marker.Size.x * markerSizeDifferenceMax) &&
-          diffZ >= 0 &&
-          diffZ <= Math.ceil(marker.Size.z * markerSizeDifferenceMax)
-        )
+          if (
+            diffX >= 0 &&
+            diffX <= Math.ceil(marker.Size.x * markerSizeDifferenceMax) &&
+            diffZ >= 0 &&
+            diffZ <= Math.ceil(marker.Size.z * markerSizeDifferenceMax)
+          ) {
+            res = true
+          }
+        }
+
+        return res
       }
 
       // non-wilderness non-markers (must be tiles) - have to be exact
