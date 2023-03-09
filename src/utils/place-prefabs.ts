@@ -186,11 +186,9 @@ export function spawnPOIMarkers(
       if (!filterResult.success) {
         if (testRun) {
           throw new Error(
-            `Unable to find matching prefab for marker. Failing testrun.\n${JSON.stringify(
-              marker,
-              null,
-              2,
-            )}`,
+            `Unable to find a matching prefab for the following marker in ${
+              socketPrefab.name
+            }:\n${JSON.stringify(marker, null, 2)}`,
           )
         }
 
@@ -200,7 +198,17 @@ export function spawnPOIMarkers(
           filterResult.reason,
           mapHelper.getBiomeForPosition(mainPOIPosition),
           '\nPrefabs candidates that filtered to zero:\n',
-          filterResult.prefabs.map(p => p.name).join('\n'),
+          filterResult.prefabs
+          .map(p =>
+            [
+              p.name,
+              `${p.meta.PrefabSize.x}x${p.meta.PrefabSize.z}`,
+              p.meta.allowedBiomes.join(', '),
+              p.meta.allowedTownships.join(', '),
+              p.meta.zoning.join(', '),
+            ].join(' '),
+          )
+          .join('\n'),
         )
 
         continue
@@ -347,12 +355,8 @@ export function spawnPOI(
   config: PrefabToolsConfig,
   testRun?: boolean,
 ): Decoration[] {
-  const {mainPOIPosition, mainPOIRotation} = translateSocketPositionAndRotation(
-    position,
-    rotation,
-    prefab,
-    mapHelper,
-  )
+  const {mainPOIPosition, mainPOIRotation} =
+    translateSocketPositionAndRotation(position, rotation, prefab, mapHelper)
   const decorations: Decoration[] = []
   const mainDecoration: Decoration = {
     name: prefab.name,

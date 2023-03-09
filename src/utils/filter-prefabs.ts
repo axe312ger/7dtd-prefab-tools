@@ -25,7 +25,7 @@ export interface Filter {
     filterContext: FilterContext,
     index?: number,
     array?: Prefab[]
-  ) => boolean;
+  ) => true | string;
 }
 
 type PrefabFilterSuccess = { success: true; prefabs: Prefab[] };
@@ -45,16 +45,16 @@ export const defaultPrefabFilters: Filter[] = [
       prefabCandidate,
       isWilderness,
     }: // debugPrefabName,
-    FilterContext): boolean => {
+    FilterContext): true | string => {
       // Do not mix tiles and non tiles
       if (prefabToReplace.meta.isTile !== prefabCandidate.meta.isTile) {
-        return false
+        return 'isTile mismatch'
       }
 
       if (
         prefabToReplace.meta.isTile &&
-          prefabToReplace.meta.allowedTownships.includes('oldwest') &&
-          !prefabCandidate.meta.allowedTownships.includes('oldwest')
+        prefabToReplace.meta.allowedTownships.includes('oldwest') &&
+        !prefabCandidate.meta.allowedTownships.includes('oldwest')
       ) {
         // Do not mix oldwest and other tiles
         // if (true || debugPrefabName === prefabCandidate.name) {
@@ -64,7 +64,7 @@ export const defaultPrefabFilters: Filter[] = [
         //     prefabCandidate.meta.allowedTownships
         //   )
         // }
-        return false
+        return 'drop is tile but oldwest and not oldwest'
       }
 
       // Ensure not to mix tile types (straight, corner, t, ...)
@@ -72,7 +72,7 @@ export const defaultPrefabFilters: Filter[] = [
         prefabToReplace.meta.isTile &&
         prefabToReplace.meta.tileType !== prefabCandidate.meta.tileType
       ) {
-        return false
+        return 'is tile but tile type mismatches'
       }
 
       if (isWilderness) {
@@ -82,7 +82,9 @@ export const defaultPrefabFilters: Filter[] = [
         //     `maybe Dropped ${prefabCandidate.name} because of wildernessss.`
         //   )
         // }
-        return prefabCandidate.meta.isWilderness
+        return prefabCandidate.meta.isWilderness ?
+          true :
+          'both need to be wilderness'
       }
 
       // If replacement candidate has a zone, filter by it
@@ -100,7 +102,7 @@ export const defaultPrefabFilters: Filter[] = [
           //     `Dropped ${prefabCandidate.name} because of zone mismatch.`
           //   )
           // }
-          return false
+          return 'zones mismatch'
         }
       }
 
@@ -126,7 +128,7 @@ export const defaultPrefabFilters: Filter[] = [
           //     `Dropped ${prefabCandidate.name} because of township mismatch.`
           //   )
           // }
-          return false
+          return 'township mismatch'
         }
       }
 
@@ -147,19 +149,19 @@ export const defaultPrefabFilters: Filter[] = [
         biomeTierMap,
       },
       marker,
-    }: FilterContext): boolean => {
+    }: FilterContext): true | string => {
       // Skip check if marker is filtered by tags
       if (marker && marker.Tags && marker.Tags.length > 0) {
         return true
       }
 
       // Mach by difficulty tier
-      const difficultyMatches = prefabCandidate.meta.difficultyTier === 0 || biomeTierMap[
-      biome
-      ].includes(prefabCandidate.meta.difficultyTier)
+      const difficultyMatches =
+        prefabCandidate.meta.difficultyTier === 0 ||
+        biomeTierMap[biome].includes(prefabCandidate.meta.difficultyTier)
 
       if (!difficultyMatches) {
-        return false
+        return 'difficulty mismatch'
       }
 
       // Match biome, except for oldwest
@@ -170,7 +172,7 @@ export const defaultPrefabFilters: Filter[] = [
         prefabCandidate.meta.allowedBiomes.includes(biome)
 
       if (!biomeMatches) {
-        return false
+        return 'biome mismatch'
       }
 
       // Filter by white and blacklists
@@ -187,7 +189,7 @@ export const defaultPrefabFilters: Filter[] = [
           )
         }
 
-        if (vanillaBlacklists) {
+        if (vanillaBlacklist) {
           isAllowed = !vanillaBlacklist.some(entry =>
             prefabCandidate.name.includes(entry),
           )
@@ -201,7 +203,9 @@ export const defaultPrefabFilters: Filter[] = [
       //   )
       // }
 
-      return isAllowed
+      return isAllowed ?
+        true :
+        `does not match white or blacklist for biome ${biome}`
     },
   },
   {
@@ -210,16 +214,16 @@ export const defaultPrefabFilters: Filter[] = [
       marker,
       prefabCandidate,
       prefabToReplace,
-    }: FilterContext): boolean => {
+    }: FilterContext): true | string => {
       // Trader should only spawn at markers with tag trader
       if (
         (marker && marker.Tags && marker.Tags.includes('trader')) ||
         prefabToReplace.meta.isTrader
       ) {
-        return prefabCandidate.meta.isTrader
+        return prefabCandidate.meta.isTrader ? true : 'trader'
       }
 
-      return !prefabCandidate.meta.isTrader
+      return prefabCandidate.meta.isTrader ? 'trader' : true
     },
   },
   {
@@ -228,17 +232,24 @@ export const defaultPrefabFilters: Filter[] = [
       prefabCandidate,
       marker,
       isWilderness,
-    }: FilterContext): boolean => {
+    }: FilterContext): true | string => {
       // Filter by marker tags if given
       if (!isWilderness && marker && marker.Tags && marker.Tags.length > 0) {
         return prefabCandidate.meta.tags.some(tag =>
           marker.Tags.includes(tag),
-        )
+        ) ?
+          true :
+          'marker tag'
       }
 
       // Drop parts for markers without tags
-      if (marker && marker.Tags && marker.Tags.length === 0 && prefabCandidate.name.indexOf('part_') === 0) {
-        return false
+      if (
+        marker &&
+        marker.Tags &&
+        marker.Tags.length === 0 &&
+        prefabCandidate.name.indexOf('part_') === 0
+      ) {
+        return 'marker tag2'
       }
 
       return true
@@ -252,7 +263,7 @@ export const defaultPrefabFilters: Filter[] = [
       prefabCandidate,
       prefabToReplace,
       config: {markerSizeDifferenceMax},
-    }: FilterContext): boolean => {
+    }: FilterContext): true | string => {
       // No size check for traders or wilderness pois
       if (isWilderness || prefabCandidate.meta.isTrader) {
         return true
@@ -272,11 +283,11 @@ export const defaultPrefabFilters: Filter[] = [
       }
 
       // non-wilderness non-markers (must be tiles) - have to be exact
-      return (
-        prefabToReplace.meta.PrefabSize.x ===
-          prefabCandidate.meta.PrefabSize.x &&
-        prefabToReplace.meta.PrefabSize.z === prefabCandidate.meta.PrefabSize.z
-      )
+      return prefabToReplace.meta.PrefabSize.x ===
+        prefabCandidate.meta.PrefabSize.x &&
+        prefabToReplace.meta.PrefabSize.z === prefabCandidate.meta.PrefabSize.z ?
+        true :
+        'size'
     },
   },
   {
@@ -288,7 +299,7 @@ export const defaultPrefabFilters: Filter[] = [
       position,
       isWilderness,
       config: {distances},
-    }: FilterContext): boolean => {
+    }: FilterContext): true | string => {
       // Exclude some from the distance check
       if (
         prefabCandidate.meta.isTile ||
@@ -310,7 +321,9 @@ export const defaultPrefabFilters: Filter[] = [
       }
 
       // Allow custom distance per tag
-      const distanceTag = prefabCandidate.meta.tags.find(tag => Object.keys(distances).includes(tag))
+      const distanceTag = prefabCandidate.meta.tags.find(tag =>
+        Object.keys(distances).includes(tag),
+      )
       if (distanceTag) {
         type = distanceTag
       }
@@ -320,9 +333,11 @@ export const defaultPrefabFilters: Filter[] = [
       // Ensure minimum distance
       const positions = distanceMap.get(prefabCandidate.name) || []
       if (positions && positions.length > 0) {
-        return Boolean(
-          !positions?.find(p => p.manhattanDistanceTo(position) < distance),
-        )
+        return positions?.find(
+          p => p.manhattanDistanceTo(position) < distance,
+        ) ?
+          'minimum distance' :
+          true
       }
 
       return true
@@ -348,7 +363,7 @@ export const filterPrefabs = (
         prefabCandidate,
       })
       if (
-        !res &&
+        res !== true &&
         (prefabCandidate.name === filterContextData.debugPrefabName ||
           prefabToReplace.name === filterContextData.debugSocketName)
       ) {
@@ -360,12 +375,12 @@ export const filterPrefabs = (
           }@${filterContextData.position.toArray().join(',')} (${
             filterContextData.marker &&
             filterContextData.marker?.Size.toArray().join(',')
-          } in ${filterContextData.biome})'`,
+          } in ${filterContextData.biome})' Reason: ${res}`,
         )
         debugDropped = true
       }
 
-      return res
+      return res === true
     })
     if (result.length === 0) {
       if (lastFilter === undefined) {
@@ -378,7 +393,7 @@ export const filterPrefabs = (
 
       return {
         success: false,
-        reason: `Filter '${filter.name}' did not return any prefabs. Last filter '${lastFilter.name}' returned ${filteredPrefabs.length} prefabs'.`,
+        reason: `Filter '${filter.name}' did not return any prefabs.\nLast filter '${lastFilter.name}' returned ${filteredPrefabs.length} prefabs'.`,
         prefabs: filteredPrefabs,
       }
     }
