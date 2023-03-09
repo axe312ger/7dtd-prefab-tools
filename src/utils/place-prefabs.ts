@@ -271,8 +271,9 @@ export function spawnPOIMarkers(
 
     // handle pois that only fit rotated
     if (
-      markerPOI.meta.PrefabSize.x > marker.Size.x ||
-      markerPOI.meta.PrefabSize.z > marker.Size.z
+      (rotation === 1 || rotation === 3) &&
+      (markerPOI.meta.PrefabSize.x > marker.Size.x ||
+        markerPOI.meta.PrefabSize.z > marker.Size.z)
     ) {
       rotation = rotation === 3 ? 0 : rotation + 1
     }
