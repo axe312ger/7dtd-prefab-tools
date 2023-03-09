@@ -222,7 +222,7 @@ describe('spawn POI markers', () => {
       {
         name: 'part_dumpster',
         position: new Vector3(-653, 44, 524),
-        rotation: 0,
+        rotation: 1,
       },
       {
         name: 'part_driveway_rural_12',
@@ -312,7 +312,7 @@ describe('spawn POI markers', () => {
       {
         name: 'part_dumpster',
         position: new Vector3(-704, 37, -369),
-        rotation: 1,
+        rotation: 2,
       },
       {
         name: 'part_driveway_rural_12',
@@ -355,7 +355,7 @@ describe('spawn POI markers', () => {
       {
         name: 'part_dumpster',
         position: new Vector3(2331, 41, 1256),
-        rotation: 3,
+        rotation: 0,
       },
       {
         name: 'part_driveway_rural_12',
@@ -397,7 +397,7 @@ describe('spawn POI markers', () => {
       {
         name: 'part_dumpster',
         position: new Vector3(-908, 37, -1794),
-        rotation: 0,
+        rotation: 1,
       },
       {
         name: 'part_driveway_rural_12',
@@ -440,7 +440,7 @@ describe('spawn POI markers', () => {
       {
         name: 'part_dumpster',
         position: new Vector3(2877, 37, -2429),
-        rotation: 2,
+        rotation: 3,
       },
       {
         name: 'part_driveway_rural_12',
