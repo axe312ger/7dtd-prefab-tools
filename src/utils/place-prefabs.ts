@@ -123,6 +123,7 @@ export function spawnPOIMarkers(
   socketPrefab: Prefab,
   prefabCounter: Map<string, number>,
   config: PrefabToolsConfig,
+  debugPrefabName?: string,
   testRun?: boolean,
 ): Decoration[] {
   if (!prefab.meta.markers) {
@@ -184,7 +185,7 @@ export function spawnPOIMarkers(
           marker,
           isWilderness: false,
           // debugPrefabName: "xcostum_Origami_Gallery(by_Pille_TopMinder)",
-          // debugPrefabName: 'oldwest_business_03',
+          debugPrefabName,
           config,
         },
       )
@@ -370,6 +371,7 @@ export function spawnPOI(
   socketPrefab: Prefab,
   prefabCounter: Map<string, number>,
   config: PrefabToolsConfig,
+  debugPrefabName?: string,
   testRun?: boolean,
 ): Decoration[] {
   const {mainPOIPosition, mainPOIRotation} =
@@ -403,6 +405,7 @@ export function spawnPOI(
     socketPrefab,
     prefabCounter,
     config,
+    debugPrefabName,
     testRun,
   )
 

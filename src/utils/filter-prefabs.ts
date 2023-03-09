@@ -102,7 +102,9 @@ export const defaultPrefabFilters: Filter[] = [
           //     `Dropped ${prefabCandidate.name} because of zone mismatch.`
           //   )
           // }
-          return 'zones mismatch'
+          return `zones mismatch - has: ${prefabCandidate.meta.zoning.join(
+            ', ',
+          )} - need: ${prefabToReplace.meta.zoning.join(', ')}`
         }
       }
 

@@ -1,4 +1,4 @@
-import {Command} from '@oclif/core'
+import {Args, Command} from '@oclif/core'
 
 import {readFile, writeFile} from 'node:fs/promises'
 import {dirname, resolve} from 'node:path'
@@ -18,15 +18,22 @@ import {defaultPrefabFilters, filterPrefabs} from '../utils/filter-prefabs'
 import {SKIPPED_POI_NAME} from '../const'
 
 export default class Populate extends Command {
-  static description = 'Populate all empty tiles in a prefab.xml'
+  static description = 'Populate all empty tiles in a prefab.xml';
 
-  static examples = [
-    '<%= config.bin %> <%= command.id %>',
-  ]
+  static examples = ['<%= config.bin %> <%= command.id %>'];
+  static args = {
+    debugPrefabName: Args.string({
+      description: 'Output why a prefab is excluded from being spawned in a POI marker',
+      default: undefined,
+    }),
+  };
 
   public async run(): Promise<void> {
     const config = await initConfig()
     const {prefabsPath} = config
+
+    const {args} = await this.parse(Populate)
+    const {debugPrefabName} = args
 
     const builder = new Builder()
     const xml = await readFile(prefabsPath, 'utf8')
@@ -114,10 +121,13 @@ export default class Populate extends Command {
           socketPrefab,
           prefabCounter,
           config,
+          debugPrefabName,
           true,
         )
 
-        console.log(`Spawned ${socketPrefab.name} (${i}/${sockets.length - 1})`)
+        console.log(
+          `Spawned ${socketPrefab.name} (${i}/${sockets.length - 1})`,
+        )
         counters.spawned++
       } catch (error) {
         const filterResult = filterPrefabs(
@@ -153,7 +163,11 @@ export default class Populate extends Command {
           continue
         }
 
-        console.log(`Spawning ${replacement.name} instead of ${socketPrefab.name} (${i}/${sockets.length - 1}) (Reason:  ${error})`)
+        console.log(
+          `Spawning ${replacement.name} instead of ${socketPrefab.name} (${i}/${
+            sockets.length - 1
+          }) (Reason:  ${error})`,
+        )
         counters.replaced++
 
         spawned = spawnPOI(
@@ -198,10 +212,7 @@ export default class Populate extends Command {
     }
 
     const newXml = builder.buildObject(newDecorations)
-    const xmlPath = resolve(
-      dirname(prefabsPath),
-      'prefabs-populated.xml',
-    )
+    const xmlPath = resolve(dirname(prefabsPath), 'prefabs-populated.xml')
     await writeFile(xmlPath, `\uFEFF${newXml.replace(/"\/>/g, '" />')}`, {
       encoding: 'utf8',
     })

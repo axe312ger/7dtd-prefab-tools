@@ -89,8 +89,6 @@ describe('spawn POI markers', () => {
     })
 
     const socketBox = createDecorationBox(socketDeco, socketPrefab)
-
-    // console.dir(res)
     const resNoParts = res.filter(res => res.name.indexOf('part_') !== 0)
 
     const expectedPrefabRotations =
