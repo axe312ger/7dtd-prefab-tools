@@ -1,4 +1,4 @@
-import {Command, Flags} from '@oclif/core'
+import {Command} from '@oclif/core'
 import {readFile} from 'node:fs/promises'
 import {
   readFileSync,
@@ -40,15 +40,6 @@ export default class ClientSideMod extends Command {
   static examples = [
     '<%= config.bin %> <%= command.id %>',
   ]
-
-  static flags = {
-    // flag with a value (-n, --name=VALUE)
-    name: Flags.string({char: 'n', description: 'name to print'}),
-    // flag with no value (-f, --force)
-    force: Flags.boolean({char: 'f'}),
-  }
-
-  static args = [{name: 'file'}]
 
   public async run(): Promise<void> {
     const config = await initConfig()

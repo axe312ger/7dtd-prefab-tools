@@ -5,13 +5,8 @@ describe('teragon-poi-property-list', () => {
   .stdout()
   .command(['teragon-poi-property-list'])
   .it('runs hello', ctx => {
-    expect(ctx.stdout).to.contain('hello world')
-  })
-
-  test
-  .stdout()
-  .command(['teragon-poi-property-list', '--name', 'jeff'])
-  .it('runs hello --name jeff', ctx => {
-    expect(ctx.stdout).to.contain('hello jeff')
+    expect(ctx.stdout).to.contain(
+      'Your Teragon prefab list has been written to',
+    )
   })
 })

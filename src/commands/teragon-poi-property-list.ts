@@ -11,10 +11,6 @@ export default class TeragonPoiPropertyList extends Command {
 
   static examples = ['<%= config.bin %> <%= command.id %>'];
 
-  static flags = {};
-
-  static args = [{name: 'file'}];
-
   public async run(): Promise<void> {
     const config = await initConfig()
 

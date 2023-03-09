@@ -1,4 +1,4 @@
-import {CliUx, Command} from '@oclif/core'
+import {ux, Command} from '@oclif/core'
 import {readFile, writeFile, access} from 'node:fs/promises'
 import fs from 'node:fs'
 import {resolve, parse} from 'node:path'
@@ -114,8 +114,6 @@ export default class Analyze extends Command {
 
   static examples = ['<%= config.bin %> <%= command.id %>'];
 
-  static args = [{name: 'file'}];
-
   public async run(): Promise<void> {
     const config = await initConfig()
     const {prefabsPath, vanillaPrefabsPath, biomesPath} = config
@@ -130,7 +128,7 @@ export default class Analyze extends Command {
     const decorations = await loadDecorations(xml)
     const biomesImage = await loadImageViaJimp(biomesPath)
 
-    CliUx.ux.action.start('Analyzing your prefabs and prefabs.xml')
+    ux.action.start('Analyzing your prefabs and prefabs.xml')
 
     const {prefabsErrorTableData, validPrefabsBySize, uniqueValues} =
       await analyzePrefabs(prefabs.validPrefabsByName)
@@ -243,7 +241,7 @@ export default class Analyze extends Command {
     )
     .filter(Boolean)
 
-    CliUx.ux.action.stop()
+    ux.action.stop()
 
     // Prefabs DATA LOGGING
     console.log(chalk.green('\nAnalysis of your configured prefabs:\n'))
@@ -262,7 +260,7 @@ export default class Analyze extends Command {
 
     if (prefabsErrorTableData.length > 0) {
       console.log(chalk.bold('\nPrefabs with issues:'))
-      CliUx.ux.table(prefabsErrorTableData, {
+      ux.table(prefabsErrorTableData, {
         name: {
           header: 'Prefab',
         },
@@ -280,7 +278,7 @@ export default class Analyze extends Command {
     )
     console.log(`Number of tiles: ${tilesCount}`)
     console.log(chalk.bold('\nList of POI markers:'))
-    CliUx.ux.table(
+    ux.table(
       markerTableData.sort((a, b) => a.size.localeCompare(b.size)),
       {
         size: {
@@ -302,7 +300,7 @@ export default class Analyze extends Command {
     )
 
     console.log(chalk.bold('\nPrefabs per biome:'))
-    CliUx.ux.table(
+    ux.table(
       biomesTableData.sort((a, b) => a.biome.localeCompare(b.biome)),
       {
         biome: {

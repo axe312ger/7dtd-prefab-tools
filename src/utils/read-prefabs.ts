@@ -5,7 +5,7 @@ import {Vector3} from 'three'
 import {parseStringPromise} from 'xml2js'
 import fastGlob from 'fast-glob'
 import expandTilde from 'expand-tilde'
-import {CliUx} from '@oclif/core'
+import {ux} from '@oclif/core'
 
 import {
   Prefab,
@@ -36,7 +36,7 @@ export async function readPrefabsFromXMLs({
   prefabsByName: Map<string, Prefab>;
   validPrefabsByName: Map<string, Prefab>;
 }> {
-  CliUx.ux.action.start(
+  ux.action.start(
     'Locate, parse and normalize XML data for all prefabs',
   )
 
@@ -269,6 +269,6 @@ export async function readPrefabsFromXMLs({
     }
   }
 
-  CliUx.ux.action.stop()
+  ux.action.stop()
   return {prefabsByName, validPrefabsByName}
 }

@@ -25,7 +25,7 @@ $ npm install -g prefab-tools
 $ prefab-tools COMMAND
 running command...
 $ prefab-tools (--version)
-prefab-tools/0.7.0 darwin-arm64 node-v18.9.0
+prefab-tools/0.8.0 darwin-arm64 node-v18.9.0
 $ prefab-tools --help [COMMAND]
 USAGE
   $ prefab-tools COMMAND
@@ -35,9 +35,9 @@ USAGE
 # Commands
 <!-- commands -->
 * [`prefab-tools align`](#prefab-tools-align)
-* [`prefab-tools analyze [FILE]`](#prefab-tools-analyze-file)
-* [`prefab-tools client-side-mod [FILE]`](#prefab-tools-client-side-mod-file)
-* [`prefab-tools help [COMMAND]`](#prefab-tools-help-command)
+* [`prefab-tools analyze`](#prefab-tools-analyze)
+* [`prefab-tools client-side-mod`](#prefab-tools-client-side-mod)
+* [`prefab-tools help [COMMANDS]`](#prefab-tools-help-commands)
 * [`prefab-tools plugins`](#prefab-tools-plugins)
 * [`prefab-tools plugins:install PLUGIN...`](#prefab-tools-pluginsinstall-plugin)
 * [`prefab-tools plugins:inspect PLUGIN...`](#prefab-tools-pluginsinspect-plugin)
@@ -48,6 +48,7 @@ USAGE
 * [`prefab-tools plugins:uninstall PLUGIN...`](#prefab-tools-pluginsuninstall-plugin-2)
 * [`prefab-tools plugins update`](#prefab-tools-plugins-update)
 * [`prefab-tools populate`](#prefab-tools-populate)
+* [`prefab-tools teragon-poi-property-list`](#prefab-tools-teragon-poi-property-list)
 * [`prefab-tools trim`](#prefab-tools-trim)
 
 ## `prefab-tools align`
@@ -65,15 +66,15 @@ EXAMPLES
   $ prefab-tools align
 ```
 
-_See code: [dist/commands/align.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.7.0/dist/commands/align.ts)_
+_See code: [dist/commands/align.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.8.0/dist/commands/align.ts)_
 
-## `prefab-tools analyze [FILE]`
+## `prefab-tools analyze`
 
 Analyze your maps prefabs.xml and get detailed stats about your spawned POIs
 
 ```
 USAGE
-  $ prefab-tools analyze [FILE]
+  $ prefab-tools analyze
 
 DESCRIPTION
   Analyze your maps prefabs.xml and get detailed stats about your spawned POIs
@@ -82,19 +83,15 @@ EXAMPLES
   $ prefab-tools analyze
 ```
 
-_See code: [dist/commands/analyze.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.7.0/dist/commands/analyze.ts)_
+_See code: [dist/commands/analyze.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.8.0/dist/commands/analyze.ts)_
 
-## `prefab-tools client-side-mod [FILE]`
+## `prefab-tools client-side-mod`
 
 describe the command here
 
 ```
 USAGE
-  $ prefab-tools client-side-mod [FILE] [-n <value>] [-f]
-
-FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
+  $ prefab-tools client-side-mod
 
 DESCRIPTION
   describe the command here
@@ -103,18 +100,18 @@ EXAMPLES
   $ prefab-tools client-side-mod
 ```
 
-_See code: [dist/commands/client-side-mod.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.7.0/dist/commands/client-side-mod.ts)_
+_See code: [dist/commands/client-side-mod.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.8.0/dist/commands/client-side-mod.ts)_
 
-## `prefab-tools help [COMMAND]`
+## `prefab-tools help [COMMANDS]`
 
 Display help for prefab-tools.
 
 ```
 USAGE
-  $ prefab-tools help [COMMAND] [-n]
+  $ prefab-tools help [COMMANDS] [-n]
 
 ARGUMENTS
-  COMMAND  Command to show help for.
+  COMMANDS  Command to show help for.
 
 FLAGS
   -n, --nested-commands  Include all nested commands in the output.
@@ -123,7 +120,7 @@ DESCRIPTION
   Display help for prefab-tools.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.19/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.7/src/commands/help.ts)_
 
 ## `prefab-tools plugins`
 
@@ -143,7 +140,7 @@ EXAMPLES
   $ prefab-tools plugins
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v2.1.7/src/commands/plugins/index.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v2.4.0/src/commands/plugins/index.ts)_
 
 ## `prefab-tools plugins:install PLUGIN...`
 
@@ -197,6 +194,9 @@ ARGUMENTS
 FLAGS
   -h, --help     Show CLI help.
   -v, --verbose
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 DESCRIPTION
   Displays installation properties of a plugin.
@@ -370,7 +370,24 @@ EXAMPLES
   $ prefab-tools populate
 ```
 
-_See code: [dist/commands/populate.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.7.0/dist/commands/populate.ts)_
+_See code: [dist/commands/populate.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.8.0/dist/commands/populate.ts)_
+
+## `prefab-tools teragon-poi-property-list`
+
+creates a terragon poi property list based on all your prefabs.
+
+```
+USAGE
+  $ prefab-tools teragon-poi-property-list
+
+DESCRIPTION
+  creates a terragon poi property list based on all your prefabs.
+
+EXAMPLES
+  $ prefab-tools teragon-poi-property-list
+```
+
+_See code: [dist/commands/teragon-poi-property-list.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.8.0/dist/commands/teragon-poi-property-list.ts)_
 
 ## `prefab-tools trim`
 
@@ -387,5 +404,5 @@ EXAMPLES
   $ prefab-tools trim
 ```
 
-_See code: [dist/commands/trim.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.7.0/dist/commands/trim.ts)_
+_See code: [dist/commands/trim.ts](https://github.com/axe312ger/7dtd-prefab-tools/blob/v0.8.0/dist/commands/trim.ts)_
 <!-- commandsstop -->
