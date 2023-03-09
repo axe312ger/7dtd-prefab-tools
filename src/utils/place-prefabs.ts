@@ -74,8 +74,10 @@ export function calculateMarkerPosition(
     break
   case 1:
     const newZ = newMarker.x
-    const modifierX = socketDecoPOIRotation % 2 ? marker.Size.z : marker.Size.x
-    const startX = socketDecoPOIRotation % 2 ? marker.Start.z : marker.Start.x
+    const modifierX =
+        socketDecoPOIRotation % 2 ? marker.Size.z : marker.Size.x
+    const startX =
+        socketDecoPOIRotation % 2 ? marker.Start.z : marker.Start.x
     newMarker.x = socketPrefab.meta.PrefabSize.z - startX - modifierX
     newMarker.z = newZ
     position.add(newMarker)
@@ -83,8 +85,10 @@ export function calculateMarkerPosition(
 
   case 3:
     const newX = newMarker.z
-    const modifierZ = socketDecoPOIRotation % 2 ? marker.Size.x : marker.Size.z
-    const startZ = socketDecoPOIRotation % 2 ? marker.Start.x : marker.Start.z
+    const modifierZ =
+        socketDecoPOIRotation % 2 ? marker.Size.x : marker.Size.z
+    const startZ =
+        socketDecoPOIRotation % 2 ? marker.Start.x : marker.Start.z
     newMarker.z = socketPrefab.meta.PrefabSize.x - startZ - modifierZ
     newMarker.x = newX
     position.add(newMarker)
@@ -151,6 +155,7 @@ export function spawnPOIMarkers(
             isWilderness: false,
             // YOU PROBABLY WANT TO CHECK RANDOM SPAWNS BELOW!!!
             // debugPrefabName: "xcostum_Origami_Gallery(by_Pille_TopMinder)",
+            // debugPrefabName: 'oldwest_business_03',
             config,
           },
         )
@@ -179,6 +184,7 @@ export function spawnPOIMarkers(
           marker,
           isWilderness: false,
           // debugPrefabName: "xcostum_Origami_Gallery(by_Pille_TopMinder)",
+          // debugPrefabName: 'oldwest_business_03',
           config,
         },
       )

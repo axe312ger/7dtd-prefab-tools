@@ -13,6 +13,9 @@ import {filterPOIMarkers} from '../utils/filter-poi-markers'
 import {spawnPOI} from '../utils/place-prefabs'
 import {MapHelper} from '../utils/map-helper'
 import {Decoration, Prefab} from '../types'
+import {getRandomPrefab} from '../utils/select-prefabs'
+import {defaultPrefabFilters, filterPrefabs} from '../utils/filter-prefabs'
+import {SKIPPED_POI_NAME} from '../const'
 
 export default class Populate extends Command {
   static description = 'Populate all empty tiles in a prefab.xml'
@@ -43,6 +46,11 @@ export default class Populate extends Command {
     }
 
     const socketsWithMarkers: Decoration[] = []
+    const counters = {
+      spawned: 0,
+      replaced: 0,
+      errors: 0,
+    }
     for (const [i, socket] of sockets.entries()) {
       const socketPrefab: Prefab | undefined = cloneDeep(
         prefabs.prefabsByName.get(socket.name.toLocaleLowerCase()),
@@ -55,34 +63,116 @@ export default class Populate extends Command {
 
       if (
         socket.guessedZone &&
-      !socketPrefab.meta.zoning.includes(socket.guessedZone)
+        !socketPrefab.meta.zoning.includes(socket.guessedZone)
       ) {
         socketPrefab.meta.zoning.push(socket.guessedZone)
       }
 
       if (
         socket.guessedTownship &&
-      !socketPrefab.meta.allowedTownships.includes(socket.guessedTownship)
+        !socketPrefab.meta.allowedTownships.includes(socket.guessedTownship)
       ) {
         socketPrefab.meta.allowedTownships.push(socket.guessedTownship)
       }
 
-      console.log(`Spawning ${socketPrefab.name} (${i}/${sockets.length - 1})`)
+      let spawned: Decoration[]
+      const biome = mapHelper.getBiomeForPosition(socket.position)
+      try {
+        if (socketPrefab.meta.isTile && !socketPrefab.meta.isTrader) {
+          const filterResult = filterPrefabs(
+            socketPrefab,
+            prefabs.validPrefabsByName,
+            defaultPrefabFilters,
+            {
+              distanceMap,
+              position: socket.position,
+              isWilderness: false,
+              // debugPrefabName: "XXX",
+              biome,
+              config,
+            },
+          )
+          if (
+            filterResult.success === false ||
+            !filterResult.prefabs.some(
+              prefab => prefab.name === socketPrefab.name,
+            )
+          ) {
+            throw new Error('Prefab is not allowed to spawn here')
+          }
+        }
 
-      const spawned = spawnPOI(
-        mapHelper,
-        socket.position,
-        socket.rotation,
-        socketPrefab,
-        prefabs.prefabsByName,
-        prefabs.validPrefabsByName,
-        distanceMap,
-        socketPrefab,
-        prefabCounter,
-        config,
-      )
+        // Spawn and throw error when marker can not be spawned
+        spawned = spawnPOI(
+          mapHelper,
+          socket.position,
+          socket.rotation,
+          socketPrefab,
+          prefabs.prefabsByName,
+          prefabs.validPrefabsByName,
+          distanceMap,
+          socketPrefab,
+          prefabCounter,
+          config,
+          true,
+        )
+
+        console.log(`Spawned ${socketPrefab.name} (${i}/${sockets.length - 1})`)
+        counters.spawned++
+      } catch (error) {
+        const filterResult = filterPrefabs(
+          socketPrefab,
+          prefabs.validPrefabsByName,
+          defaultPrefabFilters,
+          {
+            distanceMap,
+            position: socket.position,
+            isWilderness: false,
+            // debugPrefabName: 'oldwest_business_03',
+            biome,
+            config,
+          },
+        )
+
+        const replacement = getRandomPrefab(
+          socketPrefab,
+          socketPrefab,
+          biome,
+          socket.position,
+          filterResult.prefabs,
+          prefabCounter,
+        )
+
+        if (replacement === SKIPPED_POI_NAME) {
+          counters.errors++
+          console.log(
+            `Socket ${socket.name}@${socket.position
+            .toArray()
+            .join(',')} in biome ${biome} could not be replaced. Skipping it.`,
+          )
+          continue
+        }
+
+        console.log(`Spawning ${replacement.name} instead of ${socketPrefab.name} (${i}/${sockets.length - 1}) (Reason:  ${error})`)
+        counters.replaced++
+
+        spawned = spawnPOI(
+          mapHelper,
+          socket.position,
+          socket.rotation,
+          replacement,
+          prefabs.prefabsByName,
+          prefabs.validPrefabsByName,
+          distanceMap,
+          replacement,
+          prefabCounter,
+          config,
+        )
+      }
+
       spawned[0].zoning = socketPrefab.meta.zoning.join(',')
-      spawned[0].allowedTownships = socketPrefab.meta.allowedTownships.join(',')
+      spawned[0].allowedTownships =
+        socketPrefab.meta.allowedTownships.join(',')
       spawned[0].isWilderness = socketPrefab.meta.isWilderness
 
       socketsWithMarkers.push(...spawned)
@@ -116,6 +206,9 @@ export default class Populate extends Command {
       encoding: 'utf8',
     })
 
+    console.log(`Spawned: ${counters.spawned}`)
+    console.log(`Replaced: ${counters.replaced}`)
+    console.log(`Unspawned/Errors: ${counters.errors}`)
     console.log(`Finished! Wrote new ${xmlPath}`)
   }
 }
