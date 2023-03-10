@@ -312,7 +312,7 @@ describe('spawn POI markers', () => {
       {
         name: 'part_dumpster',
         position: new Vector3(-704, 37, -369),
-        rotation: 2,
+        rotation: 1,
       },
       {
         name: 'part_driveway_rural_12',
@@ -355,7 +355,7 @@ describe('spawn POI markers', () => {
       {
         name: 'part_dumpster',
         position: new Vector3(2331, 41, 1256),
-        rotation: 0,
+        rotation: 3,
       },
       {
         name: 'part_driveway_rural_12',
@@ -743,6 +743,114 @@ describe('spawn POI markers', () => {
         expect(decorationPrefab.meta.allowedTownships).to.include('oldwest')
       }
     }
+  })
+
+  it('rwg_tile_oldwest_corner with rotation test for 25x50 marker', async () => {
+    mapHelper.getBiomeForPosition = () => 'desert'
+    const distanceMap: Map<string, Vector3[]> = new Map()
+    const prefab = prefabs.validPrefabsByName.get('rwg_tile_oldwest_corner')
+    if (!prefab) {
+      throw new Error('Unable to find POI')
+    }
+
+    const position = new Vector3(-638, 35, 211)
+    const rotation = 0
+    const decorations = spawnPOI(
+      mapHelper,
+      position,
+      rotation,
+      prefab,
+      prefabs.prefabsByName,
+      prefabs.validPrefabsByName,
+      distanceMap,
+      prefab,
+      prefabCounter,
+      config,
+    )
+
+    expect(decorations[0]).to.deep.equal({
+      name: 'rwg_tile_oldwest_corner',
+      position: new Vector3(-638, 35, 211),
+      rotation: 0,
+    })
+
+    const decoration = decorations[1]
+
+    //   {
+    //   Start: Vector3 { x: 46, y: 2, z: 25 },
+    //   Size: Vector3 { x: 25, y: 0, z: 50 },
+    //   Type: 'POISpawn',
+    //   Group: '1',
+    //   Tags: [],
+    //   PartToSpawn: '',
+    //   PartRotation: 3,
+    //   PartSpawnChance: 1
+    // },
+
+    // console.log({markers: prefab.meta.markers && prefab.meta.markers[0], decoration})
+
+    const decorationPrefab = prefabs.prefabsByName.get(
+      decoration.name.toLocaleLowerCase(),
+    )
+    if (!decorationPrefab) {
+      throw new Error('Where is the prefab?')
+    }
+
+    expect(decoration.rotation).to.equal(1)
+  })
+
+  it('rwg_tile_oldwest_t with rotation test for 25x50 marker', async () => {
+    mapHelper.getBiomeForPosition = () => 'desert'
+    const distanceMap: Map<string, Vector3[]> = new Map()
+    const prefab = prefabs.validPrefabsByName.get('rwg_tile_oldwest_t')
+    if (!prefab) {
+      throw new Error('Unable to find POI')
+    }
+
+    const position = new Vector3(-423, 36, 80)
+    const rotation = 2
+    const decorations = spawnPOI(
+      mapHelper,
+      position,
+      rotation,
+      prefab,
+      prefabs.prefabsByName,
+      prefabs.validPrefabsByName,
+      distanceMap,
+      prefab,
+      prefabCounter,
+      config,
+    )
+
+    expect(decorations[0]).to.deep.equal({
+      name: 'rwg_tile_oldwest_t',
+      position: new Vector3(-423, 36, 80),
+      rotation: 2,
+    })
+
+    const decoration = decorations[1]
+
+    // console.log({markers: prefab.meta.markers && prefab.meta.markers[0], decoration})
+
+    // {
+    //   Start: Vector3 { x: 79, y: 1, z: 79 },
+    //   Size: Vector3 { x: 25, y: 0, z: 50 },
+    //   Type: 'POISpawn',
+    //   Group: '1',
+    //   Tags: [],
+    //   PartToSpawn: '',
+    //   PartRotation: 1,
+    //   PartSpawnChance: 1
+    // },
+
+    const decorationPrefab = prefabs.prefabsByName.get(
+      decoration.name.toLocaleLowerCase(),
+    )
+    if (!decorationPrefab) {
+      throw new Error('Where is the prefab?')
+    }
+
+    expect(decoration.rotation).to.equal(1)
   })
 
   it('rwg_tile_gateway_cap that had issues', async () => {
