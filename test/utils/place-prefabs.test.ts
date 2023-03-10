@@ -71,7 +71,6 @@ describe('spawn POI markers', () => {
       prefabs.prefabsByName,
       prefabFixtures,
       distanceMap,
-      prefab,
       prefabCounter,
       config,
     )
@@ -137,7 +136,6 @@ describe('spawn POI markers', () => {
         prefabs.prefabsByName,
         prefabs.validPrefabsByName,
         distanceMap,
-        prefab,
         prefabCounter,
         config,
       ),
@@ -170,7 +168,6 @@ describe('spawn POI markers', () => {
         prefabs.prefabsByName,
         prefabs.validPrefabsByName,
         distanceMap,
-        prefab,
         prefabCounter,
         config,
       ),
@@ -208,7 +205,6 @@ describe('spawn POI markers', () => {
         prefabs.prefabsByName,
         prefabs.validPrefabsByName,
         distanceMap,
-        prefab,
         prefabCounter,
         config,
       ),
@@ -256,7 +252,6 @@ describe('spawn POI markers', () => {
         prefabs.prefabsByName,
         prefabs.validPrefabsByName,
         distanceMap,
-        prefab,
         prefabCounter,
         config,
       ),
@@ -298,7 +293,6 @@ describe('spawn POI markers', () => {
         prefabs.prefabsByName,
         prefabs.validPrefabsByName,
         distanceMap,
-        prefab,
         prefabCounter,
         config,
       ),
@@ -341,7 +335,6 @@ describe('spawn POI markers', () => {
         prefabs.prefabsByName,
         prefabs.validPrefabsByName,
         distanceMap,
-        prefab,
         prefabCounter,
         config,
       ),
@@ -383,7 +376,6 @@ describe('spawn POI markers', () => {
         prefabs.prefabsByName,
         prefabs.validPrefabsByName,
         distanceMap,
-        prefab,
         prefabCounter,
         config,
       ),
@@ -425,7 +417,6 @@ describe('spawn POI markers', () => {
         prefabs.prefabsByName,
         prefabs.validPrefabsByName,
         distanceMap,
-        prefab,
         prefabCounter,
         config,
       ),
@@ -469,7 +460,6 @@ describe('spawn POI markers', () => {
         prefabs.prefabsByName,
         prefabs.validPrefabsByName,
         distanceMap,
-        prefab,
         prefabCounter,
         config,
       ),
@@ -510,7 +500,6 @@ describe('spawn POI markers', () => {
       prefabs.prefabsByName,
       prefabs.validPrefabsByName,
       distanceMap,
-      prefab,
       prefabCounter,
       config,
     )
@@ -545,7 +534,6 @@ describe('spawn POI markers', () => {
       prefabs.prefabsByName,
       prefabs.validPrefabsByName,
       distanceMap,
-      prefab,
       prefabCounter,
       config,
     )
@@ -588,7 +576,6 @@ describe('spawn POI markers', () => {
       prefabs.prefabsByName,
       prefabs.validPrefabsByName,
       distanceMap,
-      prefab,
       prefabCounter,
       config,
     )
@@ -620,7 +607,6 @@ describe('spawn POI markers', () => {
       prefabs.prefabsByName,
       prefabs.validPrefabsByName,
       distanceMap,
-      prefab,
       prefabCounter,
       config,
     )
@@ -670,7 +656,6 @@ describe('spawn POI markers', () => {
       prefabs.prefabsByName,
       prefabs.validPrefabsByName,
       distanceMap,
-      prefab,
       prefabCounter,
       config,
     )
@@ -715,7 +700,6 @@ describe('spawn POI markers', () => {
       prefabs.prefabsByName,
       prefabs.validPrefabsByName,
       distanceMap,
-      prefab,
       prefabCounter,
       config,
     )
@@ -763,7 +747,6 @@ describe('spawn POI markers', () => {
       prefabs.prefabsByName,
       prefabs.validPrefabsByName,
       distanceMap,
-      prefab,
       prefabCounter,
       config,
     )
@@ -817,7 +800,6 @@ describe('spawn POI markers', () => {
       prefabs.prefabsByName,
       prefabs.validPrefabsByName,
       distanceMap,
-      prefab,
       prefabCounter,
       config,
     )
@@ -853,6 +835,41 @@ describe('spawn POI markers', () => {
     expect(decoration.rotation).to.equal(1)
   })
 
+  it('rwg_tile_downtown_intersection_supersmackcity_center rotation 0', async () => {
+    mapHelper.getBiomeForPosition = () => 'pine_forest'
+    const distanceMap: Map<string, Vector3[]> = new Map()
+    const prefab = prefabs.validPrefabsByName.get(
+      'rwg_tile_downtown_intersection_supersmackcity_center',
+    )
+    if (!prefab) {
+      throw new Error('Unable to find POI')
+    }
+
+    const position = new Vector3(-638, 25, 211)
+    const rotation = 0
+    const decorations = spawnPOI(
+      mapHelper,
+      position,
+      rotation,
+      prefab,
+      prefabs.prefabsByName,
+      prefabs.validPrefabsByName,
+      distanceMap,
+      prefabCounter,
+      config,
+    )
+
+    expect(decorations[0]).to.deep.equal({
+      name: 'rwg_tile_downtown_intersection_supersmackcity_center',
+      position: new Vector3(-638, 25, 211),
+      rotation: 0,
+    })
+
+    expect(decorations[1].rotation).to.equal(1)
+    expect(decorations[2].rotation).to.equal(3)
+    expect(decorations[3].rotation).to.equal(0)
+  })
+
   it('rwg_tile_gateway_cap that had issues', async () => {
     mapHelper.getBiomeForPosition = () => 'snow'
     const distanceMap: Map<string, Vector3[]> = new Map()
@@ -871,7 +888,6 @@ describe('spawn POI markers', () => {
       prefabs.prefabsByName,
       prefabs.validPrefabsByName,
       distanceMap,
-      prefab,
       prefabCounter,
       config,
     )

@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<prefab>
+  <property name="CopyAirBlocks" value="True" />
+  <property name="DifficultyTier" value="1" />
+  <property name="ExcludeDistantPOIMesh" value="False" />
+  <property name="ExcludePOICulling" value="False" />
+  <property name="DistantPOIYOffset" value="0" />
+  <property name="AllowTopSoilDecorations" value="True" />
+  <property name="ShowQuestClearCount" value="1" />
+  <property name="TraderArea" value="False" />
+  <property name="RotationToFaceNorth" value="2" />
+  <property name="YOffset" value="-12" />
+  <property name="Zoning" value="none" />
+  <property name="POIMarkerSize" value="42, 0, 42#1, 1, 1#1, 1, 1#42, 0, 63#60, 0, 47#25, 0, 25#25, 0, 25#25, 0, 25" />
+  <property name="POIMarkerStart" value="91, 12, 23#67, 14, 80#82, 15, 80#29, 12, 0#83, 12, 82#13, 12, 91#42, 12, 82#42, 12, 125" />
+  <property name="POIMarkerGroup" value=",light1,light2,property,property,inner_city,inner_city,inner_city" />
+  <property name="POIMarkerTags" value="ssc_mercado###ssc_hospital#ssc_admin_villa#ssc_premium_plot#ssc_premium_plot#ssc_premium_plot" />
+  <property name="POIMarkerType" value="POISpawn,PartSpawn,PartSpawn,POISpawn,POISpawn,POISpawn,POISpawn,POISpawn" />
+  <property name="POIMarkerPartToSpawn" value=",part_crosswalk,part_crosswalk,,,,," />
+  <property name="POIMarkerPartRotations" value="0,0,0,3,2,1,2,3" />
+  <property name="POIMarkerPartSpawnChance" value="1,0.2,0.2,1,1,1,1,1" />
+  <property name="SleeperVolumeSize" value="" />
+  <property name="SleeperVolumeStart" value="" />
+  <property name="SleeperVolumeGroupId" value="" />
+  <property name="SleeperVolumeGroup" value="" />
+  <property name="SleeperIsLootVolume" value="" />
+  <property name="SleeperIsQuestExclude" value="" />
+  <property name="SleeperVolumeFlags" value="" />
+  <property name="PrefabSize" value="150, 50, 150" />
+  <property name="Tags" value="streettile,rwgonly" />
+  <property class="Stats">
+    <property name="TotalVertices" value="1257674" />
+    <property name="TotalTriangles" value="1199735" />
+    <property class="BlockEntities">
+      <property name="Vertices" value="866737" />
+      <property name="Triangles" value="889626" />
+    </property>
+    <property class="ChunkMeshes0">
+      <property name="Vertices" value="281256" />
+      <property name="Triangles" value="171258" />
+    </property>
+    <property class="ChunkMeshes1">
+      <property name="Vertices" value="29632" />
+      <property name="Triangles" value="14816" />
+    </property>
+    <property class="ChunkMeshes2">
+      <property name="Vertices" value="304" />
+      <property name="Triangles" value="152" />
+    </property>
+    <property class="ChunkMeshes3">
+      <property name="Vertices" value="504" />
+      <property name="Triangles" value="320" />
+    </property>
+    <property class="ChunkMeshes4">
+      <property name="Vertices" value="7273" />
+      <property name="Triangles" value="5717" />
+    </property>
+    <property class="ChunkMeshes5">
+      <property name="Vertices" value="600" />
+      <property name="Triangles" value="300" />
+    </property>
+    <property class="ChunkMeshes6">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes7">
+      <property name="Vertices" value="71324" />
+      <property name="Triangles" value="117524" />
+    </property>
+    <property class="ChunkMeshes8">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes9">
+      <property name="Vertices" value="44" />
+      <property name="Triangles" value="22" />
+    </property>
+  </property>
+  <property class="IndexedBlockOffsets">
+    <property class="POILight">
+      <property name="0" value="82, 21, 67" />
+    </property>
+    <property class="TraderOnOff">
+      <property name="0" value="146, 12, 129" />
+      <property name="1" value="144, 10, 132" />
+      <property name="2" value="146, 16, 135" />
+    </property>
+  </property>
+</prefab>

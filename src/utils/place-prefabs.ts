@@ -51,15 +51,17 @@ export function calculateMarkerPosition(
   socketDecoPOIRotation: number,
   socketDecoPOIPosition: Vector3,
   socketPrefab: Prefab,
+  markerPrefab: Prefab,
   marker: POIMarker,
   flip: boolean,
 ): { position: Vector3; rotation: number } {
-  const rotation = calcRotation(
-    socketDecoPOIRotation, // or first prefab rotation
-    socketPrefab.meta.RotationToFaceNorth,
-    marker.PartRotation,
-    flip,
-  )
+  const rotation =
+    calcRotation(
+      socketDecoPOIRotation, // or first prefab rotation
+      markerPrefab.meta.RotationToFaceNorth,
+      marker.PartRotation,
+      flip,
+    )
   const rotatedMarker = marker.Start.clone().applyAxisAngle(
     new Vector3(0, 1, 0),
     (Math.PI / 2) * socketDecoPOIRotation,
@@ -139,13 +141,15 @@ export function spawnPOIMarkers(
 
     const isRandom = !marker.PartToSpawn || marker.PartToSpawn.length === 0
 
-    let markerPOI = prefabsByName.get(marker.PartToSpawn.toLocaleLowerCase())
+    let markerPrefab = prefabsByName.get(
+      marker.PartToSpawn.toLocaleLowerCase(),
+    )
 
     if (!isRandom) {
       // Check if named prefab is valid
-      if (testRun && markerPOI && marker.Type === 'POISpawn') {
+      if (testRun && markerPrefab && marker.Type === 'POISpawn') {
         const filterResult = filterPrefabs(
-          markerPOI,
+          markerPrefab,
           validPrefabsByName,
           defaultPrefabFilters,
           {
@@ -160,7 +164,7 @@ export function spawnPOIMarkers(
             config,
           },
         )
-        if (!filterResult.success || !markerPOI) {
+        if (!filterResult.success || !markerPrefab) {
           throw new Error(
             `Unable to spawn named marker prefab.\n${JSON.stringify(
               marker,
@@ -234,10 +238,10 @@ export function spawnPOIMarkers(
         continue
       }
 
-      markerPOI = randomReplacement
+      markerPrefab = randomReplacement
     }
 
-    if (!markerPOI) {
+    if (!markerPrefab) {
       throw new Error(
         `unable to find marker: ${marker.PartToSpawn} in:\n${JSON.stringify(
           {prefab, mainPOIPosition, mainPOIRotation},
@@ -258,18 +262,21 @@ export function spawnPOIMarkers(
       mainPOIRotation,
       mainPOIPosition,
       prefab,
+      markerPrefab,
       marker,
       !socketPrefab.meta.isTile,
     )
 
     const {rotation, position} = markerPos
 
+    // console.log({name: markerPOI.name, markerPOIRot: markerPOI.meta.RotationToFaceNorth, rotation})
+
     if (marker.Type === 'POISpawn') {
-      position.add(new Vector3(0, markerPOI.meta.YOffset, 0))
+      position.add(new Vector3(0, markerPrefab.meta.YOffset, 0))
     }
 
     const markerDecoration: Decoration = {
-      name: markerPOI.name,
+      name: markerPrefab.name,
       position,
       rotation,
     }
@@ -284,12 +291,12 @@ export function spawnPOIMarkers(
     }
 
     // If we just spawned a POI, spawn its markers as well
-    if (markerPOI.meta.markers?.length !== 0) {
+    if (markerPrefab.meta.markers?.length !== 0) {
       markers.push(
         ...spawnPOIMarkers(
           position,
           rotation,
-          markerPOI,
+          markerPrefab,
           prefabsByName,
           validPrefabsByName,
           mapHelper,
@@ -359,7 +366,6 @@ export function spawnPOI(
   prefabsByName: Map<string, Prefab>,
   validPrefabsByName: Map<string, Prefab>,
   distanceMap: Map<string, Vector3[]>,
-  socketPrefab: Prefab,
   prefabCounter: Map<string, number>,
   config: PrefabToolsConfig,
   debugPrefabName?: string,
@@ -393,7 +399,7 @@ export function spawnPOI(
     validPrefabsByName,
     mapHelper,
     distanceMap,
-    socketPrefab,
+    prefab,
     prefabCounter,
     config,
     debugPrefabName,

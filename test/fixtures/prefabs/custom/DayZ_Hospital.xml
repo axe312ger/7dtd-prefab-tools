@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<prefab>
+  <property name="Tags" value="ssc_hospital" />
+  <property name="CopyAirBlocks" value="True" />
+  <property name="ExcludeDistantPOIMesh" value="False" />
+  <property name="ExcludePOICulling" value="False" />
+  <property name="DistantPOIYOffset" value="0" />
+  <property name="AllowTopSoilDecorations" value="False" />
+  <property name="DifficultyTier" value="0" />
+  <property name="ShowQuestClearCount" value="1" />
+  <property name="TraderArea" value="False" />
+  <property name="PrefabSize" value="63, 34, 42" />
+  <property name="RotationToFaceNorth" value="0" />
+  <property name="Zoning" value="none" />
+  <property name="YOffset" value="-15" />
+  <property class="Stats">
+    <property name="TotalVertices" value="1204976" />
+    <property name="TotalTriangles" value="1122392" />
+    <property class="BlockEntities">
+      <property name="Vertices" value="1125566" />
+      <property name="Triangles" value="1064647" />
+    </property>
+    <property class="ChunkMeshes0">
+      <property name="Vertices" value="63035" />
+      <property name="Triangles" value="36205" />
+    </property>
+    <property class="ChunkMeshes1">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes2">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes3">
+      <property name="Vertices" value="844" />
+      <property name="Triangles" value="422" />
+    </property>
+    <property class="ChunkMeshes4">
+      <property name="Vertices" value="4879" />
+      <property name="Triangles" value="3554" />
+    </property>
+    <property class="ChunkMeshes5">
+      <property name="Vertices" value="312" />
+      <property name="Triangles" value="156" />
+    </property>
+    <property class="ChunkMeshes6">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes7">
+      <property name="Vertices" value="10340" />
+      <property name="Triangles" value="17408" />
+    </property>
+    <property class="ChunkMeshes8">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+    <property class="ChunkMeshes9">
+      <property name="Vertices" value="0" />
+      <property name="Triangles" value="0" />
+    </property>
+  </property>
+  <property class="IndexedBlockOffsets">
+    <property class="POILight">
+      <property name="0" value="48, 26, 21" />
+      <property name="1" value="48, 18, 22" />
+      <property name="2" value="48, 22, 22" />
+      <property name="3" value="48, 22, 23" />
+      <property name="4" value="48, 25, 25" />
+      <property name="5" value="49, 25, 25" />
+      <property name="6" value="50, 25, 25" />
+      <property name="7" value="48, 18, 26" />
+      <property name="8" value="48, 22, 26" />
+      <property name="9" value="48, 25, 26" />
+      <property name="10" value="49, 25, 26" />
+      <property name="11" value="50, 25, 26" />
+      <property name="12" value="54, 16, 26" />
+      <property name="13" value="48, 25, 27" />
+      <property name="14" value="49, 25, 27" />
+      <property name="15" value="48, 16, 30" />
+      <property name="16" value="52, 24, 32" />
+    </property>
+    <property class="TraderOnOff">
+      <property name="0" value="27, 16, 30" />
+    </property>
+    <property class="QuestRestorePower">
+      <property name="0" value="49, 15, 13" />
+    </property>
+  </property>
+</prefab>

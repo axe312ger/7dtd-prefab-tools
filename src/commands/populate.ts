@@ -118,7 +118,6 @@ export default class Populate extends Command {
           prefabs.prefabsByName,
           prefabs.validPrefabsByName,
           distanceMap,
-          socketPrefab,
           prefabCounter,
           config,
           debugPrefabName,
@@ -178,7 +177,6 @@ export default class Populate extends Command {
           prefabs.prefabsByName,
           prefabs.validPrefabsByName,
           distanceMap,
-          replacement,
           prefabCounter,
           config,
         )
