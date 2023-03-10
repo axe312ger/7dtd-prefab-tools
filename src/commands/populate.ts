@@ -125,7 +125,7 @@ export default class Populate extends Command {
         )
 
         console.log(
-          `Spawned ${socketPrefab.name} (${i}/${sockets.length - 1})`,
+          `Spawned ${socketPrefab.name} (${i + 1}/${sockets.length})`,
         )
         counters.spawned++
       } catch (error) {
@@ -163,8 +163,8 @@ export default class Populate extends Command {
         }
 
         console.log(
-          `Spawning ${replacement.name} instead of ${socketPrefab.name} (${i}/${
-            sockets.length - 1
+          `Spawning ${replacement.name} instead of ${socketPrefab.name} (${i + 1}/${
+            sockets.length
           }) (Reason:  ${error})`,
         )
         counters.replaced++
