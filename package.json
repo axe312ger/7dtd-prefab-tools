@@ -19,7 +19,7 @@
   "dependencies": {
     "@oclif/core": "^2.5.2",
     "@oclif/plugin-help": "^5.2.7",
-    "@oclif/plugin-plugins": "^2.4.0",
+    "@oclif/plugin-plugins": "^2.4.1",
     "archiver": "^5.3.1",
     "chalk": "4",
     "clone-deep": "^4.0.1",
