@@ -13,16 +13,7 @@ export function calcRotation(
   initialRotation: number,
   RotationToFaceNorth: number,
   markerRotation: number,
-  flip = false,
 ): number {
-  if (flip) {
-    if (markerRotation === 1) {
-      markerRotation = 3
-    } else if (markerRotation === 3) {
-      markerRotation = 1
-    }
-  }
-
   return (markerRotation + RotationToFaceNorth + initialRotation) % 4
 }
 
@@ -53,15 +44,18 @@ export function calculateMarkerPosition(
   socketPrefab: Prefab,
   markerPrefab: Prefab,
   marker: POIMarker,
-  flip: boolean,
 ): { position: Vector3; rotation: number } {
-  const rotation =
+  let rotation =
     calcRotation(
       socketDecoPOIRotation, // or first prefab rotation
       markerPrefab.meta.RotationToFaceNorth,
       marker.PartRotation,
-      flip,
     )
+
+  if (marker.Type === 'PartSpawn' && marker.PartRotation % 2 === 1) {
+    rotation = (rotation + 2) % 4
+  }
+
   const rotatedMarker = marker.Start.clone().applyAxisAngle(
     new Vector3(0, 1, 0),
     (Math.PI / 2) * socketDecoPOIRotation,
@@ -127,6 +121,7 @@ export function spawnPOIMarkers(
   config: PrefabToolsConfig,
   debugPrefabName?: string,
   testRun?: boolean,
+  forceSpawnProbability?: boolean,
 ): Decoration[] {
   if (!prefab.meta.markers) {
     return []
@@ -252,22 +247,21 @@ export function spawnPOIMarkers(
     }
 
     // Take care of spawn chance
-    const shouldSpawn = randomInt(1, 100) <= marker.PartSpawnChance * 100
+    const shouldSpawn =
+      forceSpawnProbability || randomInt(1, 100) <= marker.PartSpawnChance * 100
+
     if (!shouldSpawn) {
       continue
     }
 
     // Calculate marker position
-    const markerPos = calculateMarkerPosition(
+    const {rotation, position} = calculateMarkerPosition(
       mainPOIRotation,
       mainPOIPosition,
       prefab,
       markerPrefab,
       marker,
-      !socketPrefab.meta.isTile,
     )
-
-    const {rotation, position} = markerPos
 
     // console.log({name: markerPOI.name, markerPOIRot: markerPOI.meta.RotationToFaceNorth, rotation})
 
@@ -304,6 +298,9 @@ export function spawnPOIMarkers(
           socketPrefab,
           prefabCounter,
           config,
+          debugPrefabName,
+          testRun,
+          forceSpawnProbability,
         ),
       )
     }
@@ -370,6 +367,7 @@ export function spawnPOI(
   config: PrefabToolsConfig,
   debugPrefabName?: string,
   testRun?: boolean,
+  forceSpawnProbability?: boolean,
 ): Decoration[] {
   const {mainPOIPosition, mainPOIRotation} =
     translateSocketPositionAndRotation(position, rotation, prefab, mapHelper)
@@ -404,6 +402,7 @@ export function spawnPOI(
     config,
     debugPrefabName,
     testRun,
+    forceSpawnProbability,
   )
 
   decorations.push(...markers)

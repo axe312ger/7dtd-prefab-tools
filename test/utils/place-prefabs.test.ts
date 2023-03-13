@@ -597,7 +597,7 @@ describe('spawn POI markers', () => {
       throw new Error('Unable to find POI')
     }
 
-    const position = new Vector3(-2732, 34, 1570)
+    const position = new Vector3(-2732, 24, 1570)
     const rotation = 1
     const decorations = spawnPOI(
       mapHelper,
@@ -870,46 +870,200 @@ describe('spawn POI markers', () => {
     expect(decorations[3].rotation).to.equal(0)
   })
 
-  it('rwg_tile_gateway_cap that had issues', async () => {
-    mapHelper.getBiomeForPosition = () => 'snow'
+  it('rwg_tile_downtown_intersection_zztong_01', async () => {
+    mapHelper.getBiomeForPosition = () => 'pine_forest'
     const distanceMap: Map<string, Vector3[]> = new Map()
-    const prefab = prefabs.validPrefabsByName.get('rwg_tile_gateway_cap')
+    const prefab = prefabs.validPrefabsByName.get(
+      'rwg_tile_downtown_intersection_zztong_01',
+    )
     if (!prefab) {
       throw new Error('Unable to find POI')
     }
 
-    const position = new Vector3(-1176, 92, -1452)
-    const rotation = 3
+    const testPrefabs = new Set([
+      'rwg_tile_downtown_intersection_zztong_01',
+      'zztong_intersection_02',
+      'part_generator_01',
+      'part_greeble_rooftop_01',
+      'part_greeble_rooftop_02',
+      'part_greeble_rooftop_03',
+      'part_greeble_rooftop_04',
+      'part_greeble_rooftop_05',
+      'part_greeble_rooftop_06',
+      'part_kiosk_01',
+      'part_kiosk_02',
+      'part_kiosk_sign_04',
+      'part_zztong_ev_charger_01',
+      'part_furnace_01',
+      'part_generator_01',
+      'part_greeble_building_side_01',
+      'part_greeble_building_side_01',
+      'part_greeble_rooftop_03',
+      'part_greeble_rooftop_03',
+      'part_kiosk_01',
+      'part_kiosk_02',
+      'part_kiosk_sign_04',
+      'part_kiosk_sign_04',
+      'part_lift_03',
+      'part_shipping_container_04',
+      'part_trailer_bodybags',
+      'part_zztong_ev_charger_01',
+      'part_zztong_ev_charger_01',
+    ])
+
+    const filteredPrefabsByName: Map<string, Prefab> = new Map(
+      [...prefabs.prefabsByName].filter(([k]) => testPrefabs.has(k)),
+    )
+
+    const filteredValidPrefabsByName: Map<string, Prefab> = new Map(
+      [...prefabs.validPrefabsByName].filter(([k]) => testPrefabs.has(k)),
+    )
+
+    const position = new Vector3(-1133, 92, -1409)
+    const rotation = 0
     const decorations = spawnPOI(
       mapHelper,
       position,
       rotation,
       prefab,
-      prefabs.prefabsByName,
-      prefabs.validPrefabsByName,
+      filteredPrefabsByName,
+      filteredValidPrefabsByName,
       distanceMap,
       prefabCounter,
       config,
+      undefined,
+      false,
+      true,
     )
 
     expect(decorations[0]).to.deep.equal({
-      name: 'rwg_tile_gateway_cap',
-      position: new Vector3(-1176, 34, -1452),
+      name: 'rwg_tile_downtown_intersection_zztong_01',
+      position: new Vector3(-1133, 24, -1409),
+      rotation: 0,
+    })
+
+    expect(decorations[1]).to.deep.equal({
+      name: 'zztong_Intersection_02',
+      position: new Vector3(-1090, 24, -1366),
+      rotation: 2,
+    })
+
+    expect(decorations[2]).to.deep.equal({
+      name: 'part_furnace_01',
+      position: new Vector3(-1061, 55, -1338),
+      rotation: 0,
+    })
+
+    expect(decorations[3]).to.deep.equal({
+      name: 'part_generator_01',
+      position: new Vector3(-1073, 37, -1355),
+      rotation: 0,
+    })
+
+    expect(decorations[4]).to.deep.equal({
+      name: 'part_greeble_building_side_01',
+      position: new Vector3(-1063, 45, -1336),
       rotation: 3,
     })
 
-    // @todo expect hat one trader spawned
-    expect(
-      decorations.slice(1, -1).some(decoration => {
-        const decorationPrefab = prefabs.prefabsByName.get(
-          decoration.name.toLocaleLowerCase(),
-        )
-        if (!decorationPrefab) {
-          throw new Error('Where is the prefab?')
-        }
+    expect(decorations[5]).to.deep.equal({
+      name: 'part_greeble_building_side_01',
+      position: new Vector3(-1054, 45, -1335),
+      rotation: 1, // this is an assumption!
+    })
 
-        return decorationPrefab.meta.isTrader
-      }),
-    )
+    expect(decorations[6]).to.deep.equal({
+      name: 'part_greeble_rooftop_03',
+      position: new Vector3(-1086, 55, -1336),
+      rotation: 2,
+    })
+
+    expect(decorations[7]).to.deep.equal({
+      name: 'part_greeble_rooftop_03',
+      position: new Vector3(-1034, 55, -1336),
+      rotation: 0,
+    })
+
+    expect(decorations[8]).to.deep.equal({
+      name: 'part_kiosk_01',
+      position: new Vector3(-1061, 45, -1327),
+      rotation: 2,
+    })
+
+    expect(decorations[9]).to.deep.equal({
+      name: 'part_kiosk_02',
+      position: new Vector3(-1061, 45, -1346),
+      rotation: 0,
+    })
+
+    expect(decorations[10]).to.deep.equal({
+      name: 'part_kiosk_sign_04',
+      position: new Vector3(-1076, 46, -1335),
+      rotation: 0,
+    })
+
+    expect(decorations[11]).to.deep.equal({
+      name: 'part_kiosk_sign_04',
+      position: new Vector3(-1044, 46, -1335),
+      rotation: 0,
+    })
+
+    // We have no example for this in real data (yet)
+    // expect(decorations[12]).to.deep.equal({
+    //   name: "part_lift_03",
+    //   position: new Vector3(-1176, 24, -1452),
+    //   rotation: 3,
+    // });
+
+    // We have no example for this in real data (yet)
+    // expect(decorations[13]).to.deep.equal({
+    //   name: 'part_shipping_container_04',
+    //   position: new Vector3(-1176, 24, -1452),
+    //   rotation: 3,
+    // })
+
+    expect(decorations[14]).to.deep.equal({
+      name: 'part_trailer_bodybags',
+      position: new Vector3(-1042, 37, -1347),
+      rotation: 1,
+    })
+
+    expect(decorations[15]).to.deep.equal({
+      name: 'part_zztong_ev_charger_01',
+      position: new Vector3(-1086, 37, -1326),
+      rotation: 2,
+    })
+
+    expect(decorations[16]).to.deep.equal({
+      name: 'part_zztong_ev_charger_01',
+      position: new Vector3(-1083, 37, -1326),
+      rotation: 2,
+    })
+
+    expect(decorations[17]).to.deep.equal({
+      name: 'part_greeble_rooftop_01',
+      position: new Vector3(-1125, 48, -1324),
+      rotation: 2,
+    })
+
+    expect(decorations[18]).to.deep.equal({
+      name: 'part_greeble_rooftop_05',
+      position: new Vector3(-1130, 48, -1307),
+      rotation: 1,
+    })
+
+    expect(decorations[19]).to.deep.equal({
+      name: 'part_greeble_rooftop_06',
+      position: new Vector3(-1038, 53, -1406),
+      rotation: 1,
+    })
+
+    expect(decorations[20]).to.deep.equal({
+      name: 'part_greeble_rooftop_02',
+      position: new Vector3(-1104, 61, -1352),
+      rotation: 0,
+    })
+
+    expect(decorations).to.have.length(21)
   })
 })
