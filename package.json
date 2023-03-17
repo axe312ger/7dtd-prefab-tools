@@ -1,6 +1,6 @@
 {
   "name": "prefab-tools",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "Toolkit to analyze, trim, repopulate and manipulate your 7 Days To Die map",
   "author": "SuperSmack.City",
   "bin": {
