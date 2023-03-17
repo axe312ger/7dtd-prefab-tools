@@ -45,29 +45,24 @@ export const getRandomPrefab = (
     return prefabCandidates[0]
   }
 
-  // Prefer unspawned prefabs
-  const unspawned = prefabCandidates.filter(
-    prefabCandidate =>
-      (prefabCounter.get(prefabCandidate.name.toLocaleLowerCase()) || 0) === 0,
-  )
+  let lowestCount = -1
+  for (const prefabName of prefabCandidates) {
+    const count = prefabCounter.get(prefabName.name.toLocaleLowerCase()) || 0
 
-  if (unspawned.length > 0) {
-    if (unspawned.length === 1) {
-      // console.log("[RANDOMIZER] Last unspawned:", unspawned[0].name)
-      return unspawned[0]
+    if (lowestCount < 0 || count < lowestCount) {
+      lowestCount = count
     }
-
-    const rnd = randomInt(0, unspawned.length - 1)
-    // console.log("[RANDOMIZER] ", {
-    //   unspawned: unspawned.map((v) => v.name).join(","),
-    //   rnd,
-    // })
-    return unspawned.length === 1 ? unspawned[0] : unspawned[rnd]
   }
 
-  // console.log("[RANDOMIZER] No unspawned, go normal")
+  const leastSpawned = prefabCandidates.filter(
+    prefabCandidate =>
+      (prefabCounter.get(prefabCandidate.name.toLocaleLowerCase()) || 0) === lowestCount,
+  )
 
-  return prefabCandidates.length === 1 ?
-    prefabCandidates[0] :
-    prefabCandidates[randomInt(0, prefabCandidates.length - 1)]
+  if (leastSpawned.length === 1) {
+    return leastSpawned[0]
+  }
+
+  const rnd = randomInt(0, leastSpawned.length - 1)
+  return leastSpawned[rnd]
 }
