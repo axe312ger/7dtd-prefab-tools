@@ -321,6 +321,7 @@ export const defaultPrefabFilters: Filter[] = [
       // Exclude some from the distance check
       if (
         prefabCandidate.meta.isTile ||
+        prefabCandidate.name.toLocaleLowerCase().indexOf('part_') === 0 ||
         (biome === 'wasteland' &&
           (prefabCandidate.name.toLowerCase().includes('rubble') ||
             prefabCandidate.name.toLowerCase().includes('remnant')))
