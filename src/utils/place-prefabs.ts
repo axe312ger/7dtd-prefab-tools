@@ -42,20 +42,8 @@ export function calculateMarkerPosition(
   socketDecoPOIRotation: number,
   socketDecoPOIPosition: Vector3,
   socketPrefab: Prefab,
-  markerPrefab: Prefab,
   marker: POIMarker,
-): { position: Vector3; rotation: number } {
-  let rotation =
-    calcRotation(
-      socketDecoPOIRotation, // or first prefab rotation
-      markerPrefab.meta.RotationToFaceNorth,
-      marker.PartRotation,
-    )
-
-  if (marker.Type === 'PartSpawn' && marker.PartRotation % 2 === 1) {
-    rotation = (rotation + 2) % 4
-  }
-
+): Vector3 {
   const rotatedMarker = marker.Start.clone().applyAxisAngle(
     new Vector3(0, 1, 0),
     (Math.PI / 2) * socketDecoPOIRotation,
@@ -105,7 +93,25 @@ export function calculateMarkerPosition(
     .sub(new Vector3(sizeX, 0, sizeZ))
   }
 
-  return {rotation, position}
+  return position
+}
+
+export function calculateMarkerRotation(
+  socketDecoPOIRotation: number,
+  markerPrefab: Prefab,
+  marker: POIMarker,
+): number {
+  let rotation = calcRotation(
+    socketDecoPOIRotation, // or first prefab rotation
+    markerPrefab.meta.RotationToFaceNorth,
+    marker.PartRotation,
+  )
+
+  if (marker.Type === 'PartSpawn' && marker.PartRotation % 2 === 1) {
+    rotation = (rotation + 2) % 4
+  }
+
+  return rotation
 }
 
 export function spawnPOIMarkers(
@@ -140,6 +146,13 @@ export function spawnPOIMarkers(
       marker.PartToSpawn.toLocaleLowerCase(),
     )
 
+    const position = calculateMarkerPosition(
+      mainPOIRotation,
+      mainPOIPosition,
+      prefab,
+      marker,
+    )
+
     if (!isRandom) {
       // Check if named prefab is valid
       if (testRun && markerPrefab && marker.Type === 'POISpawn') {
@@ -149,7 +162,7 @@ export function spawnPOIMarkers(
           defaultPrefabFilters,
           {
             distanceMap,
-            position: mainPOIPosition,
+            position,
             biome: mapHelper.getBiomeForPosition(mainPOIPosition),
             marker,
             isWilderness: false,
@@ -172,6 +185,7 @@ export function spawnPOIMarkers(
     } else if (marker.Type === 'POISpawn') {
       // Find random POI for marker, included ones filtered by tags
       const markerGhostPrefab = getPrefabForRandomMarker(prefab, marker)
+      const biome = mapHelper.getBiomeForPosition(position)
 
       const filterResult = filterPrefabs(
         markerGhostPrefab,
@@ -179,8 +193,8 @@ export function spawnPOIMarkers(
         defaultPrefabFilters,
         {
           distanceMap,
-          position: mainPOIPosition,
-          biome: mapHelper.getBiomeForPosition(mainPOIPosition),
+          position,
+          biome,
           marker,
           isWilderness: false,
           // debugPrefabName: "xcostum_Origami_Gallery(by_Pille_TopMinder)",
@@ -202,7 +216,7 @@ export function spawnPOIMarkers(
           `Unable to find valid POI for marker in ${socketPrefab.name}:`,
           marker,
           filterResult.reason,
-          mapHelper.getBiomeForPosition(mainPOIPosition),
+          biome,
           '\nPrefabs candidates that filtered to zero:\n',
           filterResult.prefabs
           .map(p =>
@@ -223,8 +237,8 @@ export function spawnPOIMarkers(
       const randomReplacement = getRandomPrefab(
         markerGhostPrefab,
         socketPrefab,
-        mapHelper.getBiomeForPosition(mainPOIPosition),
-        mainPOIPosition,
+        biome,
+        position,
         filterResult.prefabs,
         prefabCounter,
       )
@@ -255,10 +269,8 @@ export function spawnPOIMarkers(
     }
 
     // Calculate marker position
-    const {rotation, position} = calculateMarkerPosition(
+    const rotation = calculateMarkerRotation(
       mainPOIRotation,
-      mainPOIPosition,
-      prefab,
       markerPrefab,
       marker,
     )
