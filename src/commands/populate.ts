@@ -100,12 +100,22 @@ export default class Populate extends Command {
             },
           )
           if (
-            filterResult.success === false ||
+            filterResult.success === false) {
+            throw new Error(
+              `No prefabs can spawn here. Reason:\n${
+                filterResult.reason
+              }`,
+            )
+          }
+
+          if (
             !filterResult.prefabs.some(
               prefab => prefab.name === socketPrefab.name,
             )
           ) {
-            throw new Error('Prefab is not allowed to spawn here')
+            throw new Error(
+              'Prefab is not in the list of allowed prefabs for this location.',
+            )
           }
         }
 
@@ -121,7 +131,6 @@ export default class Populate extends Command {
           prefabCounter,
           config,
           debugPrefabName,
-          true,
         )
 
         console.log(
