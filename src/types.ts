@@ -62,8 +62,8 @@ export interface PrefabToolsConfig {
   prefabsPath: string;
   mapSize: number;
   biomeMap: { [key: string]: string };
-  vanillaWhitelists: { [key: string]: string[] };
-  vanillaBlacklists: { [key: string]: string[] };
+  prefabWhitelists: { [key: string]: string[] };
+  prefabBlacklists: { [key: string]: string[] };
   socketBlacklist: string[];
   biomeTierMap: { [key: string]: number[] };
   markerSizeDifferenceMax: number

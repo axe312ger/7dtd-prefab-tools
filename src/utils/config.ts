@@ -121,7 +121,7 @@ export const defaultConfig: Partial<PrefabToolsConfig> = {
     wilderness: 3000,
     trader: 2000,
   },
-  vanillaWhitelists: {
+  prefabWhitelists: {
     wasteland: [
       'abandoned_house',
       'bombshelter',
@@ -150,7 +150,7 @@ export const defaultConfig: Partial<PrefabToolsConfig> = {
       'warehouse_06',
     ],
   },
-  vanillaBlacklists: {
+  prefabBlacklists: {
     // eslint-disable-next-line camelcase
     pine_forest: [
       'abandoned_house',
