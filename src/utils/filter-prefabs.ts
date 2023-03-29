@@ -146,7 +146,6 @@ export const defaultPrefabFilters: Filter[] = [
       // debugPrefabName,
       config: {
         prefabBlacklists,
-        vanillaPrefabsPath,
         prefabWhitelists,
         biomeTierMap,
       },
@@ -174,36 +173,27 @@ export const defaultPrefabFilters: Filter[] = [
         prefabCandidate.meta.allowedBiomes.includes(biome)
 
       if (!biomeMatches) {
-        return 'biome mismatch'
+        // whitelist overrules biome filter
+        const prefabWhitelist = prefabWhitelists[biome]
+        if (
+          !prefabWhitelist ||
+          !prefabWhitelist.some(entry => prefabCandidate.name.includes(entry))
+        )
+          return `biome mismatch ${
+            prefabWhitelist && `and not included in ${biome} whitelist`
+          }`
       }
 
-      // Filter by white and blacklists
-      const prefabWhitelist = prefabWhitelists[biome]
+      // Blacklists
       const prefabBlacklist = prefabBlacklists[biome]
 
-      let isAllowed = true
-      if (prefabWhitelist) {
-        isAllowed = prefabWhitelist.some(entry =>
-          prefabCandidate.name.includes(entry),
-        )
+      if (prefabBlacklist && prefabBlacklist.some(entry =>
+        prefabCandidate.name.includes(entry),
+      )) {
+        return `included in ${biome} blacklist`
       }
 
-      if (prefabBlacklist) {
-        isAllowed = !prefabBlacklist.some(entry =>
-          prefabCandidate.name.includes(entry),
-        )
-      }
-
-      // if (!isAllowed && debugPrefabName === prefabCandidate.name) {
-      //   console.log(
-      //     `Dropped ${prefabCandidate.name} because of white or black list.`,
-      //     {prefabWhitelist, prefabBlacklist},
-      //   )
-      // }
-
-      return isAllowed ?
-        true :
-        `does not match white or blacklist for biome ${biome}`
+      return true
     },
   },
   {
