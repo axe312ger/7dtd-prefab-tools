@@ -44,6 +44,7 @@ export const defaultPrefabFilters: Filter[] = [
       prefabToReplace,
       prefabCandidate,
       isWilderness,
+      config,
     }: // debugPrefabName,
     FilterContext): true | string => {
       // Do not mix tiles and non tiles
@@ -319,6 +320,14 @@ export const defaultPrefabFilters: Filter[] = [
       )
       if (distanceTag) {
         type = distanceTag
+      }
+
+      // Allow custom distnace per biome name
+      const distanceBiome = prefabCandidate.meta.allowedBiomes.find(biome =>
+        Object.keys(distances).includes(biome),
+      )
+      if (distanceBiome) {
+        type = distanceBiome
       }
 
       const minimumDistance = distances[type]

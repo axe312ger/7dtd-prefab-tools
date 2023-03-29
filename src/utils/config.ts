@@ -120,6 +120,7 @@ export const defaultConfig: Partial<PrefabToolsConfig> = {
     default: 400,
     wilderness: 3000,
     trader: 2000,
+    wasteland: 200,
   },
   prefabWhitelists: {
     wasteland: [
