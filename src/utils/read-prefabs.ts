@@ -31,7 +31,6 @@ const getDimensions = (prefabData: PrefabXMLData): Vector3 => {
 export async function readPrefabsFromXMLs({
   vanillaPrefabsPath,
   additionalPrefabsPaths,
-  socketBlacklist,
   additionalTileTypes,
 }: PrefabToolsConfig): Promise<{
   prefabsByName: Map<string, Prefab>;
@@ -276,8 +275,8 @@ export async function readPrefabsFromXMLs({
           prefab.meta.tags.includes('test') ||
           prefab.meta.tags.includes('navonly') ||
           prefab.meta.zoning.includes('biomeonly') ||
-          prefab.filePath.includes('Player Creations') ||
-          socketBlacklist.includes(prefab.name)
+          prefab.filePath.includes('Player Creations')
+          // socketBlacklist.some(item => prefab.name.includes(item))
         )
       )
     ) {

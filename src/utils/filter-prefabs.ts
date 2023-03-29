@@ -51,19 +51,28 @@ export const defaultPrefabFilters: Filter[] = [
         return 'tiles should not be replaced by POIs and vise versa'
       }
 
+      if (
+        prefabCandidate.meta.isTile &&
+        prefabToReplace.name !== prefabCandidate.name &&
+        config.socketBlacklist.some(item => prefabCandidate.name.toLocaleLowerCase().includes(item))
+      ) {
+        return 'this socket is blacklisted and wont spawn as replacement'
+      }
+
       if (prefabToReplace.meta.isTile) {
         // Tiles must share the same type/zone
         if (
           prefabToReplace.meta.tileType &&
-          prefabCandidate.meta.tileType &&
-          prefabToReplace.meta.tileType !== prefabCandidate.meta.tileType
+            prefabCandidate.meta.tileType &&
+            prefabToReplace.meta.tileType !== prefabCandidate.meta.tileType
         ) {
           return `tile does not match the correct type/zone (${prefabToReplace.meta.tileType})`
         }
 
         // Ensure not to mix roat pattern (straight, corner, t, ...)
         if (
-          prefabToReplace.meta.tilePattern !== prefabCandidate.meta.tilePattern
+          prefabToReplace.meta.tilePattern !==
+            prefabCandidate.meta.tilePattern
         ) {
           return `is tile but tile road pattern mismatches (${prefabToReplace.meta.tilePattern})`
         }
