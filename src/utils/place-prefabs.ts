@@ -288,14 +288,6 @@ export function spawnPOIMarkers(
     }
     markers.push(markerDecoration)
 
-    if (!testRun) {
-      addToDistanceMap(distanceMap, markerDecoration)
-      prefabCounter.set(
-        markerDecoration.name.toLocaleLowerCase(),
-        (prefabCounter.get(markerDecoration.name) || 0) + 1,
-      )
-    }
-
     // If we just spawned a POI, spawn its markers as well
     if (markerPrefab.meta.markers?.length !== 0) {
       markers.push(
@@ -391,15 +383,6 @@ export function spawnPOI(
   }
   decorations.push(mainDecoration)
 
-  if (!testRun) {
-    addToDistanceMap(distanceMap, mainDecoration)
-
-    prefabCounter.set(
-      prefab.name.toLocaleLowerCase(),
-      (prefabCounter.get(prefab.name.toLocaleLowerCase()) || 0) + 1,
-    )
-  }
-
   // Spawn poi markers
   const markers = spawnPOIMarkers(
     mainPOIPosition,
@@ -418,6 +401,16 @@ export function spawnPOI(
   )
 
   decorations.push(...markers)
+
+  for (const decoration of [mainDecoration, ...markers]) {
+    addToDistanceMap(distanceMap, decoration)
+    const name = decoration.name.toLocaleLowerCase()
+
+    prefabCounter.set(
+      name,
+      (prefabCounter.get(name) || 0) + 1,
+    )
+  }
 
   return decorations
 }

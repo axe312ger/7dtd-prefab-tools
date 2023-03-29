@@ -131,6 +131,7 @@ export default class Populate extends Command {
           prefabCounter,
           config,
           debugPrefabName,
+          true,
         )
 
         console.log(
