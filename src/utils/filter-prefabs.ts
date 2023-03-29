@@ -175,13 +175,14 @@ export const defaultPrefabFilters: Filter[] = [
       if (!biomeMatches) {
         // whitelist overrules biome filter
         const prefabWhitelist = prefabWhitelists[biome]
-        if (
-          !prefabWhitelist ||
-          !prefabWhitelist.some(entry => prefabCandidate.name.includes(entry))
-        )
-          return `biome mismatch ${
-            prefabWhitelist && `and not included in ${biome} whitelist`
-          }`
+        if (!prefabWhitelist) {
+          return 'biome mismatch'
+        }
+
+        if (!prefabWhitelist.some(entry => prefabCandidate.name.includes(entry))
+        ) {
+          return `biome mismatch and not included in ${biome} whitelist`
+        }
       }
 
       // Blacklists
@@ -333,15 +334,15 @@ export const defaultPrefabFilters: Filter[] = [
         type = distanceTag
       }
 
-      const distance = distances[type]
+      const minimumDistance = distances[type]
 
       // Ensure minimum distance
       const positions = distanceMap.get(prefabCandidate.name) || []
       if (positions && positions.length > 0) {
-        return positions?.find(
-          p => p.manhattanDistanceTo(position) < distance,
+        return positions?.some(
+          p => p.manhattanDistanceTo(position) < minimumDistance,
         ) ?
-          'minimum distance' :
+          'distance to low to POI of same type' :
           true
       }
 
