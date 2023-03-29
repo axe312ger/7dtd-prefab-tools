@@ -23,21 +23,22 @@ export interface POIMarker {
 }
 
 export interface POIMeta {
-  zoning: string[]
-  allowedBiomes: string[]
-  allowedTownships: string[]
-  difficultyTier: number
-  markers?: POIMarker[]
-  markerGroups?: Map<string, Set<POIMarker>>
-  markerGroupsOrder?: string[]
-  PrefabSize: Vector3
-  RotationToFaceNorth: number
-  YOffset: number
-  isTrader: boolean
-  isTile: boolean
-  isWilderness: boolean
-  tags: string[]
+  zoning: string[];
+  allowedBiomes: string[];
+  allowedTownships: string[];
+  difficultyTier: number;
+  markers?: POIMarker[];
+  markerGroups?: Map<string, Set<POIMarker>>;
+  markerGroupsOrder?: string[];
+  PrefabSize: Vector3;
+  RotationToFaceNorth: number;
+  YOffset: number;
+  isTrader: boolean;
+  isTile: boolean;
+  isWilderness: boolean;
+  tags: string[];
   tileType?: string
+  tilePattern?: string;
 }
 
 export interface Decoration {

@@ -53,8 +53,8 @@ export const defaultPrefabFilters: Filter[] = [
 
       if (
         prefabToReplace.meta.isTile &&
-        prefabToReplace.meta.allowedTownships.includes('oldwest') &&
-        !prefabCandidate.meta.allowedTownships.includes('oldwest')
+        prefabToReplace.meta.allowedTownships.includes('oldwest') !==
+          prefabCandidate.meta.allowedTownships.includes('oldwest')
       ) {
         // Do not mix oldwest and other tiles
         // if (true || debugPrefabName === prefabCandidate.name) {
@@ -73,6 +73,16 @@ export const defaultPrefabFilters: Filter[] = [
         prefabToReplace.meta.tileType !== prefabCandidate.meta.tileType
       ) {
         return 'is tile but tile type mismatches'
+      }
+
+      if (
+        prefabToReplace.meta.isTile &&
+        (
+          (!prefabToReplace.meta.tilePattern || !prefabCandidate.meta.tilePattern) ||
+          prefabToReplace.meta.tilePattern !== prefabCandidate.meta.tilePattern
+        )
+      ) {
+        return 'is tile but tile road pattern mismatches'
       }
 
       if (isWilderness) {
@@ -144,11 +154,7 @@ export const defaultPrefabFilters: Filter[] = [
       prefabCandidate,
       biome,
       // debugPrefabName,
-      config: {
-        prefabBlacklists,
-        prefabWhitelists,
-        biomeTierMap,
-      },
+      config: {prefabBlacklists, prefabWhitelists, biomeTierMap},
       marker,
     }: FilterContext): true | string => {
       // Skip check if marker is filtered by tags
@@ -179,7 +185,8 @@ export const defaultPrefabFilters: Filter[] = [
           return 'biome mismatch'
         }
 
-        if (!prefabWhitelist.some(entry => prefabCandidate.name.includes(entry))
+        if (
+          !prefabWhitelist.some(entry => prefabCandidate.name.includes(entry))
         ) {
           return `biome mismatch and not included in ${biome} whitelist`
         }
@@ -188,9 +195,10 @@ export const defaultPrefabFilters: Filter[] = [
       // Blacklists
       const prefabBlacklist = prefabBlacklists[biome]
 
-      if (prefabBlacklist && prefabBlacklist.some(entry =>
-        prefabCandidate.name.includes(entry),
-      )) {
+      if (
+        prefabBlacklist &&
+        prefabBlacklist.some(entry => prefabCandidate.name.includes(entry))
+      ) {
         return `included in ${biome} blacklist`
       }
 

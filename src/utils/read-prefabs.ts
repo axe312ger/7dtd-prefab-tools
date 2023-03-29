@@ -152,6 +152,7 @@ export async function readPrefabsFromXMLs({
           'residentialnew',
           'industrial',
           'rural',
+          'countryresidential',
         ].includes(tag),
       ),
     )
@@ -228,7 +229,7 @@ export async function readPrefabsFromXMLs({
     }
 
     if (isTile) {
-      const tileType = name
+      meta.tileType = name
       .split('_')
       .find(segment =>
         [
@@ -240,7 +241,21 @@ export async function readPrefabsFromXMLs({
           't',
         ].includes(segment),
       )
-      meta.tileType = tileType
+
+      meta.tilePattern = name
+      .split('_')
+      .find(segment =>
+        [
+          'downtown',
+          'residential',
+          'commercial',
+          'industrial',
+          'rural',
+          'countryresidential',
+          'oldwest',
+          'gateway',
+        ].includes(segment),
+      )
     }
 
     const prefab: Prefab = {filePath, name, prefabData, meta}
