@@ -48,50 +48,30 @@ export const defaultPrefabFilters: Filter[] = [
     FilterContext): true | string => {
       // Do not mix tiles and non tiles
       if (prefabToReplace.meta.isTile !== prefabCandidate.meta.isTile) {
-        return 'isTile mismatch'
+        return 'tiles should not be replaced by POIs and vise versa'
       }
 
-      if (
-        prefabToReplace.meta.isTile &&
-        prefabToReplace.meta.allowedTownships.includes('oldwest') !==
-          prefabCandidate.meta.allowedTownships.includes('oldwest')
-      ) {
-        // Do not mix oldwest and other tiles
-        // if (true || debugPrefabName === prefabCandidate.name) {
-        //   console.log(
-        //     `Dropped ${prefabCandidate.name} because of oldwest tile check.`,
-        //     prefabToReplace.meta.allowedTownships,
-        //     prefabCandidate.meta.allowedTownships
-        //   )
-        // }
-        return 'drop is tile but oldwest and not oldwest'
-      }
+      if (prefabToReplace.meta.isTile) {
+        // Tiles must share the same type/zone
+        if (
+          prefabToReplace.meta.tileType &&
+          prefabCandidate.meta.tileType &&
+          prefabToReplace.meta.tileType !== prefabCandidate.meta.tileType
+        ) {
+          return `tile does not match the correct type/zone (${prefabToReplace.meta.tileType})`
+        }
 
-      // Ensure not to mix tile types (straight, corner, t, ...)
-      if (
-        prefabToReplace.meta.isTile &&
-        prefabToReplace.meta.tileType !== prefabCandidate.meta.tileType
-      ) {
-        return 'is tile but tile type mismatches'
-      }
-
-      if (
-        prefabToReplace.meta.isTile &&
-        (
-          (!prefabToReplace.meta.tilePattern || !prefabCandidate.meta.tilePattern) ||
+        // Ensure not to mix roat pattern (straight, corner, t, ...)
+        if (
           prefabToReplace.meta.tilePattern !== prefabCandidate.meta.tilePattern
-        )
-      ) {
-        return 'is tile but tile road pattern mismatches'
+        ) {
+          return `is tile but tile road pattern mismatches (${prefabToReplace.meta.tilePattern})`
+        }
+
+        return true
       }
 
       if (isWilderness) {
-        // If we are looking for wilderness pois, we can skip the other checks and just test for the flag
-        // if (true || debugPrefabName === prefabCandidate.name) {
-        //   console.log(
-        //     `maybe Dropped ${prefabCandidate.name} because of wildernessss.`
-        //   )
-        // }
         return prefabCandidate.meta.isWilderness ?
           true :
           'both need to be wilderness'
@@ -107,11 +87,6 @@ export const defaultPrefabFilters: Filter[] = [
         )
 
         if (!matchesZone) {
-          // if (true || debugPrefabName === prefabCandidate.name) {
-          //   console.log(
-          //     `Dropped ${prefabCandidate.name} because of zone mismatch.`
-          //   )
-          // }
           return `zones mismatch - has: ${prefabCandidate.meta.zoning.join(
             ', ',
           )} - need: ${prefabToReplace.meta.zoning.join(', ')}`
@@ -135,11 +110,6 @@ export const defaultPrefabFilters: Filter[] = [
         )
 
         if (!matchesTownship) {
-          // if (true || debugPrefabName === prefabCandidate.name) {
-          //   console.log(
-          //     `Dropped ${prefabCandidate.name} because of township mismatch.`
-          //   )
-          // }
           return 'township mismatch'
         }
       }

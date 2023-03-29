@@ -67,6 +67,7 @@ export interface PrefabToolsConfig {
   prefabBlacklists: { [key: string]: string[] };
   socketBlacklist: string[];
   biomeTierMap: { [key: string]: number[] };
-  markerSizeDifferenceMax: number
-  distances : { [key: string]: number };
+  markerSizeDifferenceMax: number;
+  distances: { [key: string]: number };
+  additionalTileTypes: string[];
 }

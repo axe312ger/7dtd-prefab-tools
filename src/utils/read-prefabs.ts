@@ -32,17 +32,17 @@ export async function readPrefabsFromXMLs({
   vanillaPrefabsPath,
   additionalPrefabsPaths,
   socketBlacklist,
+  additionalTileTypes,
 }: PrefabToolsConfig): Promise<{
   prefabsByName: Map<string, Prefab>;
   validPrefabsByName: Map<string, Prefab>;
 }> {
-  ux.action.start(
-    'Locate, parse and normalize XML data for all prefabs',
-  )
+  ux.action.start('Locate, parse and normalize XML data for all prefabs')
 
   // Locate all prefabs
-  const globPatterns = [vanillaPrefabsPath, ...additionalPrefabsPaths].map(pattern =>
-    path.join(expandTilde(pattern), '**', '*.xml').replace(/\\/g, '/'),
+  const globPatterns = [vanillaPrefabsPath, ...additionalPrefabsPaths].map(
+    pattern =>
+      path.join(expandTilde(pattern), '**', '*.xml').replace(/\\/g, '/'),
   )
 
   const files = await fastGlob(
@@ -63,7 +63,9 @@ export async function readPrefabsFromXMLs({
     const data = await parseStringPromise(fileContent)
 
     if (!data.prefab) {
-      console.log(`Unable to read file ${filePath}. Does this script have permission to read these files?`)
+      console.log(
+        `Unable to read file ${filePath}. Does this script have permission to read these files?`,
+      )
       continue
     }
 
@@ -83,6 +85,7 @@ export async function readPrefabsFromXMLs({
     }
 
     const {name} = path.parse(filePath)
+
     const allowedTownships = parseArrayValue(prefabData.AllowedTownships)
     const isTile = name.indexOf('rwg_tile_') === 0
     const isTrader = prefabData.TraderArea.toLocaleLowerCase() === 'true'
@@ -96,7 +99,10 @@ export async function readPrefabsFromXMLs({
       YOffset: Number.parseInt(prefabData.YOffset, 10) || 0,
       isTrader,
       isTile,
-      isWilderness: !isTrader && !name.includes('part_') && allowedTownships.includes('wilderness'),
+      isWilderness:
+        !isTrader &&
+        !name.includes('part_') &&
+        allowedTownships.includes('wilderness'),
       tags: parseArrayValue(prefabData.Tags),
     }
 
@@ -229,22 +235,14 @@ export async function readPrefabsFromXMLs({
     }
 
     if (isTile) {
-      meta.tileType = name
-      .split('_')
-      .find(segment =>
-        [
-          'intersection',
-          'straight',
-          'gateway',
-          'corner',
-          'cap',
-          't',
-        ].includes(segment),
+      const nameSegments = name.toLocaleLowerCase().split('_')
+      meta.tilePattern = nameSegments.find(segment =>
+        ['intersection', 'straight', 'gateway', 'corner', 'cap', 't'].includes(
+          segment,
+        ),
       )
 
-      meta.tilePattern = name
-      .split('_')
-      .find(segment =>
+      meta.tileType = nameSegments.find(segment =>
         [
           'downtown',
           'residential',
@@ -254,6 +252,7 @@ export async function readPrefabsFromXMLs({
           'countryresidential',
           'oldwest',
           'gateway',
+          ...additionalTileTypes,
         ].includes(segment),
       )
     }
@@ -268,16 +267,18 @@ export async function readPrefabsFromXMLs({
     if (
       !(
         // prefab.name.indexOf('part_') === 0 ||
-        prefab.name.indexOf('AAA_') === 0 ||
-        prefab.name.indexOf('000_') === 0 ||
-        // prefab.name.indexOf("rwg_tile_oldwest_") === 0 ||
-        // prefab.meta.tags.includes('part') ||
-        prefab.meta.tags.includes('testonly') ||
-        prefab.meta.tags.includes('test') ||
-        prefab.meta.tags.includes('navonly') ||
-        prefab.meta.zoning.includes('biomeonly') ||
-        prefab.filePath.includes('Player Creations') ||
-        socketBlacklist.includes(prefab.name)
+        (
+          prefab.name.indexOf('AAA_') === 0 ||
+          prefab.name.indexOf('000_') === 0 ||
+          // prefab.name.indexOf("rwg_tile_oldwest_") === 0 ||
+          // prefab.meta.tags.includes('part') ||
+          prefab.meta.tags.includes('testonly') ||
+          prefab.meta.tags.includes('test') ||
+          prefab.meta.tags.includes('navonly') ||
+          prefab.meta.zoning.includes('biomeonly') ||
+          prefab.filePath.includes('Player Creations') ||
+          socketBlacklist.includes(prefab.name)
+        )
       )
     ) {
       validPrefabsByName.set(prefab.name.toLocaleLowerCase(), prefab)

@@ -200,4 +200,5 @@ export const defaultConfig: Partial<PrefabToolsConfig> = {
     'spawn_',
     'rwg_tile_oldwest_',
   ],
+  additionalTileTypes: [],
 }
