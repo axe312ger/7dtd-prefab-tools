@@ -1,26 +1,23 @@
+/* eslint-disable unicorn/prefer-module */
+/* eslint-disable no-await-in-loop */
 import {Command} from '@oclif/core'
 import {readFile} from 'node:fs/promises'
 import {
   readFileSync,
   createReadStream,
-  createWriteStream,
   existsSync,
   accessSync,
   constants,
 } from 'node:fs'
-import * as StreamPromises from 'node:stream/promises'
+import * as FsPromises from 'node:fs/promises'
 import {join, resolve, dirname, parse} from 'node:path'
-
-import archiver from 'archiver'
-import chalk from 'chalk'
-import prettyBytes from 'pretty-bytes'
 
 import {readPrefabsFromXMLs} from '../utils/read-prefabs'
 import {loadDecorations} from '../utils/load-decorations'
 import {initConfig} from '../utils/config'
 import {Prefab} from '../types'
 
-const BASE_DIR_NAME = 'SuperSmackCity - Prefabs'
+const BASE_DIR_NAME = 'Client Side Mod'
 
 const DUMMIES = new Set([
   '60x60',
@@ -35,11 +32,9 @@ const DUMMIES = new Set([
 ])
 
 export default class ClientSideMod extends Command {
-  static description = 'describe the command here'
+  static description = 'Creates an folder with all prefabs that are spawned on your map. For prefabs with common sizes the block info will be replaced by dummy data. That way you provide a distant terrain client side mod to your players with minimal file size.';
 
-  static examples = [
-    '<%= config.bin %> <%= command.id %>',
-  ]
+  static examples = ['<%= config.bin %> <%= command.id %>'];
 
   public async run(): Promise<void> {
     const config = await initConfig()
@@ -66,59 +61,11 @@ export default class ClientSideMod extends Command {
       }
     }
 
-    // Loop through
-    const clientSideModPath = resolve(process.cwd(), 'client-side-mod.zip')
-    const output = createWriteStream(clientSideModPath)
-    const archive = archiver('zip', {
-      zlib: {level: 9},
-    })
-
-    // listen for all archive data to be written
-    // 'close' event is fired only when a file descriptor is involved
-    output.on('close', function () {
-      console.log(
-        chalk.bold(
-          `\nClient side mod with ${prettyBytes(
-            archive.pointer(),
-          )} has been created:`,
-        ),
-        clientSideModPath,
-      )
-    })
-
-    // This event is fired when the data source is drained no matter what was the data source.
-    // It is not part of this library but rather from the NodeJS Stream API.
-    // @see: https://nodejs.org/api/stream.html#stream_event_end
-    output.on('end', function () {
-      console.log('Data has been drained')
-    })
-
-    // good practice to catch warnings (ie stat failures and other non-blocking errors)
-    archive.on('warning', function (err) {
-      if (err.code === 'ENOENT') {
-        // log warning
-      } else {
-        // throw error
-        throw err
-      }
-    })
-
-    // good practice to catch this error explicitly
-    archive.on('error', function (err) {
-      throw err
-    })
-
-    // Progress
-    archive.on('progress', function ({entries, fs}) {
-      console.log(
-        `${entries.processed}/${entries.total} @ ${prettyBytes(
-          fs.processedBytes,
-        )}/${prettyBytes(fs.totalBytes)}`,
-      )
-    })
-
+    let cnt = 0
     for (const prefab of prefabsToInclude.values()) {
+      cnt++
       const {name, dir} = parse(prefab.filePath)
+      console.log(`${cnt}/${prefabsToInclude.size}: ${prefab.name}`)
 
       const id = `${prefab.meta.PrefabSize.x}x${prefab.meta.PrefabSize.z}`
       const dummyExists = DUMMIES.has(id)
@@ -131,7 +78,9 @@ export default class ClientSideMod extends Command {
 
       let ins = null
       try {
-        const insPath = dummyExists ? resolve(__dirname, '..', 'prefab-dummies', `dummy_${id}.ins`) : resolve(dir, `${name}.ins`)
+        const insPath = dummyExists ?
+          resolve(__dirname, '..', 'prefab-dummies', `dummy_${id}.ins`) :
+          resolve(dir, `${name}.ins`)
 
         accessSync(insPath, constants.F_OK)
 
@@ -141,29 +90,24 @@ export default class ClientSideMod extends Command {
       }
 
       const tts = dummyExists ?
-        readFileSync(resolve(__dirname, '..', 'prefab-dummies', `dummy_${id}.tts`)) :
+        readFileSync(
+          resolve(__dirname, '..', 'prefab-dummies', `dummy_${id}.tts`),
+        ) :
         createReadStream(resolve(dir, `${name}.tts`))
 
-      archive.append(nim, {
-        name: join(BASE_DIR_NAME, name, `${name}.blocks.nim`),
-      })
+      const targetDir = join(process.cwd(), BASE_DIR_NAME, name)
+      await FsPromises.mkdir(targetDir, {recursive: true})
+
+      await FsPromises.writeFile(join(targetDir, `${name}.blocks.nim`), nim)
 
       if (ins) {
-        archive.append(ins, {
-          name: join(BASE_DIR_NAME, name, `${name}.ins`),
-        })
+        await FsPromises.writeFile(join(targetDir, `${name}.ins`), ins)
       }
 
-      archive.append(tts, {
-        name: join(BASE_DIR_NAME, name, `${name}.tts`),
-      })
+      await FsPromises.writeFile(join(targetDir, `${name}.tts`), tts)
 
-      archive.append(createReadStream(resolve(dir, `${name}.xml`)), {
-        name: join(BASE_DIR_NAME, name, `${name}.xml`),
-      })
-      archive.append(createReadStream(resolve(dir, `${name}.mesh`)), {
-        name: join(BASE_DIR_NAME, name, `${name}.mesh`),
-      })
+      await FsPromises.writeFile(join(targetDir, `${name}.xml`), createReadStream(resolve(dir, `${name}.xml`)))
+      await FsPromises.writeFile(join(targetDir, `${name}.mesh`), createReadStream(resolve(dir, `${name}.mesh`)))
 
       try {
         const previewImagePath = resolve(dir, `${name}.jpg`)
@@ -171,16 +115,15 @@ export default class ClientSideMod extends Command {
 
         const previewImage = createReadStream(previewImagePath)
 
-        archive.append(previewImage, {
-          name: join(BASE_DIR_NAME, name, `${name}.jpg`),
-        })
+        await FsPromises.writeFile(join(targetDir, `${name}.jpg`), previewImage)
       } catch {}
     }
 
-    // Finish archive
-    await archive.finalize()
-
-    // Write to disk
-    await StreamPromises.pipeline(archive, output)
+    console.log(
+      `Done. A folder with all our maps prefabs, optimized for size, can be found here: ${join(
+        process.cwd(),
+        BASE_DIR_NAME,
+      )}`,
+    )
   }
 }
